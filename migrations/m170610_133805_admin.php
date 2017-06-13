@@ -13,7 +13,7 @@ class m170610_133805_admin extends Migration
             'auth_key' => $this->string(100)->notNull(),
             'password_hash' => $this->string(100)->notNull(),
             'access_token' => $this->string(100)->notNull(),
-            'token' => $this->string(100),
+            'password_reset_token' => $this->string(100),
             'status' => "ENUM('active', 'inactive', 'expire', 'ban', 'block') NOT NULL DEFAULT 'active'",
             'role' => "ENUM('admin', 'editor', 'author', 'contributor') NOT NULL DEFAULT 'admin'",
         ]);
@@ -24,7 +24,7 @@ class m170610_133805_admin extends Migration
                 'auth_key' => Yii::$app->security->generateRandomString(),
                 'password_hash' => Yii::$app->security->generatePasswordHash('admin'),
                 'access_token' => Yii::$app->security->generateRandomString() . time(),
-                'token' => '',
+                'password_reset_token' => '',
                 'status' => 'active',
                 'role' => 'admin',
             )

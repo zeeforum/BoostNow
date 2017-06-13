@@ -13,6 +13,7 @@ class m170609_182522_User extends Migration
             'auth_key' => $this->string(100)->notNull(),
             'password_hash' => $this->string(100)->notNull(),
             'access_token' => $this->string(100)->notNull(),
+            'password_reset_token' => $this->string(100),
             'status' => "ENUM('active', 'inactive', 'expire', 'ban', 'block') NOT NULL DEFAULT 'active'",
         ]);
 
@@ -22,6 +23,7 @@ class m170609_182522_User extends Migration
                 'auth_key' => Yii::$app->security->generateRandomString(),
                 'password_hash' => Yii::$app->security->generatePasswordHash('admin'),
                 'access_token' => Yii::$app->security->generateRandomString() . time(),
+                'password_reset_token' => '',
                 'status' => 'active',
             )
         );

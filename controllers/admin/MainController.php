@@ -36,10 +36,16 @@
 
 			$model = new AdminLoginForm();
 			$model->scenario = 'forgotPassword';
-			if ($model->load(Yii::$app->request->post()) && $model->resetPassword()) {
-				
+			if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+				if ($model->resetPassword()) {
+					Yii::$app->getSession()->setFlash('smsg', 'Please Check Your Email to Reset Your Password!');
+   					return $this->redirect(Yii::$app->params['adminUrl']);
+   				} else {
+   					Yii::$app->session->setFlash('emsg', 'Sorry, we are unable to reset password for the provided email address.');
+   				}
 			}
 
+			$this->view->title = 'Forgot Password';
 			return $this->render('forgot-password', [
 				'model' => $model,
 			]);

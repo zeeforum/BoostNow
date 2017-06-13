@@ -27,6 +27,14 @@ AuthAsset::register($this);
 		]); ?>
 
 		<div class="panel-body">
+			<?php
+				$smsg = Yii::$app->session->getFlash('smsg');
+				if ($smsg) {
+			?>
+				<div class="alert alert-success"><?= $smsg ?></div>
+			<?php
+				}
+			?>
 			<div class="login-fields">
 				<p>Please provide your details</p>
 						

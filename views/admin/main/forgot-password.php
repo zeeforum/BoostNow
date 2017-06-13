@@ -14,8 +14,17 @@ AuthAsset::register($this);
 <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3 text-center">
 	<div class="panel panel-primary">
 		<div class="panel-heading">
-			<h3>Admin Login</h3>
+			<h3>Reset Password</h3>
 		</div>
+
+		<?php
+			$smsg = Yii::$app->session->getFlash('emsg');
+			if ($smsg) {
+		?>
+			<div class="alert alert-danger"><?= $smsg ?></div>
+		<?php
+			}
+		?>
 		
 		<?php $form = ActiveForm::begin([
 			'id' => 'form1',

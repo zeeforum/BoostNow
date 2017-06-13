@@ -28,7 +28,13 @@ class AdminLoginForm extends Model {
 		return [
 			['username', 'required', 'message' => 'Enter Your Username/Email', 'on' => ['login']],
 			['email', 'required', 'message' => 'Enter Your Email', 'on' => ['forgotPassword']],
-			['email', 'email', 'message' => 'Enter Valid Email',],
+			['email', 'email', 'message' => 'Enter Valid Email'],
+			['email', 'exist',
+				'targetClass' => 'app\models\Admin',
+				'filter' => ['status' => Admin::STATUS_ACTIVE],
+				'message' => 'There is no user with this email address.',
+				'on' => 'forgotPassword'
+			],
 			// username and password are both required
 			[['username', 'password'], 'required', 'message' => 'Enter Your Password', 'on' => ['login']],
 			// rememberMe must be a boolean value
@@ -80,36 +86,35 @@ class AdminLoginForm extends Model {
 	}
 
 	public function resetPassword() {
-		$this->sendEmail();
-
-		return false;
+		return $this->sendEmail();
 	}
 
 	public function sendEmail() {
-        /* @var $user User */
-        $user = Admin::findOne([
-            'status' => Admin::STATUS_ACTIVE,
-            'email' => $this->email,
-        ]);
-        if (!$user) {
+		$user = Admin::findOne([
+				'status' => Admin::STATUS_ACTIVE,
+				'email' => $this->email,
+		]);
+
+		if (!$user) {
             return false;
         }
-        
-        
-        $user->generatePasswordResetToken();
-        if (!$user->save()) {
-            return false;
+
+		if (!User::isPasswordResetTokenValid($user->password_reset_token)) {
+            $user->generatePasswordResetToken();
+            if (!$user->save()) {
+                return false;
+            }
         }
-        
-        return Yii::$app
-            ->mailer
-            ->compose(
-                //['html' => 'passwordResetToken-html', 'text' => 'passwordResetToken-text'],
-                ['user' => $user]
-            )
-            ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->name . ' robot'])
-            ->setTo($this->email)
-            ->setSubject('Password reset for ' . Yii::$app->name)
-            ->send();
-    }
+		
+		return Yii::$app
+			->mailer
+			->compose(
+				['text' => 'forgot-password'],
+				['user' => $user]
+			)
+			->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->name . ' robot'])
+			->setTo($this->email)
+			->setSubject('Password reset for ' . Yii::$app->name)
+			->send();
+	}
 }
