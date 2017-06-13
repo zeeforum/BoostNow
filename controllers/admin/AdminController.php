@@ -12,7 +12,7 @@
 		public function beforeAction($bool = true) {
 			if ($bool) {
 				if (Yii::$app->admin->isGuest) {
-					return $this->redirect(Yii::$app->homeUrl . 'site/admin-login');
+					return $this->redirect(Yii::$app->params['adminUrl']);
 				}
 			}
 

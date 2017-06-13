@@ -37,7 +37,7 @@ class Admin extends ActiveRecord implements IdentityInterface {
 	 * @return static|null
 	 */
 	public static function findByUsername($username) {
-		return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
+		return static::find()->where(['username' => $username])->orWhere(['email' => $username])->andWhere(['status' => self::STATUS_ACTIVE])->one();
 	}
 
 	/**
