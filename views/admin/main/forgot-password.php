@@ -28,20 +28,13 @@ AuthAsset::register($this);
 
 		<div class="panel-body">
 			<div class="login-fields">
-				<p>Please provide your details</p>
+				<p>Please provide your email to recover your password</p>
 						
-				<?= $form->field($model, 'username')->textInput(['autofocus' => true, 'id' => 'username', 'placeholder' => 'Enter Your Email/Username', 'class' => 'form-control']) ?>
-
-				<?= $form->field($model, 'password')->passwordInput(['id' => 'password', 'placeholder' => 'Enter Your Password', 'class' => 'form-control']) ?>
+				<?= $form->field($model, 'email')->textInput(['autofocus' => true, 'id' => 'email', 'placeholder' => 'Enter Your Email', 'class' => 'form-control']) ?>
 			</div> <!-- /login-fields -->
 
 			<div class="login-actions">
-				<div class="login-checkbox">
-					<?= $form->field($model, 'rememberMe')->checkbox([
-						'template' => "<div class=\"field login-checkbox\">{input} {label}</div>",
-					]) ?>
-				</div>
-				<?= Html::submitButton('Login', ['class' => 'button btn btn-success btn-large signin-btn', 'name' => 'cmd']) ?>
+				<?= Html::submitButton('Reset', ['class' => 'button btn btn-success btn-large signin-btn', 'name' => 'cmd']) ?>
 			</div> <!-- .actions -->
 		</div>
 
@@ -50,5 +43,5 @@ AuthAsset::register($this);
 <div class="clear"></div>
 
 <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3 text-center">
-	<a href="<?= Yii::$app->params['adminUrl'] . 'main/forgot-password'; ?>">Forgot Password Click Here To Recover?</a>
+	<a href="<?= Yii::$app->params['adminUrl']; ?>">Login to Your Account</a>
 </div> <!-- /login-extra -->
