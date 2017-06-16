@@ -25,10 +25,7 @@ class AuthAsset extends AssetBundle
     ];
     public $js = [
         'plugins/jQuery/jquery-2.2.3.min.js',
-        /*'js/jquery.validate.min.js',
-        'js/additional-methods.min.js',*/
         'js/bootstrap.min.js',
-        'js/app.min.js',
     ];
     public $depends = [
         //'yii\web\YiiAsset',

@@ -51,4 +51,27 @@
 			]);
 		}
 
+		public function actionResetPassword() {
+			$token = Yii::$app->request->get('token');
+			$model = new AdminLoginForm();
+			$model->scenario = 'resetPassword';
+			$admin_row = AdminLoginForm::findByPasswordResetToken($token);
+			if (!$admin_row) {
+				return $this->redirect(Yii::$app->params['adminUrl']);
+			} else if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+				$model->token = $token;
+				if ($model->changePassword()) {
+					Yii::$app->getSession()->setFlash('smsg', 'Password Changed Successfully!');
+   					return $this->redirect(Yii::$app->params['adminUrl']);
+   				} else {
+   					Yii::$app->session->setFlash('emsg', 'Sorry, we are unable to reset password.');
+   				}
+			}
+			$this->view->title = 'Change Password';
+			return $this->render('reset-password', [
+				'model' => $model,
+				'token' => $token
+			]);
+		}
+
 	}

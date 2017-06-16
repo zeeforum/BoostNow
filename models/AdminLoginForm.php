@@ -16,6 +16,8 @@ class AdminLoginForm extends Model {
 	public $email;
 	public $username;
 	public $password;
+	public $confirm_password;
+	public $token;
 	public $rememberMe = true;
 
 	private $_user;
@@ -35,8 +37,11 @@ class AdminLoginForm extends Model {
 				'message' => 'There is no user with this email address.',
 				'on' => 'forgotPassword'
 			],
-			// username and password are both required
-			[['username', 'password'], 'required', 'message' => 'Enter Your Password', 'on' => ['login']],
+			
+			['password', 'required', 'message' => 'Enter Your Password', 'on' => ['resetPassword', 'login']],
+			['confirm_password', 'required', 'message' => 'Confirm Your Password', 'on' => ['resetPassword']],
+			['confirm_password', 'validateConfirmPassword', 'message' => 'Password and Confirm Password Should be same.', 'on' => ['resetPassword']],
+			
 			// rememberMe must be a boolean value
 			['rememberMe', 'boolean', 'on' => ['login']],
 			// password is validated by validatePassword()
@@ -57,6 +62,14 @@ class AdminLoginForm extends Model {
 
 			if (!$user || !$user->validatePassword($this->password)) {
 				$this->addError($attribute, 'Incorrect username or password.');
+			}
+		}
+	}
+
+	public function validateConfirmPassword($attribute, $params) {
+		if (!$this->hasErrors()) {
+			if ($this->password != $this->confirm_password) {
+				$this->addError($attribute, 'Password and Confirm Password Should be same.');
 			}
 		}
 	}
@@ -89,6 +102,25 @@ class AdminLoginForm extends Model {
 		return $this->sendEmail();
 	}
 
+	public function changePassword() {
+		$admin = Admin::findByPasswordResetToken($this->token);
+		
+		if ($admin) {
+			$admin->setPassword($this->password, true);
+			if ($admin->update() !== false) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		return false;
+	}
+
+	public static function findByPasswordResetToken($token) {
+		return Admin::findByPasswordResetToken($token);
+	}
+
 	public function sendEmail() {
 		$user = Admin::findOne([
 				'status' => Admin::STATUS_ACTIVE,
@@ -96,23 +128,23 @@ class AdminLoginForm extends Model {
 		]);
 
 		if (!$user) {
-            return false;
-        }
+			return false;
+		}
 
-		if (!User::isPasswordResetTokenValid($user->password_reset_token)) {
-            $user->generatePasswordResetToken();
-            if (!$user->save()) {
-                return false;
-            }
-        }
+		if (!Admin::isPasswordResetTokenValid($user->password_reset_token)) {
+			$user->generatePasswordResetToken();
+			if (!$user->save()) {
+				return false;
+			}
+		}
 		
 		return Yii::$app
 			->mailer
 			->compose(
-				['text' => 'forgot-password'],
+				['html' => 'forgot-password'],
 				['user' => $user]
 			)
-			->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->name . ' robot'])
+			->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->name])
 			->setTo($this->email)
 			->setSubject('Password reset for ' . Yii::$app->name)
 			->send();
