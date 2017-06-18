@@ -22,7 +22,7 @@ class m170618_083616_categories extends Migration
 
     public function down()
     {
-        $this->dropTable('admin');
+        $this->dropTable('categories');
     }
 
     /*
