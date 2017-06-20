@@ -17,6 +17,7 @@
 			}
 			$admin_row = Yii::$app->admin;
 			Yii::$app->params['username'] = $admin_row->identity->username;
+			Yii::$app->params['description'] = $admin_row->identity->description;
 			Yii::$app->params['adminEmail'] = $admin_row->identity->email;
 			$formatter = Yii::$app->formatter;
 			Yii::$app->params['date'] =$formatter->asDate($admin_row->identity->created_at, 'long');
