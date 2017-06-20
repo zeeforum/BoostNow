@@ -12,6 +12,7 @@ class m170610_133805_admin extends Migration
             'username' => $this->string(100)->notNull(),
             'email' => $this->string(255)->notNull(),
             'description' => $this->string(255),
+            'picture' => $this->string(33),
             'auth_key' => $this->string(100)->notNull(),
             'password_hash' => $this->string(100)->notNull(),
             'access_token' => $this->string(100)->notNull(),
