@@ -15,7 +15,12 @@
 					return $this->redirect(Yii::$app->params['adminUrl']);
 				}
 			}
-
+			$admin_row = Yii::$app->admin;
+			Yii::$app->params['username'] = $admin_row->identity->username;
+			Yii::$app->params['adminEmail'] = $admin_row->identity->email;
+			$formatter = Yii::$app->formatter;
+			Yii::$app->params['date'] =$formatter->asDate($admin_row->identity->created_at, 'long');
+			Yii::$app->params['profilePicture'] = $admin_row->identity->picture;
 			return true;
 		}
 
