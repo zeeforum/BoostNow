@@ -62,7 +62,7 @@ AdminAsset::register($this);
 										<li><!-- start message -->
 											<a href="#">
 												<div class="pull-left">
-													<img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+													<img src="<?= Yii::$app->params['base_url'] . 'img/avatar.png'; ?>" class="img-circle" alt="User Image">
 												</div>
 												<h4>
 													Support Team
@@ -75,7 +75,7 @@ AdminAsset::register($this);
 										<li>
 											<a href="#">
 												<div class="pull-left">
-													<img src="dist/img/user3-128x128.jpg" class="img-circle" alt="User Image">
+													<img src="<?= Yii::$app->params['base_url'] . 'img/avatar.png'; ?>" class="img-circle" alt="User Image">
 												</div>
 												<h4>
 													AdminLTE Design Team
@@ -87,7 +87,7 @@ AdminAsset::register($this);
 										<li>
 											<a href="#">
 												<div class="pull-left">
-													<img src="dist/img/user4-128x128.jpg" class="img-circle" alt="User Image">
+													<img src="<?= Yii::$app->params['base_url'] . 'img/avatar.png'; ?>" class="img-circle" alt="User Image">
 												</div>
 												<h4>
 													Developers
@@ -99,7 +99,7 @@ AdminAsset::register($this);
 										<li>
 											<a href="#">
 												<div class="pull-left">
-													<img src="dist/img/user3-128x128.jpg" class="img-circle" alt="User Image">
+													<img src="<?= Yii::$app->params['base_url'] . 'img/avatar.png'; ?>" class="img-circle" alt="User Image">
 												</div>
 												<h4>
 													Sales Department
@@ -111,7 +111,7 @@ AdminAsset::register($this);
 										<li>
 											<a href="#">
 												<div class="pull-left">
-													<img src="dist/img/user4-128x128.jpg" class="img-circle" alt="User Image">
+													<img src="<?= Yii::$app->params['base_url'] . 'img/avatar.png'; ?>" class="img-circle" alt="User Image">
 												</div>
 												<h4>
 													Reviewers
@@ -243,13 +243,13 @@ AdminAsset::register($this);
 						<!-- User Account: style can be found in dropdown.less -->
 						<li class="dropdown user user-menu">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-								<img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+								<?php if (Yii::$app->params['profilePicture']) { ?><img src="<?= Yii::$app->params['base_url'] . 'images/profile/' . Yii::$app->params['profilePicture']; ?>" class="user-image" alt="<?= Yii::$app->params['username']; ?>"><?php } ?>
 								<span class="hidden-xs"><?= Yii::$app->params['username']; ?></span>
 							</a>
 							<ul class="dropdown-menu">
 								<!-- User image -->
 								<li class="user-header">
-									<img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+									<?php if (Yii::$app->params['profilePicture']) { ?><img src="<?= Yii::$app->params['base_url'] . 'images/profile/' . Yii::$app->params['profilePicture']; ?>" class="img-circle" alt="<?= Yii::$app->params['username']; ?>"><?php } ?>
 									<p>
 										<?= Yii::$app->params['description']; ?>
 										<small>Member since <?= Yii::$app->params['date']; ?></small>
@@ -295,9 +295,9 @@ AdminAsset::register($this);
 			<!-- sidebar: style can be found in sidebar.less -->
 			<section class="sidebar">
 				<!-- Sidebar user panel -->
-				<div class="user-panel">
+				<div class="user-panel" <?php if (Yii::$app->params['profilePicture']=='') { ?>style="padding-bottom:50px;"<?php } ?>>
 					<div class="pull-left image">
-						<img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+						<?php if (Yii::$app->params['profilePicture']) { ?><img src="<?= Yii::$app->params['base_url'] . 'images/profile/' . Yii::$app->params['profilePicture']; ?>" class="img-circle" alt="<?= Yii::$app->params['username']; ?>"><?php } ?>
 					</div>
 					<div class="pull-left info">
 						<p><?= Yii::$app->params['username']; ?></p>
