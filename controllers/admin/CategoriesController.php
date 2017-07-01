@@ -15,11 +15,10 @@
 			$category_row = Categories::findOne($id);
 			if (!$category_row) {
 				return $this->redirect(Yii::$app->params['adminUrl'] . 'categories/');
-			} else if (Yii::$app->admin->can('updateOwnPost', ['post' => $category_row])) {
-				//print_r($category_row);
-				die('yes');
+			} else if ($userId = parent::canAccess('detailCategory', $category_row)) {
+				$this->view->title = 'Category Detail';
+				return $this->render('detail', ['category_row' => $category_row]);
 			}
-			die('no');
 		}
 
 	}
