@@ -12,7 +12,8 @@
 		public function beforeAction($bool = true) {
 			if ($bool) {
 				if (Yii::$app->admin->isGuest) {
-					return $this->redirect(Yii::$app->params['adminUrl']);
+					$this->redirect(Yii::$app->params['adminUrl']);
+					return false;
 				}
 			}
 			$admin_row = Yii::$app->admin;

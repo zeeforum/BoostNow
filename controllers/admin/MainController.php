@@ -16,7 +16,7 @@
 			}
 		}
 
-		public function actionLogin() {
+		public function actionIndex() {
 			$this->redirectToDashboard();
 
 			$model = new AdminLoginForm();
