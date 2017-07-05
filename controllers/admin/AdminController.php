@@ -8,7 +8,7 @@
 	class AdminController extends Controller {
 
 		public $layout = '@app/views/admin/layout/main.php';
-		private $access = [
+		/*private $access = [
 			'admin' => [
 				'createCategory' => true,
 				'updateCategory' => true,
@@ -23,7 +23,7 @@
 				'deleteCategory' => true,
 				'detailCategory' => true,
 			],
-		];
+		];*/
 
 		public function beforeAction($bool = true) {
 			if ($bool) {
@@ -42,7 +42,7 @@
 			return true;
 		}
 
-		public function canAccess($key, $arr = NULL) {
+		/*public function canAccess($key, $arr = NULL) {
 			$userRole = isset(Yii::$app->admin->identity->role) ? Yii::$app->admin->identity->role : 'contributor' ;
 			$userId = isset(Yii::$app->admin->identity->id) ? Yii::$app->admin->identity->id : 0 ;
 			if (isset($this->access[$userRole][$key])) {
@@ -57,6 +57,6 @@
 
 			throw new \yii\web\UnauthorizedHttpException('You are not allowed to access this page');
 			return false;
-		}
+		}*/
 
 	}

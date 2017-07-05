@@ -55,5 +55,20 @@
 
 			// allow "author" to update their own posts
 			$auth->addChild($author, $updateOwnPost);
+
+			//$auth = Yii::$app->authManager;
+
+			$rule = new \app\rbac\UserGroupRule;
+			$auth->add($rule);
+
+			$author = $auth->createRole('author');
+			$author->ruleName = $rule->name;
+			$auth->add($author);
+			// ... add permissions as children of $author ...
+
+			$admin = $auth->createRole('admin');
+			$admin->ruleName = $rule->name;
+			$auth->add($admin);
+			// ... add permissions as children of $admin ...
 		}
 	}

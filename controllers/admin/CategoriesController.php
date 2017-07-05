@@ -15,10 +15,18 @@
 			$category_row = Categories::findOne($id);
 			if (!$category_row) {
 				return $this->redirect(Yii::$app->params['adminUrl'] . 'categories/');
-			} else if ($userId = parent::canAccess('detailCategory', $category_row)) {
+			} 
+			Yii::$app->admin->can('updatePost', ['post' => $category_row]);
+			if (Yii::$app->admin->can('updatePost', ['post' => $category_row])) {
+			    die('Access Granted!');
+			}
+
+			die('Access Denied!');
+
+			/*else if ($userId = parent::canAccess('detailCategory', $category_row)) {
 				$this->view->title = 'Category Detail';
 				return $this->render('detail', ['category_row' => $category_row]);
-			}
+			}*/
 		}
 
 	}
