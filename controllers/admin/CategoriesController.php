@@ -4,6 +4,7 @@
 
 	use Yii;
 	use app\models\Categories;
+	use yii\helpers\Url;
 
 	class CategoriesController extends AdminController {
 
@@ -20,7 +21,6 @@
 			if (Yii::$app->admin->can('updatePost', ['post' => $category_row])) {
 			    die('Access Granted!');
 			}
-
 			die('Access Denied!');
 
 			/*else if ($userId = parent::canAccess('detailCategory', $category_row)) {
