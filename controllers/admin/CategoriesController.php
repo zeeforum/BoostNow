@@ -11,6 +11,8 @@
 			$admin_id = Yii::$app->admin->can('categories');
 			$categories_model = new Categories();
 			$categories_rows = Categories::find()->all();
+			$this->view->title = 'Categories';
+
 			return $this->render('categories', [
 				'categories_rows' => $categories_rows,
 				'model' => $categories_model,

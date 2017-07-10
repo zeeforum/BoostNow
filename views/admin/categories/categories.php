@@ -6,8 +6,6 @@
 	$this->params['breadcrumbs'][] = 'Categories';
 ?>
 
-<!-- Main content -->
-<section class="content">
 	<div class="row">
 		<div class="col-lg-12">
 			<div class="box box-danger">
@@ -57,5 +55,3 @@
 		</div>
 	</div>
 	<!-- /.row --> 
-</section>
-<!-- /.content -->
