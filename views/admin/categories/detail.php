@@ -10,9 +10,6 @@
 <section class="content">
 	<div class="row">
 		<div class="col-lg-12">
-			<div class="row no-gutter">
-				<div class="span12"><?php echo isset($msg) ? $msg : ''; ?></div>
-			</div>
 			<div class="box box-danger">
 				<div class="box-body">
 					<div class="pull-right m-bottom-5"> <a class="btn btn-default" href="">Edit Category</a> </div>
