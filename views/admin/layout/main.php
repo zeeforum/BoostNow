@@ -492,6 +492,11 @@ AdminAsset::register($this);
 
 		<!-- Content Wrapper. Contains page content -->
 		<div class="content-wrapper">
+
+			<div class="alert alert-warning" style="padding: 20px 30px; background: rgb(243, 156, 18); z-index: 999999; font-size: 16px; font-weight: 600;">
+				<a class="pull-right" href="#" class="close" data-dismiss="alert" style="color: rgb(255, 255, 255); font-size: 20px;">×</a>
+				Ready to sell your theme? Submit your theme to our new marketplace now and let over 200k visitors see it!</a>
+			</div>
 			
 			<!-- Content Header (Page header) -->
 			<section class="content-header">
