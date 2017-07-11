@@ -8,20 +8,31 @@
 
 	<div class="row">
 		<div class="col-lg-12">
-			<div class="box box-danger">
+			<div class="box box-primary">
 				<div class="box-body">
-					<div class="pull-right">
-						<button type="button" class="btn btn-success btn-sm collapsed" data-toggle="collapse" data-original-title="Add Category" data-target="#addForm"><i class="fa fa-plus icon"></i></button>
-					</div>
-					<div class="clearfix"></div>
 
-					<div class="collapse" id="addForm">
-						<div class="box box-default">
-							<?php $form = ActiveForm::begin(['id' => 'category-form']); ?>
-							<div class="box-body">
-								<div class="row">
-									
-									<div class="form-group col-xs-6">
+					<div class="col-sm-6 col-md-4 leftside">
+						<?php $form = ActiveForm::begin(['id' => 'category-form']); ?>
+						
+							<div class="row">
+								
+								<div class="form-group">
+									<?php echo $form->field($model, 'name'); ?>
+								</div>
+								<!-- /.form-group -->
+
+								<div class="form-group">
+									<?php echo $form->field($model, 'keywords')->textarea(['rows' => 2]); ?>
+								</div>
+								<!-- /.form-group -->
+
+								<div class="form-group">
+									<?php echo $form->field($model, 'description')->textarea(['rows' => 2]); ?>
+								</div>
+								<!-- /.form-group -->
+
+								<div class="form-group row margin-bottom">
+									<div class="col-sm-6">
 										<?php
 											$parent = array();
 											if ($categories_rows) {
@@ -29,26 +40,34 @@
 													$parent[$row->id] = $row->name;
 												}
 											}
-											echo $form->field($model, 'parent_id')->dropdownList($parent, ['prompt'=>'Select Parent Category']);
+											echo $form->field($model, 'parent_id')->dropdownList($parent, ['prompt'=>'None']);
 										?>
 									</div>
-									<!-- /.form-group -->
-									
 								</div>
-								<!-- /.row -->
+								<!-- /.form-group -->
+
+								<div class="form-group">
+									<?php echo $form->field($model, 'detail')->textarea(['rows' => 6]); ?>
+								</div>
+								<!-- /.form-group -->
+
+								<?= Html::submitButton('Add New Category', ['class' => 'button btn btn-primary btn-large']) ?>
+								
 							</div>
+							<!-- /.row -->
+
+						<?php ActiveForm::end(); ?>
+					</div>
+					<!-- /left-side -->
+
+					<div class="col-sm-6 col-md-8 rightside">
+						<div class="pull-right search-bar">
+							<?php $form = ActiveForm::begin(); ?>
+								
 							<?php ActiveForm::end(); ?>
-							<!-- /.box-body -->
 						</div>
 					</div>
-					<!-- /addForm -->
 
-					<div class="clearfix" style="margin-bottom:5px"></div>
-					<div class="panel panel-primary">
-						<div class="panel-heading">Categories</div>
-						<table class="table table-striped">
-						</table>
-					</div>
 				</div>
 			</div>
 			<!-- /.col (left) -->
