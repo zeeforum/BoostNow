@@ -1,8 +1,7 @@
 <?php
-
 	namespace app\controllers\admin;
+	
 	use app\models\AdminLoginForm;
-
 	use Yii;
 	use yii\web\Controller;
 

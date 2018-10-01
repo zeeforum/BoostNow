@@ -8,4 +8,5 @@ return [
     'adminUrl' => 'http://localhost/git/BoostNow/web/main-admin/',
     'app_version' => '0.1',
     'user.passwordResetTokenExpire' => 86400,
+    'profilePicture' => '',
 ];

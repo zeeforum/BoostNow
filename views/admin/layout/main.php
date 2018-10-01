@@ -246,13 +246,13 @@ $adminUrl = Yii::$app->params['adminAbsUrl'];
 						<!-- User Account: style can be found in dropdown.less -->
 						<li class="dropdown user user-menu">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-								<?php if (Yii::$app->params['profilePicture']) { ?><img src="<?= Yii::$app->params['base_url'] . 'images/profile/' . Yii::$app->params['profilePicture']; ?>" class="user-image" alt="<?= Yii::$app->params['username']; ?>"><?php } ?>
+								<?php if (Yii::$app->params['profilePicture']) { ?><img src="<?= Yii::$app->params['profilePicture']; ?>" class="user-image" alt="<?= Yii::$app->params['username']; ?>"><?php } ?>
 								<span class="hidden-xs"><?= Yii::$app->params['username']; ?></span>
 							</a>
 							<ul class="dropdown-menu">
 								<!-- User image -->
 								<li class="user-header">
-									<?php if (Yii::$app->params['profilePicture']) { ?><img src="<?= Yii::$app->params['base_url'] . 'images/profile/' . Yii::$app->params['profilePicture']; ?>" class="img-circle" alt="<?= Yii::$app->params['username']; ?>"><?php } ?>
+									<?php if (Yii::$app->params['profilePicture']) { ?><img src="<?= Yii::$app->params['profilePicture']; ?>" class="img-circle" alt="<?= Yii::$app->params['username']; ?>"><?php } ?>
 									<p>
 										<?= Yii::$app->params['description']; ?>
 										<small>Member since <?= Yii::$app->params['date']; ?></small>
@@ -285,7 +285,7 @@ $adminUrl = Yii::$app->params['adminAbsUrl'];
 				<!-- Sidebar user panel -->
 				<div class="user-panel" <?php if (Yii::$app->params['profilePicture']=='') { ?>style="padding-bottom:50px;"<?php } ?>>
 					<div class="pull-left image">
-						<?php if (Yii::$app->params['profilePicture']) { ?><img src="<?= Yii::$app->params['base_url'] . 'images/profile/' . Yii::$app->params['profilePicture']; ?>" class="img-circle" alt="<?= Yii::$app->params['username']; ?>"><?php } ?>
+						<?php if (Yii::$app->params['profilePicture']) { ?><img src="<?= Yii::$app->params['profilePicture']; ?>" class="img-circle" alt="<?= Yii::$app->params['username']; ?>"><?php } ?>
 					</div>
 					<div class="pull-left info">
 						<p><?= Yii::$app->params['username']; ?></p>

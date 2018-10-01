@@ -25,8 +25,23 @@
 					return $this->setMsg([$this->admin . '/user/profile'], 'Profile Updated Successfully!');
 				}
 			}
-			// print_r(Yii::$app->session->getFlash('smsg'));
+			
+			$model->description = Yii::$app->params['description'];
+
 			return $this->render('profile', ['model' => $model]);
+		}
+
+		public function actionChangePassword() {
+			$model = new Profile();
+			$model->scenario = 'changePassword';
+
+			if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+				if ($model->changePassword()) {
+					return $this->setMsg([$this->admin . '/user/change-password'], 'Password Changed Successfully!');
+				}
+			}
+
+			return $this->render('change-password', ['model' => $model]);
 		}
 
 		public function actionLogout() {

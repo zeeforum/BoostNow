@@ -45,7 +45,10 @@
 			$this->admin_id = $admin_row->identity->id;
 			$formatter = Yii::$app->formatter;
 			Yii::$app->params['date'] = $formatter->asDate($admin_row->identity->created_at, 'long');
-			Yii::$app->params['profilePicture'] = $admin_row->identity->picture;
+			
+			if ($admin_row->identity->picture)
+				Yii::$app->params['profilePicture'] = Yii::$app->params['base_url'] . 'images/profile/' . $admin_row->identity->picture;
+
 			$this->admin = Yii::$app->params['adminAbsUrl'];
 			
 			return true;

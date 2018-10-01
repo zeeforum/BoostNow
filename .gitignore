@@ -1,6 +1,9 @@
 # phpstorm project files
 .idea
 
+# phpintel (sublime) project files
+.phpintel
+
 # netbeans project files
 nbproject
 

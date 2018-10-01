@@ -2,7 +2,8 @@
 	use yii\helpers\Html;
 	use yii\widgets\ActiveForm;
 
-	$this->title = 'Profile';
+	$this->title = 'Update Profile';
+	$this->params['breadcrumbs'][] = 'Your Profile';
 ?>
 <div class="panel panel-primary">
 	<div class="panel panel-body">
@@ -13,6 +14,17 @@
 			<?= $form->field($model, 'description')->textarea(); ?>
 
 			<?= $form->field($model, 'picture')->fileInput(['accept' => 'image/*']); ?>
+
+			<?php
+				if (Yii::$app->params['profilePicture']) {
+			?>
+			<div class="col-xs-12 col-sm-8 no-gutter">
+				<img src="<?= Yii::$app->params['profilePicture']; ?>" class="img img-responsive" />
+			</div>
+			<div class="clearfix" style="margin-bottom:10px;"></div>
+			<?php
+				}
+			?>
 
 			<?= Html::submitButton('Update', ['class' => 'button btn btn-primary btn-large signin-btn', 'name' => 'cmd']) ?>
 
