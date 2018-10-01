@@ -5,7 +5,7 @@ The same way we tested a web site, Codeception allows you to test web services. 
 You should start by creating a new test suite, (which was not provided by the `bootstrap` command). We recommend calling it **api** and using the `ApiTester` class for it.
 
 ```bash
-$ php codecept generate:suite api
+$ php vendor/bin/codecept generate:suite api
 ```
 
 We will put all the api tests there.
@@ -17,7 +17,7 @@ The REST web service is accessed via HTTP with standard methods: `GET`, `POST`, 
 Configure modules in `api.suite.yml`:
 
 ``` yaml
-class_name: ApiTester
+actor: ApiTester
 modules:
     enabled:
         - REST:
@@ -28,7 +28,7 @@ modules:
 The REST module will connect to `PhpBrowser` according to this configuration. Depending on the web service we may deal with XML or JSON responses. Codeception handles both data formats well, however If you don't need one of them, you can explicitly specify that the JSON or XML parts of the module will be used:
 
 ``` yaml
-class_name: ApiTester
+actor: ApiTester
 modules:
     enabled:
         - REST:
@@ -39,9 +39,8 @@ modules:
 
 API tests can be functional and be executed using Symfony, Laravel5, Zend, or any other framework module. You will need slightly update configuration for it:
 
-
 ``` yaml
-class_name: ApiTester
+actor: ApiTester
 modules:
     enabled:
         - REST:
@@ -52,25 +51,39 @@ modules:
 Once we have configured our new testing suite, we can create the first sample test:
 
 ```bash
-$ php codecept generate:cept api CreateUser
+$ codecept generate:cest api CreateUser
 ```
 
-It will be called `CreateUserCept.php`. We can use it to test the creation of a user via the REST API.
+It will be called `CreateUserCest.php`. 
+We need to implement a public method for each test. Let's make `createUserViaAPI` to test creation of a user via the REST API.
 
 ```php
 <?php
-$I = new ApiTester($scenario);
-$I->wantTo('create a user via API');
-$I->amHttpAuthenticated('service_user', '123456');
-$I->haveHttpHeader('Content-Type', 'application/x-www-form-urlencoded');
-$I->sendPOST('/users', ['name' => 'davert', 'email' => 'davert@codeception.com']);
-$I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK); // 200
-$I->seeResponseIsJson();
-$I->seeResponseContains('{"result":"ok"}');
+class CreateUserCest
+{
+    public function _before(\ApiTester $I)
+    {
+    }
 
+    public function _after(\ApiTester $I)
+    {
+    }
+
+    // tests
+    public function createUserViaAPI(\ApiTester $I)
+    {
+        $I->amHttpAuthenticated('service_user', '123456');
+        $I->haveHttpHeader('Content-Type', 'application/x-www-form-urlencoded');
+        $I->sendPOST('/users', ['name' => 'davert', 'email' => 'davert@codeception.com']);
+        $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK); // 200
+        $I->seeResponseIsJson();
+        $I->seeResponseContains('{"result":"ok"}');
+        
+    }
+}
 ```
 
-We can use HTTP code constants from `Codeception\Util\HttpCode` instead of numeric values to check response code in `seeResponseCodeIs` and `dontSeeResponseCodeIs` methods. 
+We can use HTTP code constants from `Codeception\Util\HttpCode` instead of numeric values to check response code in `seeResponseCodeIs` and `dontSeeResponseCodeIs` methods.
 
 ### Testing JSON Responses
 
@@ -112,20 +125,17 @@ The same way you can receive request parameters and headers.
 
 ### Validate JSON structures
 
-It is pretty common for API tests to not only validate the received data but to check the structure of the response. Response data is not usually considered to be consistent, and may change on each request, however the JSON/XML structure should be kept the same for an API version. In order to check response structure the REST module has some useful methods. 
+It is pretty common for API tests to not only validate the received data but to check the structure of the response. Response data is not usually considered to be consistent, and may change on each request, however the JSON/XML structure should be kept the same for an API version. In order to check response structure the REST module has some useful methods.
 
 If we expect a JSON response to be received we can check its structure with [JSONPath](http://goessner.net/articles/JsonPath/). It looks and sounds like XPath but is designed to work with JSON data, however we can convert JSON into XML and use XPath to validate the structure. Both approaches are valid and can be used in the REST module:
 
 ```php
 <?php
-$I = new ApiTester($scenario);
-$I->wantTo('validate structure of GitHub api responses');
 $I->sendGET('/users');
 $I->seeResponseCodeIs(HttpCode::OK); // 200
 $I->seeResponseIsJson();
 $I->seeResponseJsonMatchesJsonPath('$[0].user.login');
 $I->seeResponseJsonMatchesXpath('//user/login');
-
 ```
 
 More detailed check can be applied if you need to validate the type of fields in a response.
@@ -151,35 +161,30 @@ Codeception uses this simple and lightweight definitions format which can be [ea
 
 ### Testing XML Responses
 
-In case your REST API works with XML format you can use similar methods to test its data and structure. 
+In case your REST API works with XML format you can use similar methods to test its data and structure.
 There is `seeXmlResponseIncludes` method to match inclusion of XML parts in response, and `seeXmlResponseMatchesXpath` to validate its structure.
 
 ```php
 <?php
-use Codeception\Util\Xml as XmlUtils;
-
-$I = new ApiTester($scenario);
-$I->wantTo('validate structure of GitHub api responses');
 $I->sendGET('/users.xml');
 $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK); // 200
 $I->seeResponseIsXml();
 $I->seeXmlResponseMatchesXpath('//user/login');
-$I->seeXmlResponseIncludes(XmlUtils::toXml(
+$I->seeXmlResponseIncludes(\Codeception\Util\Xml::toXml([
     'user' => [
       'name' => 'davert',
       'email' => 'davert@codeception.com',
       'status' => 'inactive'
   ]
-));
+]));
 
 ```
 
-We are using XmlUtils class which allows us to build XML structures in a clean manner. The `toXml` method may accept a string or array and returns \DOMDocument instance. If your XML contains attributes and so can't be represented as a PHP array you can create XML using the [XmlBuilder](http://codeception.com/docs/reference/XmlBuilder) class. We will take a look at it a bit more in next section.
+We are using `Codeception\Util\Xml` class which allows us to build XML structures in a clean manner. The `toXml` method may accept a string or array and returns \DOMDocument instance. If your XML contains attributes and so can't be represented as a PHP array you can create XML using the [XmlBuilder](http://codeception.com/docs/reference/XmlBuilder) class. We will take a look at it a bit more in next section.
 
 <div class="alert alert-info">
 Use `\Codeception\Util\Xml::build()` to create XmlBuilder instance.
 </div>
-
 
 ## SOAP
 
@@ -188,7 +193,7 @@ SOAP web services are usually more complex. You will need PHP [configured with S
 Let's configure `SOAP` module to be used with `PhpBrowser`:
 
 ``` yaml
-class_name: ApiTester
+actor: ApiTester
 modules:
     enabled:
     - SOAP:
@@ -249,14 +254,10 @@ In the next example we will use `XmlBuilder` instead of regular XML.
 
 ```php
 <?php
-use \Codeception\Util\Xml;
-
-$I = new ApiTester($scenario);
-$I->wantTo('create user');
 $I->haveSoapHeader('Session', array('token' => '123456'));
 $I->sendSoapRequest('CreateUser', Xml::build()
   ->user->email->val('miles@davis.com'));
-$I->seeSoapResponseIncludes(Xml::build()
+$I->seeSoapResponseIncludes(\Codeception\Util\Xml::build()
   ->result->val('Ok')
     ->user->attr('id', 1)
 );

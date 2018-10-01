@@ -10,7 +10,6 @@ Wrapper for basic shell commands and shell output
 
 *Please review the code of non-stable modules and provide patches if you have issues.*
 
-
 ## Actions
 
 ### dontSeeInShellOutput
@@ -45,7 +44,32 @@ Checks that output from last executed command contains text
  * `param` $text
 
 
-### seeShellOutputMatches
-__not documented__
+### seeResultCodeIs
+ 
+Checks result code
 
-<p>&nbsp;</p><div class="alert alert-warning">Module reference is taken from the source code. <a href="https://github.com/Codeception/Codeception/tree/2.2/src/Codeception/Module/Cli.php">Help us to improve documentation. Edit module reference</a></div>
+```php
+<?php
+$I->seeResultCodeIs(0);
+```
+
+ * `param` $code
+
+
+### seeResultCodeIsNot
+ 
+Checks result code
+
+```php
+<?php
+$I->seeResultCodeIsNot(0);
+```
+
+ * `param` $code
+
+
+### seeShellOutputMatches
+ 
+ * `param` $regex
+
+<p>&nbsp;</p><div class="alert alert-warning">Module reference is taken from the source code. <a href="https://github.com/Codeception/Codeception/tree/2.5/src/Codeception/Module/Cli.php">Help us to improve documentation. Edit module reference</a></div>

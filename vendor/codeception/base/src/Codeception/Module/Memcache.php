@@ -78,6 +78,10 @@ class Memcache extends CodeceptionModule
      */
     public function _after(TestInterface $test)
     {
+        if (empty($this->memcache)) {
+            return;
+        }
+
         $this->memcache->flush();
         switch (get_class($this->memcache)) {
             case 'Memcache':
@@ -135,7 +139,7 @@ class Memcache extends CodeceptionModule
         $this->debugSection("Value", $actual);
 
         if (null === $value) {
-            $this->assertTrue(false !== $actual, "Cannot find key '$key' in Memcached");
+            $this->assertNotFalse($actual, "Cannot find key '$key' in Memcached");
         } else {
             $this->assertEquals($value, $actual, "Cannot find key '$key' in Memcached with the provided value");
         }
@@ -165,7 +169,7 @@ class Memcache extends CodeceptionModule
         $this->debugSection("Value", $actual);
 
         if (null === $value) {
-            $this->assertTrue(false === $actual, "The key '$key' exists in Memcached");
+            $this->assertFalse($actual, "The key '$key' exists in Memcached");
         } else {
             if (false !== $actual) {
                 $this->assertEquals($value, $actual, "The key '$key' exists in Memcached with the provided value");

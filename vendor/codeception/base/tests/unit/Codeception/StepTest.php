@@ -3,7 +3,7 @@
 use Facebook\WebDriver\WebDriverBy;
 use Codeception\Util\Locator;
 
-class StepTest extends \PHPUnit_Framework_TestCase
+class StepTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @param $args
@@ -37,7 +37,7 @@ class StepTest extends \PHPUnit_Framework_TestCase
     public function testGetHtml()
     {
         $step = $this->getStep(['Do some testing', ['arg1', 'arg2']]);
-        $this->assertSame('I do some testing <span style="color: #732E81">"arg1","arg2"</span>', $step->getHtml());
+        $this->assertSame('I do some testing <span style="color: #732E81">&quot;arg1&quot;,&quot;arg2&quot;</span>', $step->getHtml());
 
         $step = $this->getStep(['Do some testing', []]);
         $this->assertSame('I do some testing', $step->getHtml());
@@ -113,5 +113,15 @@ class StepTest extends \PHPUnit_Framework_TestCase
         $step = $this->getStep(['see', ["aaaa\nbbbb\nc"]]);
         $output = $step->toString(200);
         $this->assertEquals('see "aaaa\nbbbb\nc"', $output);
+    }
+
+    public function testFormattedOutput()
+    {
+        $argument = Codeception\Util\Stub::makeEmpty('\Codeception\Step\Argument\FormattedOutput');
+        $argument->method('getOutput')->willReturn('some formatted output');
+
+        $step = $this->getStep(['argument', [$argument]]);
+        $output = $step->toString(200);
+        $this->assertEquals('argument "some formatted output"', $output);
     }
 }

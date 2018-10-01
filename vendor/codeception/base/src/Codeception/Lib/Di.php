@@ -46,14 +46,14 @@ class Di
     ) {
         // normalize namespace
         $className = ltrim($className, '\\');
-        
+
         // get class from container
         if (isset($this->container[$className])) {
             if ($this->container[$className] instanceof $className) {
                 return $this->container[$className];
-            } else {
-                throw new InjectionException("Failed to resolve cyclic dependencies for class '$className'");
             }
+
+            throw new InjectionException("Failed to resolve cyclic dependencies for class '$className'");
         }
 
         // get class from parent container
@@ -113,7 +113,7 @@ class Di
             $args = $this->prepareArgs($reflectedMethod, $defaults);
         } catch (\Exception $e) {
             $msg = $e->getMessage();
-            if($e->getPrevious()){ // injection failed because PHP code is invalid. See #3869
+            if ($e->getPrevious()) { // injection failed because PHP code is invalid. See #3869
                 $msg .= '; '. $e->getPrevious();
             }
             throw new InjectionException(

@@ -22,7 +22,7 @@ class ParamsLoader
             return $this->loadEnvironmentVars();
         }
 
-        $this->paramsFile = codecept_root_dir($paramStorage);
+        $this->paramsFile = codecept_absolute_path($paramStorage);
         if (!file_exists($this->paramsFile)) {
             throw new ConfigurationException("Params file {$this->paramsFile} not found");
         }
@@ -42,6 +42,10 @@ class ParamsLoader
 
             if (preg_match('~(\.env(\.|$))~', $paramStorage)) {
                 return $this->loadDotEnvFile();
+            }
+
+            if (preg_match('~\.xml$~', $paramStorage)) {
+                return $this->loadXmlFile();
             }
         } catch (\Exception $e) {
             throw new ConfigurationException("Failed loading params from $paramStorage\n" . $e->getMessage());
@@ -74,17 +78,56 @@ class ParamsLoader
         return $params;
     }
 
+    protected function loadXmlFile()
+    {
+        $paramsToArray = function (\SimpleXMLElement $params) use (&$paramsToArray) {
+            $a = [];
+            foreach ($params as $param) {
+                $key = isset($param['key']) ? (string) $param['key'] : $param->getName();
+                $type = isset($param['type']) ? (string) $param['type'] : 'string';
+                $value = (string) $param;
+                switch ($type) {
+                    case 'bool':
+                    case 'boolean':
+                    case 'int':
+                    case 'integer':
+                    case 'float':
+                    case 'double':
+                        $a[$key] = settype($value, $type);
+                        break;
+                    case 'constant':
+                        $a[$key] = constant($value);
+                        break;
+                    case 'collection':
+                        $a[$key] = $paramsToArray($param);
+                        break;
+                    default:
+                        $a[$key] = (string) $param;
+                }
+            }
+
+            return $a;
+        };
+
+        return $paramsToArray(simplexml_load_file($this->paramsFile));
+    }
+
     protected function loadDotEnvFile()
     {
-        if (!class_exists('Dotenv\Dotenv')) {
-            throw new ConfigurationException(
-                "`vlucas/phpdotenv` library is required to parse .env files.\n" .
-                "Please install it via composer: composer require vlucas/phpdotenv"
-            );
+        if (class_exists('Dotenv\Dotenv')) {
+            $dotEnv = new \Dotenv\Dotenv(codecept_root_dir(), $this->paramStorage);
+            $dotEnv->load();
+            return $_SERVER;
+        } elseif (class_exists('Symfony\Component\Dotenv\Dotenv')) {
+            $dotEnv = new \Symfony\Component\Dotenv\Dotenv();
+            $dotEnv->load(codecept_root_dir($this->paramStorage));
+            return $_SERVER;
         }
-        $dotEnv = new \Dotenv\Dotenv(codecept_root_dir(), $this->paramStorage);
-        $dotEnv->load();
-        return $_ENV;
+
+        throw new ConfigurationException(
+            "`vlucas/phpdotenv` library is required to parse .env files.\n" .
+            "Please install it via composer: composer require vlucas/phpdotenv"
+        );
     }
 
     protected function loadEnvironmentVars()

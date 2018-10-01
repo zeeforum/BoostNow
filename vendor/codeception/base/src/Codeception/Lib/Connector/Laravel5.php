@@ -2,6 +2,8 @@
 namespace Codeception\Lib\Connector;
 
 use Codeception\Lib\Connector\Laravel5\ExceptionHandlerDecorator;
+use Codeception\Lib\Connector\Shared\LaravelCommon;
+use Codeception\Stub;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
@@ -12,6 +14,8 @@ use Symfony\Component\HttpKernel\Client;
 
 class Laravel5 extends Client
 {
+    use LaravelCommon;
+
     /**
      * @var Application
      */
@@ -51,21 +55,6 @@ class Laravel5 extends Client
      * @var bool
      */
     private $modelEventsDisabled;
-
-    /**
-     * @var array
-     */
-    private $bindings = [];
-
-    /**
-     * @var array
-     */
-    private $contextualBindings = [];
-
-    /**
-     * @var array
-     */
-    private $instances = [];
 
     /**
      * @var object
@@ -116,6 +105,7 @@ class Laravel5 extends Client
         $this->applyBindings();
         $this->applyContextualBindings();
         $this->applyInstances();
+        $this->applyApplicationHandlers();
 
         $request = Request::createFromBase($request);
         $response = $this->kernel->handle($request);
@@ -186,11 +176,9 @@ class Laravel5 extends Client
         }
         $this->app->instance('request', Request::createFromBase($request));
 
-        // Reset the old database after the DatabaseServiceProvider ran.
-        // This way other service providers that rely on the $app['db'] entry
-        // have the correct instance available.
+        // Reset the old database after all the service providers are registered.
         if ($this->oldDb) {
-            $this->app['events']->listen('Illuminate\Database\DatabaseServiceProvider', function () {
+            $this->app['events']->listen('bootstrapped: Illuminate\Foundation\Bootstrap\RegisterProviders', function () {
                 $this->app->singleton('db', function () {
                     return $this->oldDb;
                 });
@@ -200,9 +188,19 @@ class Laravel5 extends Client
         $this->app->make('Illuminate\Contracts\Http\Kernel')->bootstrap();
 
         // Record all triggered events by adding a wildcard event listener
-        $this->app['events']->listen('*', function () {
-            $this->triggeredEvents[] = $this->normalizeEvent($this->app['events']->firing());
-        });
+        // Since Laravel 5.4 wildcard event handlers receive the event name as the first argument,
+        // but for earlier Laravel versions the firing() method of the event dispatcher should be used
+        // to determine the event name.
+        if (method_exists($this->app['events'], 'firing')) {
+            $listener = function () {
+                $this->triggeredEvents[] = $this->normalizeEvent($this->app['events']->firing());
+            };
+        } else {
+            $listener = function ($event) {
+                $this->triggeredEvents[] = $this->normalizeEvent($event);
+            };
+        }
+        $this->app['events']->listen('*', $listener);
 
         // Replace the Laravel exception handler with our decorated exception handler,
         // so exceptions can be intercepted for the disable_exception_handling functionality.
@@ -244,9 +242,6 @@ class Laravel5 extends Client
      */
     private function mockEventDispatcher()
     {
-        $mockGenerator = new \PHPUnit_Framework_MockObject_Generator;
-        $mock = $mockGenerator->getMock('Illuminate\Contracts\Events\Dispatcher');
-
         // Even if events are disabled we still want to record the triggered events.
         // But by mocking the event dispatcher the wildcard listener registered in the initialize method is removed.
         // So to record the triggered events we have to catch the calls to the fire method of the event dispatcher mock.
@@ -255,9 +250,14 @@ class Laravel5 extends Client
 
             return [];
         };
-        $mock->expects(new \PHPUnit_Framework_MockObject_Matcher_AnyInvokedCount)
-            ->method('fire')
-            ->will(new \PHPUnit_Framework_MockObject_Stub_ReturnCallback($callback));
+
+        // In Laravel 5.4 the Illuminate\Contracts\Events\Dispatcher interface was changed,
+        // the 'fire' method was renamed to 'dispatch'. This code determines the correct method to mock.
+        $method = method_exists($this->app['events'], 'dispatch') ? 'dispatch' : 'fire';
+
+        $mock = Stub::makeEmpty('Illuminate\Contracts\Events\Dispatcher', [
+           $method => $callback
+        ]);
 
         $this->app->instance('events', $mock);
     }
@@ -282,40 +282,6 @@ class Laravel5 extends Client
         $segments = explode(':', $event);
 
         return $segments[0];
-    }
-
-    /**
-     * Apply the registered Laravel service container bindings.
-     */
-    private function applyBindings()
-    {
-        foreach ($this->bindings as $abstract => $binding) {
-            list($concrete, $shared) = $binding;
-
-            $this->app->bind($abstract, $concrete, $shared);
-        }
-    }
-
-    /**
-     * Apply the registered Laravel service container contextual bindings.
-     */
-    private function applyContextualBindings()
-    {
-        foreach ($this->contextualBindings as $concrete => $bindings) {
-            foreach ($bindings as $abstract => $implementation) {
-                $this->app->addContextualBinding($concrete, $abstract, $implementation);
-            }
-        }
-    }
-
-    /**
-     * Apply the registered Laravel service container instance bindings.
-     */
-    private function applyInstances()
-    {
-        foreach ($this->instances as $abstract => $instance) {
-            $this->app->instance($abstract, $instance);
-        }
     }
 
     //======================================================================
@@ -384,47 +350,5 @@ class Laravel5 extends Client
     {
         $this->middlewareDisabled = true;
         $this->app->instance('middleware.disable', true);
-    }
-
-    /**
-     * Register a Laravel service container binding that should be applied
-     * after initializing the Laravel Application object.
-     *
-     * @param $abstract
-     * @param $concrete
-     * @param bool $shared
-     */
-    public function haveBinding($abstract, $concrete, $shared = false)
-    {
-        $this->bindings[$abstract] = [$concrete, $shared];
-    }
-
-    /**
-     * Register a Laravel service container contextual binding that should be applied
-     * after initializing the Laravel Application object.
-     *
-     * @param $concrete
-     * @param $abstract
-     * @param $implementation
-     */
-    public function haveContextualBinding($concrete, $abstract, $implementation)
-    {
-        if (! isset($this->contextualBindings[$concrete])) {
-            $this->contextualBindings[$concrete] = [];
-        }
-
-        $this->contextualBindings[$concrete][$abstract] = $implementation;
-    }
-
-    /**
-     * Register a Laravel service container instance binding that should be applied
-     * after initializing the Laravel Application object.
-     *
-     * @param $abstract
-     * @param $instance
-     */
-    public function haveInstance($abstract, $instance)
-    {
-        $this->instances[$abstract] = $instance;
     }
 }

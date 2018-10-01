@@ -1,32 +1,26 @@
 <?php
-// for phar
-if (file_exists(__DIR__.'/vendor/autoload.php')) {
-    require_once(__DIR__.'/vendor/autoload.php');
-} elseif (file_exists(__DIR__.'/../../autoload.php')) {
+
+$autoloadFile = './vendor/codeception/codeception/autoload.php';
+if (file_exists('./vendor/autoload.php') && file_exists($autoloadFile) && __FILE__ != realpath($autoloadFile)) {
+    //for global installation or phar file
+    fwrite(
+        STDERR,
+        "\n==== Redirecting to Composer-installed version in vendor/codeception ====\n"
+    );
+    require $autoloadFile;
+    //require package/bin instead of codecept to avoid printing hashbang line
+    require './vendor/codeception/codeception/package/bin';
+    die;
+} elseif (file_exists(__DIR__ . '/vendor/autoload.php')) {
+    // for phar
+    require_once(__DIR__ . '/vendor/autoload.php');
+} elseif (file_exists(__DIR__ . '/../../autoload.php')) {
+    //for composer
     require_once __DIR__ . '/../../autoload.php';
 }
+unset($autoloadFile);
 
 // @codingStandardsIgnoreStart
-// loading WebDriver aliases
-if (!class_exists('RemoteWebDriver') and class_exists('Facebook\WebDriver\Remote\RemoteWebDriver')) {
-    class RemoteWebDriver extends \Facebook\WebDriver\Remote\RemoteWebDriver {};
-    class InvalidSelectorException extends Facebook\WebDriver\Exception\InvalidSelectorException {};
-    class NoSuchElementException extends Facebook\WebDriver\Exception\NoSuchElementException {};
-    class WebDriverCurlException extends Facebook\WebDriver\Exception\WebDriverCurlException {};
-    class WebDriverActions extends Facebook\WebDriver\Interactions\WebDriverActions {};
-    class LocalFileDetector extends Facebook\WebDriver\Remote\LocalFileDetector {};
-    class WebDriverCapabilityType extends Facebook\WebDriver\Remote\WebDriverCapabilityType {};
-    class WebDriverAlert extends Facebook\WebDriver\WebDriverAlert {};
-    class WebDriverBy extends Facebook\WebDriver\WebDriverBy {};
-    class WebDriverDimension extends Facebook\WebDriver\WebDriverDimension {};
-    class RemoteWebElement extends Facebook\WebDriver\Remote\RemoteWebElement {};
-    class WebDriverExpectedCondition extends Facebook\WebDriver\WebDriverExpectedCondition {};
-    class WebDriverKeys extends Facebook\WebDriver\WebDriverKeys {};
-    class WebDriverSelect extends Facebook\WebDriver\WebDriverSelect {};
-    class WebDriverTimeouts extends Facebook\WebDriver\WebDriverTimeouts {};
-    class WebDriverWindow extends Facebook\WebDriver\WebDriverWindow {};
-    interface WebDriverElement extends Facebook\WebDriver\WebDriverElement {};
-}
 
 include_once __DIR__ . DIRECTORY_SEPARATOR . 'shim.php';
 // compat
@@ -39,27 +33,6 @@ if (PHP_MAJOR_VERSION < 7) {
     }
 }
 // @codingStandardsIgnoreEnd
-
-if (!function_exists('json_last_error_msg')) {
-    /**
-     * Copied from http://php.net/manual/en/function.json-last-error-msg.php#117393
-     * @return string
-     */
-    function json_last_error_msg()
-    {
-        static $errors = array(
-            JSON_ERROR_NONE => 'No error',
-            JSON_ERROR_DEPTH => 'Maximum stack depth exceeded',
-            JSON_ERROR_STATE_MISMATCH => 'State mismatch (invalid or malformed JSON)',
-            JSON_ERROR_CTRL_CHAR => 'Control character error, possibly incorrectly encoded',
-            JSON_ERROR_SYNTAX => 'Syntax error',
-            JSON_ERROR_UTF8 => 'Malformed UTF-8 characters, possibly incorrectly encoded'
-        );
-
-        $error = json_last_error();
-        return isset($errors[$error]) ? $errors[$error] : 'Unknown error';
-    }
-}
 
 // function not autoloaded in PHP, thus its a good place for them
 if (!function_exists('codecept_debug')) {
@@ -105,5 +78,38 @@ if (!function_exists('codecept_relative_path')) {
             \Codeception\Configuration::projectDir(),
             DIRECTORY_SEPARATOR
         );
+    }
+}
+
+if (!function_exists('codecept_absolute_path')) {
+    /**
+     * If $path is absolute, it will be returned without changes.
+     * If $path is relative, it will be passed to `codecept_root_dir()` function
+     * to make it absolute.
+     *
+     * @param string $path
+     * @return string the absolute path
+     */
+    function codecept_absolute_path($path)
+    {
+        return codecept_is_path_absolute($path) ? $path : codecept_root_dir($path);
+    }
+}
+
+if (!function_exists('codecept_is_path_absolute')) {
+    /**
+     * Check whether the given $path is absolute.
+     *
+     * @param string $path
+     * @return bool
+     * @since 2.4.4
+     */
+    function codecept_is_path_absolute($path)
+    {
+        if (DIRECTORY_SEPARATOR === '/') {
+            return mb_substr($path, 0, 1) === DIRECTORY_SEPARATOR;
+        }
+
+        return preg_match('#^[A-Z]:(?![^/\\\])#i', $path) === 1;
     }
 }

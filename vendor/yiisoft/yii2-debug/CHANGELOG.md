@@ -1,7 +1,92 @@
 Yii Framework 2 debug extension Change Log
 ==========================================
 
-2.0.7 under development
+2.0.14 September 24, 2018
+-------------------------
+
+- Bug #300: Fixed email files are not deleted by GC (pistej)
+- Bug #302: Fixed panel usage with suffixes in UrlManager (kyrylo-permiakov)
+- Bug #327: Fix animation on page load when the toolbar is expanded (brandonkelly)
+- Bug #332: Fix error when trace is missing from message (cornernote)
+- Enh #77: Added "Events" panel (klimov-paul)
+- Enh #301: Added configuration option to toggle IP address restriction warning on / off (jkrasniewski)
+- Enh #311: Adjusted module's code to use `->get()` for dependencies (samdark)
+- Enh #316: Prevent multiple lines in toolbar (ZAYEC77)
+
+
+2.0.13 December 5, 2017
+-----------------------
+
+- Bug #284: Fixed "TypeError: input.substr is not a function" (leopold537)
+- Bug #290: Fixed "fetch request profile link" (leopold537)
+- Enh #274: Made user component configurable for `UserSwitch` and `UserPanel` (samdark)
+- Enh #283: Send debug headers in AJAX requests in order to be able to link to debug panel from single page apps (glendemon)
+- Enh #283: Duplicated queries count on DB panel (pistej)
+- Enh #294: Added a "General Info" table to the Request panel (brandonkelly)
+- Chg #292: Added PHP 7.2 compatibility (brandonkelly)
+- Chg: Changed `default/view` not to depend on `db` panel (silverfire)
+
+
+2.0.12 October 09, 2017
+-----------------------
+
+- Bug #271: Fixed regression in 2.0.11 causing debug fail with some custom classes implementing IdentityInterface (zertex)
+- Bug #279: Fixed incomplete initialization of path aliases while using non-web application (samdark)
+
+
+2.0.11 September 06, 2017
+------------------------
+
+- Bug #262: Fixed issue when identity ID is stored in a field different from `id` (samdark)
+- Bug #265: Fixed calling `isMainUser()` on null regression in 2.0.10 (samdark)
+
+
+2.0.10 September 04, 2017
+-------------------------
+
+- Bug #221: Fixed the decimal point issue in Timeline when using various locales (bashkarev)
+- Bug #223: Limit the height during the opening animation (nkovacs)
+- Bug #226: Fixed issue in user panel when you use custom RBAC module that does not implement `\yii\rbac\ManagerInterface` (pana1990)
+- Bug #236: Fixed rendering AJAX errors to use `innerText` instead of `innerHTML` (samdark)
+- Bug #239: Fixed an issue in the user panel when using console application with debug module enabled (pana1990)
+- Bug #241: Fixed double query to the user table (LAV45)
+- Bug #242: Fixed silent crash by omitting AssetsPanel creation when yii/web/AssetManager not being used like in REST apps (tunecino)
+- Bug #244: Fixed copying SQL via triple-click in Firefox (arzzen)
+- Bug #249: Fixed toolbar not displayed because of misconfigured authManager (samdark)
+- Bug #251: User panel was displaying current user info instead of user info at the moment of request (samdark)
+- Bug #252, #234, #220, #242: Reworked error handling to be error-resistent and display errors in the panel itself (bashkarev)
+- Bug #257: Fixed user panel to properly display object attributes (samdark)
+- Enh #188: Added `RequestPanel::$displayVars` that lists allowed variables in request panel (samdark)
+- Enh #204: Switch users from the panel (sam002)
+- Enh #208: All identity models get converted to arrays when saving User panel data now, not just ActiveRecord models (brandonkelly)
+- Enh #208: Identity model packaging for User panels is now done in an `identityData()` method, making it easier for subclasses to customize (brandonkelly)
+- Enh #218: Hide the debug toolbar when an HTML page is printed (githubjeka)
+- Enh #225: Added classes to use bootstrap styles for filter inputs in Timeline panel (johonunu)
+- Enh #256: Catch fetch AJAX requests (leopold537)
+
+
+2.0.9 February 21, 2017
+-----------------------
+
+- Bug #195: Fixed failure when user model has timestamp behavior attached (sam002)
+- Bug #199: Do not use user panel in case component isn't properly defined in the application (samdark)
+- Bug #200: Fixed error in user panel when RBAC role or permission contains non-string data (samdark)
+
+
+2.0.8 February 19, 2017
+-----------------------
+
+- Bug #82: Fixed debug crashing when there's a closure in log message (samdark)
+- Bug #176: Use module's real ID instead of hardcoded "debug" (samdark)
+- Enh #34: Added memory graph to timeline panel (bashkarev)
+- Enh #174: Added routing panel (bashkarev, samdark)
+- Enh #179: Increased request time logging accuracy and precision (samdark)
+- Enh #181: Added user panel (pana1990)
+- Enh #185: Added meta tag to prevent indexing of debug by search engines in case it's exposed (aminkt, samdark)
+- Enh #196: Added language information to config panel (cebe)
+
+
+2.0.7 November 24, 2016
 -----------------------
 
 - Bug #61: Fixed toolbar not to be cached by using renderDynamic (dynasource)

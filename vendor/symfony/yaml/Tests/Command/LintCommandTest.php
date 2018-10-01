@@ -11,17 +11,18 @@
 
 namespace Symfony\Component\Yaml\Tests\Command;
 
-use Symfony\Component\Yaml\Command\LintCommand;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
+use Symfony\Component\Yaml\Command\LintCommand;
 
 /**
  * Tests the YamlLintCommand.
  *
  * @author Robin Chalas <robin.chalas@gmail.com>
  */
-class LintCommandTest extends \PHPUnit_Framework_TestCase
+class LintCommandTest extends TestCase
 {
     private $files;
 
@@ -48,6 +49,33 @@ bar';
 
         $this->assertEquals(1, $ret, 'Returns 1 in case of error');
         $this->assertContains('Unable to parse at line 3 (near "bar").', trim($tester->getDisplay()));
+    }
+
+    public function testConstantAsKey()
+    {
+        $yaml = <<<YAML
+!php/const 'Symfony\Component\Yaml\Tests\Command\Foo::TEST': bar
+YAML;
+        $ret = $this->createCommandTester()->execute(array('filename' => $this->createFile($yaml)), array('verbosity' => OutputInterface::VERBOSITY_VERBOSE, 'decorated' => false));
+        $this->assertSame(0, $ret, 'lint:yaml exits with code 0 in case of success');
+    }
+
+    public function testCustomTags()
+    {
+        $yaml = <<<YAML
+foo: !my_tag {foo: bar}
+YAML;
+        $ret = $this->createCommandTester()->execute(array('filename' => $this->createFile($yaml), '--parse-tags' => true), array('verbosity' => OutputInterface::VERBOSITY_VERBOSE, 'decorated' => false));
+        $this->assertSame(0, $ret, 'lint:yaml exits with code 0 in case of success');
+    }
+
+    public function testCustomTagsError()
+    {
+        $yaml = <<<YAML
+foo: !my_tag {foo: bar}
+YAML;
+        $ret = $this->createCommandTester()->execute(array('filename' => $this->createFile($yaml)), array('verbosity' => OutputInterface::VERBOSITY_VERBOSE, 'decorated' => false));
+        $this->assertSame(1, $ret, 'lint:yaml exits with code 1 in case of error');
     }
 
     /**
@@ -103,4 +131,9 @@ bar';
 
         rmdir(sys_get_temp_dir().'/framework-yml-lint-test');
     }
+}
+
+class Foo
+{
+    const TEST = 'foo';
 }

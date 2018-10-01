@@ -2,9 +2,9 @@
 namespace Codeception;
 
 use Codeception\Lib\ModuleContainer;
+use Codeception\Step\Argument\FormattedOutput;
 use Codeception\Step\Meta as MetaStep;
 use Codeception\Util\Locator;
-use Codeception\Lib\Console\Message;
 
 abstract class Step
 {
@@ -87,6 +87,11 @@ abstract class Step
         return $this->failed;
     }
 
+    public function getArguments()
+    {
+        return $this->arguments;
+    }
+
     public function getArgumentsAsString($maxLength = 200)
     {
         $arguments = $this->arguments;
@@ -149,7 +154,9 @@ abstract class Step
                 }
             }
         } elseif (is_object($argument)) {
-            if (method_exists($argument, '__toString')) {
+            if ($argument instanceof FormattedOutput) {
+                $argument = $argument->getOutput();
+            } elseif (method_exists($argument, '__toString')) {
                 $argument = (string)$argument;
             } elseif (get_class($argument) == 'Facebook\WebDriver\WebDriverBy') {
                 $argument = Locator::humanReadableString($argument);
@@ -157,8 +164,9 @@ abstract class Step
                 $argument = $this->getClassName($argument);
             }
         }
-
-        return json_encode($argument, JSON_UNESCAPED_UNICODE);
+        $arg_str = json_encode($argument, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        $arg_str = str_replace('\"', '"', $arg_str);
+        return $arg_str;
     }
 
     protected function getClassName($argument)
@@ -167,9 +175,9 @@ abstract class Step
             return 'Closure';
         } elseif ((isset($argument->__mocked))) {
             return $this->formatClassName($argument->__mocked);
-        } else {
-            return $this->formatClassName(get_class($argument));
         }
+
+        return $this->formatClassName(get_class($argument));
     }
 
     protected function formatClassName($classname)
@@ -214,7 +222,7 @@ abstract class Step
             return sprintf('%s %s', ucfirst($this->prefix), $this->humanize($this->getAction()));
         }
 
-        return sprintf('%s %s <span style="color: %s">%s</span>', ucfirst($this->prefix), $this->humanize($this->getAction()), $highlightColor, $this->getHumanizedArguments());
+        return sprintf('%s %s <span style="color: %s">%s</span>', ucfirst($this->prefix), htmlspecialchars($this->humanize($this->getAction())), $highlightColor, htmlspecialchars($this->getHumanizedArguments()));
     }
 
     public function getHumanizedActionWithoutArguments()
@@ -237,7 +245,7 @@ abstract class Step
         $text = preg_replace('/([A-Z]+)([A-Z][a-z])/', '\\1 \\2', $text);
         $text = preg_replace('/([a-z\d])([A-Z])/', '\\1 \\2', $text);
         $text = preg_replace('~\bdont\b~', 'don\'t', $text);
-        return strtolower($text);
+        return mb_strtolower($text, 'UTF-8');
     }
 
     public function run(ModuleContainer $container = null)
@@ -283,7 +291,7 @@ abstract class Step
         while (isset($stack[$i])) {
             $step = $stack[$i];
             $i--;
-            if (!isset($step['file']) or !isset($step['function'])) {
+            if (!isset($step['file']) or !isset($step['function']) or !isset($step['class'])) {
                 continue;
             }
 
@@ -291,11 +299,20 @@ abstract class Step
                 continue;
             }
 
-            $this->metaStep = new Step\Meta($step['function'], array_values($step['args']));
+            // in case arguments were passed by reference, copy args array to ensure dereference.  array_values() does not dereference values
+            $this->metaStep = new Step\Meta($step['function'], array_map(function ($i) {
+                return $i;
+            }, array_values($step['args'])));
             $this->metaStep->setTraceInfo($step['file'], $step['line']);
 
+            codecept_debug(get_class($step['object']));
             // pageobjects or other classes should not be included with "I"
             if (!in_array('Codeception\Actor', class_parents($step['class']))) {
+                if (isset($step['object'])) {
+                    $this->metaStep->setPrefix(get_class($step['object']) . ':');
+                    return;
+                }
+
                 $this->metaStep->setPrefix($step['class'] . ':');
             }
             return;

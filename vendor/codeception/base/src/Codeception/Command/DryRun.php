@@ -9,7 +9,6 @@ use Codeception\Subscriber\Bootstrap as BootstrapLoader;
 use Codeception\Subscriber\Console as ConsolePrinter;
 use Codeception\SuiteManager;
 use Codeception\Test\Interfaces\ScenarioDriven;
-use Codeception\Test\Loader;
 use Codeception\Test\Test;
 use Codeception\Util\Maybe;
 use Symfony\Component\Console\Command\Command;
@@ -39,7 +38,6 @@ class DryRun extends Command
             [
                 new InputArgument('suite', InputArgument::REQUIRED, 'suite to scan for feature files'),
                 new InputArgument('test', InputArgument::OPTIONAL, 'tests to be loaded'),
-                new InputOption('config', 'c', InputOption::VALUE_OPTIONAL, 'Use custom path for config'),
             ]
         );
         parent::configure();
@@ -56,11 +54,15 @@ class DryRun extends Command
         $suite = $input->getArgument('suite');
         $test = $input->getArgument('test');
 
-        $config = Configuration::config($input->getOption('config'));
+        $config = $this->getGlobalConfig();
+        ini_set(
+            'memory_limit',
+            isset($config['settings']['memory_limit']) ? $config['settings']['memory_limit'] : '1024M'
+        );
         if (! Configuration::isEmpty() && ! $test && strpos($suite, $config['paths']['tests']) === 0) {
             list(, $suite, $test) = $this->matchTestFromFilename($suite, $config['paths']['tests']);
         }
-        $settings = $this->getSuiteConfig($suite, $input->getOption('config'));
+        $settings = $this->getSuiteConfig($suite);
 
         $dispatcher = new EventDispatcher();
         $dispatcher->addSubscriber(new ConsolePrinter([
@@ -81,7 +83,7 @@ class DryRun extends Command
         $dispatcher->dispatch(Events::SUITE_INIT, new SuiteEvent($suiteManager->getSuite(), null, $settings));
         $dispatcher->dispatch(Events::SUITE_BEFORE, new SuiteEvent($suiteManager->getSuite(), null, $settings));
         foreach ($tests as $test) {
-            if ($test instanceof \PHPUnit_Framework_TestSuite_DataProvider) {
+            if ($test instanceof \PHPUnit\Framework\TestSuite\DataProvider) {
                 foreach ($test as $t) {
                     if ($t instanceof Test) {
                         $this->dryRunTest($output, $dispatcher, $t);

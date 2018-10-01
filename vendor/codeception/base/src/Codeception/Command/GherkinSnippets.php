@@ -10,7 +10,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Generates code snippets for matched feature files in a suite.
- * Code snuppets are expected to be implemtned in Actor or PageOjects
+ * Code snippets are expected to be implemented in Actor or PageObjects
  *
  * Usage:
  *
@@ -46,7 +46,7 @@ class GherkinSnippets extends Command
         $this->addStyles($output);
         $suite = $input->getArgument('suite');
         $test = $input->getArgument('test');
-        $config = $this->getSuiteConfig($suite, $input->getOption('config'));
+        $config = $this->getSuiteConfig($suite);
 
         $generator = new SnippetsGenerator($config, $test);
         $snippets = $generator->getSnippets();
@@ -67,6 +67,6 @@ class GherkinSnippets extends Command
         }
         $output->writeln("<info> ----------------------------------------- </info>");
         $output->writeln(sprintf(' <bold>%d</bold> snippets proposed', count($snippets)));
-        $output->writeln("<notice> Copy generated snippets to {$config['class_name']} or a specific Gherkin context </notice>");
+        $output->writeln("<notice> Copy generated snippets to {$config['actor']} or a specific Gherkin context </notice>");
     }
 }

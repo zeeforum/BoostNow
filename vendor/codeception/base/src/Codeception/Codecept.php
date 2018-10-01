@@ -7,14 +7,14 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class Codecept
 {
-    const VERSION = "2.2.8";
+    const VERSION = "2.5.0";
 
     /**
      * @var \Codeception\PHPUnit\Runner
      */
     protected $runner;
     /**
-     * @var \PHPUnit_Framework_TestResult
+     * @var \PHPUnit\Framework\TestResult
      */
     protected $result;
 
@@ -37,29 +37,31 @@ class Codecept
      * @var array
      */
     protected $options = [
-        'silent'        => false,
-        'debug'         => false,
-        'steps'         => false,
-        'html'          => false,
-        'xml'           => false,
-        'json'          => false,
-        'tap'           => false,
-        'report'        => false,
-        'colors'        => false,
-        'coverage'      => false,
-        'coverage-xml'  => false,
-        'coverage-html' => false,
-        'coverage-text' => false,
-        'groups'        => null,
-        'excludeGroups' => null,
-        'filter'        => null,
-        'env'           => null,
-        'fail-fast'     => false,
-        'ansi'          => true,
-        'verbosity'     => 1,
-        'interactive'   => true,
-        'no-rebuild'    => false,
-        'quiet'         => false,
+        'silent'          => false,
+        'debug'           => false,
+        'steps'           => false,
+        'html'            => false,
+        'xml'             => false,
+        'json'            => false,
+        'tap'             => false,
+        'report'          => false,
+        'colors'          => false,
+        'coverage'        => false,
+        'coverage-xml'    => false,
+        'coverage-html'   => false,
+        'coverage-text'   => false,
+        'coverage-crap4j' => false,
+        'coverage-phpunit'=> false,
+        'groups'          => null,
+        'excludeGroups'   => null,
+        'filter'          => null,
+        'env'             => null,
+        'fail-fast'       => false,
+        'ansi'            => true,
+        'verbosity'       => 1,
+        'interactive'     => true,
+        'no-rebuild'      => false,
+        'quiet'           => false,
     ];
 
     protected $config = [];
@@ -71,7 +73,7 @@ class Codecept
 
     public function __construct($options = [])
     {
-        $this->result = new \PHPUnit_Framework_TestResult;
+        $this->result = new \PHPUnit\Framework\TestResult;
         $this->dispatcher = new EventDispatcher();
         $this->extensionLoader = new ExtensionLoader($this->dispatcher);
 
@@ -113,6 +115,7 @@ class Codecept
         $this->dispatcher->addSubscriber(new Subscriber\ErrorHandler());
         $this->dispatcher->addSubscriber(new Subscriber\Dependencies());
         $this->dispatcher->addSubscriber(new Subscriber\Bootstrap());
+        $this->dispatcher->addSubscriber(new Subscriber\PrepareTest());
         $this->dispatcher->addSubscriber(new Subscriber\Module());
         $this->dispatcher->addSubscriber(new Subscriber\BeforeAfterTest());
 
@@ -137,13 +140,16 @@ class Codecept
         $this->extensionLoader->registerGlobalExtensions();
     }
 
-    public function run($suite, $test = null)
+    public function run($suite, $test = null, array $config = null)
     {
         ini_set(
             'memory_limit',
             isset($this->config['settings']['memory_limit']) ? $this->config['settings']['memory_limit'] : '1024M'
         );
-        $settings = Configuration::suiteSettings($suite, Configuration::config());
+
+        $config = $config ?: Configuration::config();
+
+        $settings = Configuration::suiteSettings($suite, $config);
 
         $selectedEnvironments = $this->options['env'];
         $environments = Configuration::suiteEnvironments($suite);
@@ -179,7 +185,9 @@ class Codecept
     {
         $suiteManager = new SuiteManager($this->dispatcher, $suite, $settings);
         $suiteManager->initialize();
+        srand($this->options['seed']);
         $suiteManager->loadTests($test);
+        srand();
         $suiteManager->run($this->runner, $this->result, $this->options);
         return $this->result;
     }
@@ -201,7 +209,7 @@ class Codecept
     }
 
     /**
-     * @return \PHPUnit_Framework_TestResult
+     * @return \PHPUnit\Framework\TestResult
      */
     public function getResult()
     {

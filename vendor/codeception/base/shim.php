@@ -1,7 +1,12 @@
 <?php
 // @codingStandardsIgnoreStart
+
+namespace {
+    \Codeception\PHPUnit\Init::init();
+}
+
 namespace Symfony\Component\CssSelector {
-if (!class_exists('Symfony\Component\CssSelector\CssSelectorConverter')) {
+    if (!class_exists('Symfony\Component\CssSelector\CssSelectorConverter')) {
         class CssSelectorConverter {
             function toXPath($cssExpr, $prefix = 'descendant-or-self::') {
                 return CssSelector::toXPath($cssExpr, $prefix);
@@ -9,6 +14,7 @@ if (!class_exists('Symfony\Component\CssSelector\CssSelectorConverter')) {
         }
     }
 }
+
 
 // prefering old names
 
@@ -38,18 +44,29 @@ namespace Codeception\Platform {
     {
     }
 }
+
 namespace {
+
     class_alias('Codeception\TestInterface', 'Codeception\TestCase');
 
-    // phpunit codecoverage updates
-    if (class_exists('SebastianBergmann\CodeCoverage\CodeCoverage')) {
-        class_alias('SebastianBergmann\CodeCoverage\CodeCoverage', 'PHP_CodeCoverage');
-        class_alias('SebastianBergmann\CodeCoverage\Report\Text', 'PHP_CodeCoverage_Report_Text');
-        class_alias('SebastianBergmann\CodeCoverage\Report\PHP', 'PHP_CodeCoverage_Report_PHP');
-        class_alias('SebastianBergmann\CodeCoverage\Report\Clover', 'PHP_CodeCoverage_Report_Clover');
-        class_alias('SebastianBergmann\CodeCoverage\Report\Html\Facade', 'PHP_CodeCoverage_Report_HTML');
-        class_alias('SebastianBergmann\CodeCoverage\Exception', 'PHP_CodeCoverage_Exception');
+    // loading WebDriver aliases
+    if (!class_exists('RemoteWebDriver') and class_exists('Facebook\WebDriver\Remote\RemoteWebDriver')) {
+        class RemoteWebDriver extends \Facebook\WebDriver\Remote\RemoteWebDriver {};
+        class InvalidSelectorException extends Facebook\WebDriver\Exception\InvalidSelectorException {};
+        class NoSuchElementException extends Facebook\WebDriver\Exception\NoSuchElementException {};
+        class WebDriverCurlException extends Facebook\WebDriver\Exception\WebDriverCurlException {};
+        class WebDriverActions extends Facebook\WebDriver\Interactions\WebDriverActions {};
+        class LocalFileDetector extends Facebook\WebDriver\Remote\LocalFileDetector {};
+        class WebDriverCapabilityType extends Facebook\WebDriver\Remote\WebDriverCapabilityType {};
+        class WebDriverAlert extends Facebook\WebDriver\WebDriverAlert {};
+        class WebDriverBy extends Facebook\WebDriver\WebDriverBy {};
+        class WebDriverDimension extends Facebook\WebDriver\WebDriverDimension {};
+        class RemoteWebElement extends Facebook\WebDriver\Remote\RemoteWebElement {};
+        class WebDriverExpectedCondition extends Facebook\WebDriver\WebDriverExpectedCondition {};
+        class WebDriverKeys extends Facebook\WebDriver\WebDriverKeys {};
+        class WebDriverSelect extends Facebook\WebDriver\WebDriverSelect {};
+        class WebDriverTimeouts extends Facebook\WebDriver\WebDriverTimeouts {};
+        class WebDriverWindow extends Facebook\WebDriver\WebDriverWindow {};
+        interface WebDriverElement extends Facebook\WebDriver\WebDriverElement {};
     }
 }
-
-// @codingStandardsIgnoreEnd

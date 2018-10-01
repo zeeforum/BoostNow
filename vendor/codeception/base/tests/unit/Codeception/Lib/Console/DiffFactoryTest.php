@@ -1,7 +1,6 @@
 <?php
 namespace Codeception\Lib\Console;
 
-use Codeception\Util\Stub;
 use SebastianBergmann\Comparator\ComparisonFailure;
 
 /**
@@ -33,26 +32,10 @@ class DiffFactoryTest extends \Codeception\Test\Unit
      */
     protected function createFailure()
     {
-        $expectedXml = <<<XML
-<note>
-    <to>Tove</to>
-    <from>Jani</from>
-    <heading>Reminder</heading>
-    <body>Don't forget me this weekend!</body>
-</note>
-XML;
+        $expected = "a\nb";
+        $actual = "a\nc";
 
-        $actualXml = <<<XML
-<note>
-    <to>Tove</to>
-    <from>Jani</from>
-    <heading>Reminder
-    </heading>
-    <body>Don't forget me this weekend!</body>
-</note>
-XML;
-
-        return new ComparisonFailure($expectedXml, $actualXml, $expectedXml, $actualXml);
+        return new ComparisonFailure($expected, $actual, $expected, $actual);
     }
 
     /**
@@ -62,16 +45,10 @@ XML;
     {
         $expectedDiff = <<<TXT
 @@ @@
- <note>
-     <to>Tove</to>
-     <from>Jani</from>
--    <heading>Reminder</heading>
-+    <heading>Reminder
-+    </heading>
-     <body>Don't forget me this weekend!</body>
- </note>
+ a
+-b
++c
 TXT;
-
         return $expectedDiff . "\n";
     }
 }

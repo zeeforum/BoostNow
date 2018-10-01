@@ -4,11 +4,13 @@
 
 	use Yii;
 	use yii\web\Controller;
+	use yii\helpers\Url;
 
 	class AdminController extends Controller {
 
 		public $layout = '@app/views/admin/layout/main.php';
-		private $admin_role = NULL, $admin = NULL;
+		public $admin = NULL;
+		private $admin_role = NULL;
 		private $admin_id = 0;
 		/*private $access = [
 			'admin' => [
@@ -34,6 +36,7 @@
 					return false;
 				}
 			}
+
 			$admin_row = Yii::$app->admin;
 			Yii::$app->params['username'] = $admin_row->identity->username;
 			Yii::$app->params['description'] = $admin_row->identity->description;
@@ -44,6 +47,7 @@
 			Yii::$app->params['date'] = $formatter->asDate($admin_row->identity->created_at, 'long');
 			Yii::$app->params['profilePicture'] = $admin_row->identity->picture;
 			$this->admin = Yii::$app->params['adminAbsUrl'];
+			
 			return true;
 		}
 
@@ -64,4 +68,13 @@
 			return false;
 		}*/
 
+		public function redirectTo($url) {
+			return $this->redirect(Url::to($url));
+		}
+
+		public function setMsg($url, $message, $type = 'success') {
+			$msgType = $type == 'success' ? 'smsg' : 'emsg';
+			Yii::$app->getSession()->setFlash($msgType, $message);
+			return $this->redirectTo($url);
+		}
 	}

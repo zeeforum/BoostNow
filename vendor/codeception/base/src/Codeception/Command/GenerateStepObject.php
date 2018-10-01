@@ -13,8 +13,8 @@ use Symfony\Component\Console\Question\Question;
 /**
  * Generates StepObject class. You will be asked for steps you want to implement.
  *
- * * `codecept g:step acceptance AdminSteps`
- * * `codecept g:step acceptance UserSteps --silent` - skip action questions
+ * * `codecept g:stepobject acceptance AdminSteps`
+ * * `codecept g:stepobject acceptance UserSteps --silent` - skip action questions
  *
  */
 class GenerateStepObject extends Command
@@ -40,11 +40,11 @@ class GenerateStepObject extends Command
     {
         $suite = $input->getArgument('suite');
         $step = $input->getArgument('step');
-        $config = $this->getSuiteConfig($suite, $input->getOption('config'));
+        $config = $this->getSuiteConfig($suite);
 
-        $class = $this->getClassName($step);
+        $class = $this->getShortClassName($step);
 
-        $path = $this->buildPath(Configuration::supportDir() . 'Step' . DIRECTORY_SEPARATOR . ucfirst($suite), $step);
+        $path = $this->createDirectoryFor(Configuration::supportDir() . 'Step' . DIRECTORY_SEPARATOR . ucfirst($suite), $step);
 
         $dialog = $this->getHelperSet()->get('question');
         $filename = $path . $class . '.php';
@@ -64,7 +64,7 @@ class GenerateStepObject extends Command
             } while ($action);
         }
 
-        $res = $this->save($filename, $gen->produce());
+        $res = $this->createFile($filename, $gen->produce());
 
         if (!$res) {
             $output->writeln("<error>StepObject $filename already exists</error>");

@@ -2,8 +2,9 @@
 
 use Codeception\Lib\ModuleContainer;
 use Codeception\Module\Redis;
+use Codeception\Test\Unit;
 
-class RedisTest extends \PHPUnit_Framework_TestCase
+class RedisTest extends Unit
 {
     /**
      * @var array
@@ -93,7 +94,7 @@ class RedisTest extends \PHPUnit_Framework_TestCase
     protected function shouldFail($exceptionClass = null)
     {
         if (!$exceptionClass) {
-            $exceptionClass = 'PHPUnit_Framework_AssertionFailedError';
+            $exceptionClass = 'PHPUnit\Framework\AssertionFailedError';
         }
 
         $this->setExpectedException($exceptionClass);

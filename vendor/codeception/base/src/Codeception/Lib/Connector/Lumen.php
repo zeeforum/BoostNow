@@ -2,15 +2,19 @@
 namespace Codeception\Lib\Connector;
 
 use Codeception\Lib\Connector\Lumen\DummyKernel;
+use Codeception\Lib\Connector\Shared\LaravelCommon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Facade;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Client;
+use Illuminate\Http\UploadedFile;
 
 class Lumen extends Client
 {
+    use LaravelCommon;
+
     /**
      * @var \Laravel\Lumen\Application
      */
@@ -66,6 +70,11 @@ class Lumen extends Client
         }
         $this->firstRequest = false;
 
+        $this->applyBindings();
+        $this->applyContextualBindings();
+        $this->applyInstances();
+        $this->applyApplicationHandlers();
+
         $request = Request::createFromBase($request);
         $response = $this->kernel->handle($request);
 
@@ -90,9 +99,13 @@ class Lumen extends Client
             $this->oldDb = $this->app['db'];
         }
 
-        $this->app = $this->kernel = require $this->module->config['bootstrap_file'];
+        if (class_exists(Facade::class)) {
+            // If the container has been instantiated ever,
+            // we need to clear its static fields before create new container.
+            Facade::clearResolvedInstances();
+        }
 
-        Facade::clearResolvedInstances();
+        $this->app = $this->kernel = require $this->module->config['bootstrap_file'];
 
         // Lumen registers necessary bindings on demand when calling $app->make(),
         // so here we force the request binding before registering our own request object,
@@ -111,5 +124,44 @@ class Lumen extends Client
         }
 
         $this->module->setApplication($this->app);
+    }
+
+    /**
+     * Make sure files are \Illuminate\Http\UploadedFile instances with the private $test property set to true.
+     * Fixes issue https://github.com/Codeception/Codeception/pull/3417.
+     *
+     * @param array $files
+     * @return array
+     */
+    protected function filterFiles(array $files)
+    {
+        $files = parent::filterFiles($files);
+
+        if (! class_exists('Illuminate\Http\UploadedFile')) {
+            // The \Illuminate\Http\UploadedFile class was introduced in Laravel 5.2.15,
+            // so don't change the $files array if it does not exist.
+            return $files;
+        }
+
+        return $this->convertToTestFiles($files);
+    }
+
+    /**
+     * @param array $files
+     * @return array
+     */
+    private function convertToTestFiles(array $files)
+    {
+        $filtered = [];
+
+        foreach ($files as $key => $value) {
+            if (is_array($value)) {
+                $filtered[$key] = $this->convertToTestFiles($value);
+            } else {
+                $filtered[$key] = UploadedFile::createFromBase($value, true);
+            }
+        }
+
+        return $filtered;
     }
 }

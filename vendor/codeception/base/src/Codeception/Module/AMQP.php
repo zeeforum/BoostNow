@@ -1,32 +1,23 @@
 <?php
 namespace Codeception\Module;
 
+use Codeception\Exception\ModuleException as ModuleException;
 use Codeception\Lib\Interfaces\RequiresPackage;
 use Codeception\Module as CodeceptionModule;
-use Codeception\Exception\ModuleException as ModuleException;
 use Codeception\TestInterface;
 use Exception;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
-use PhpAmqpLib\Message\AMQPMessage;
 use PhpAmqpLib\Exception\AMQPProtocolChannelException;
+use PhpAmqpLib\Message\AMQPMessage;
 
 /**
  * This module interacts with message broker software that implements
  * the Advanced Message Queuing Protocol (AMQP) standard. For example, RabbitMQ (tested).
- * Use it to cleanup the queue between tests.
  *
  * <div class="alert alert-info">
- * To use this module with Composer you need <em>"videlalvaro/php-amqplib": "*"</em> package.
+ * To use this module with Composer you need <em>"php-amqplib/php-amqplib": "~2.4"</em> package.
  * </div>
- *
- * ## Status
- * * Maintainer: **davert**, **tiger-seo**
- * * Stability: **alpha**
- * * Contact: codecept@davert.mail.ua
- * * Contact: tiger.seo@gmail.com
- *
- * *Please review the code of non-stable modules and provide patches if you have issues.*
  *
  * ## Config
  *
@@ -36,6 +27,7 @@ use PhpAmqpLib\Exception\AMQPProtocolChannelException;
  * * vhost: '/' - vhost to connect
  * * cleanup: true - defined queues will be purged before running every test.
  * * queues: [mail, twitter] - queues to cleanup
+ * * single_channel - create and use only one channel during test execution
  *
  * ### Example
  *
@@ -48,24 +40,22 @@ use PhpAmqpLib\Exception\AMQPProtocolChannelException;
  *                 password: 'guest'
  *                 vhost: '/'
  *                 queues: [queue1, queue2]
+ *                 single_channel: false
  *
  * ## Public Properties
  *
  * * connection - AMQPStreamConnection - current connection
- *
- * @since 1.1.2
- * @author tiger.seo@gmail.com
- * @author davert
  */
 class AMQP extends CodeceptionModule implements RequiresPackage
 {
     protected $config = [
-        'host'     => 'localhost',
-        'username' => 'guest',
-        'password' => 'guest',
-        'port'     => '5672',
-        'vhost'    => '/',
-        'cleanup'  => true,
+        'host'           => 'localhost',
+        'username'       => 'guest',
+        'password'       => 'guest',
+        'port'           => '5672',
+        'vhost'          => '/',
+        'cleanup'        => true,
+        'single_channel' => false
     ];
 
     /**
@@ -74,9 +64,9 @@ class AMQP extends CodeceptionModule implements RequiresPackage
     public $connection;
 
     /**
-     * @var AMQPChannel
+     * @var int
      */
-    protected $channel;
+    protected $channelId;
 
     protected $requiredFields = ['host', 'username', 'password', 'vhost'];
 
@@ -119,16 +109,16 @@ class AMQP extends CodeceptionModule implements RequiresPackage
      * ?>
      * ```
      *
-     * @param $exchange
-     * @param $message string|AMQPMessage
-     * @param $routing_key
+     * @param string $exchange
+     * @param string|\PhpAmqpLib\Message\AMQPMessage $message
+     * @param string $routing_key
      */
     public function pushToExchange($exchange, $message, $routing_key = null)
     {
         $message = $message instanceof AMQPMessage
             ? $message
             : new AMQPMessage($message);
-        $this->connection->channel()->basic_publish($message, $exchange, $routing_key);
+        $this->getChannel()->basic_publish($message, $exchange, $routing_key);
     }
 
     /**
@@ -141,8 +131,8 @@ class AMQP extends CodeceptionModule implements RequiresPackage
      * ?>
      * ```
      *
-     * @param $queue
-     * @param $message string|AMQPMessage
+     * @param string $queue
+     * @param string|\PhpAmqpLib\Message\AMQPMessage $message
      */
     public function pushToQueue($queue, $message)
     {
@@ -150,8 +140,140 @@ class AMQP extends CodeceptionModule implements RequiresPackage
             ? $message
             : new AMQPMessage($message);
 
-        $this->connection->channel()->queue_declare($queue);
-        $this->connection->channel()->basic_publish($message, '', $queue);
+        $this->getChannel()->queue_declare($queue);
+        $this->getChannel()->basic_publish($message, '', $queue);
+    }
+
+    /**
+     * Declares an exchange
+     *
+     * This is an alias of method `exchange_declare` of `PhpAmqpLib\Channel\AMQPChannel`.
+     *
+     * ```php
+     * <?php
+     * $I->declareExchange(
+     *     'nameOfMyExchange', // exchange name
+     *     'topic' // exchange type
+     * )
+     * ```
+     *
+     * @param string $exchange
+     * @param string $type
+     * @param bool $passive
+     * @param bool $durable
+     * @param bool $auto_delete
+     * @param bool $internal
+     * @param bool $nowait
+     * @param array $arguments
+     * @param int $ticket
+     * @return mixed|null
+     */
+    public function declareExchange(
+        $exchange,
+        $type,
+        $passive = false,
+        $durable = false,
+        $auto_delete = true,
+        $internal = false,
+        $nowait = false,
+        $arguments = null,
+        $ticket = null
+    ) {
+        return $this->getChannel()->exchange_declare(
+            $exchange,
+            $type,
+            $passive,
+            $durable,
+            $auto_delete,
+            $internal,
+            $nowait,
+            $arguments,
+            $ticket
+        );
+    }
+
+    /**
+     * Declares queue, creates if needed
+     *
+     * This is an alias of method `queue_declare` of `PhpAmqpLib\Channel\AMQPChannel`.
+     *
+     * ```php
+     * <?php
+     * $I->declareQueue(
+     *     'nameOfMyQueue', // exchange name
+     * )
+     * ```
+     *
+     * @param string $queue
+     * @param bool $passive
+     * @param bool $durable
+     * @param bool $exclusive
+     * @param bool $auto_delete
+     * @param bool $nowait
+     * @param array $arguments
+     * @param int $ticket
+     * @return mixed|null
+     */
+    public function declareQueue(
+        $queue = '',
+        $passive = false,
+        $durable = false,
+        $exclusive = false,
+        $auto_delete = true,
+        $nowait = false,
+        $arguments = null,
+        $ticket = null
+    ) {
+        return $this->getChannel()->queue_declare(
+            $queue,
+            $passive,
+            $durable,
+            $exclusive,
+            $auto_delete,
+            $nowait,
+            $arguments,
+            $ticket
+        );
+    }
+
+    /**
+     * Binds a queue to an exchange
+     *
+     * This is an alias of method `queue_bind` of `PhpAmqpLib\Channel\AMQPChannel`.
+     *
+     * ```php
+     * <?php
+     * $I->bindQueueToExchange(
+     *     'nameOfMyQueueToBind', // name of the queue
+     *     'transactionTracking.transaction', // exchange name to bind to
+     *     'your.routing.key' // Optionally, provide a binding key
+     * )
+     * ```
+     *
+     * @param string $queue
+     * @param string $exchange
+     * @param string $routing_key
+     * @param bool $nowait
+     * @param array $arguments
+     * @param int $ticket
+     * @return mixed|null
+     */
+    public function bindQueueToExchange(
+        $queue,
+        $exchange,
+        $routing_key = '',
+        $nowait = false,
+        $arguments = null,
+        $ticket = null
+    ) {
+        return $this->getChannel()->queue_bind(
+            $queue,
+            $exchange,
+            $routing_key,
+            $nowait,
+            $arguments,
+            $ticket
+        );
     }
 
     /**
@@ -167,12 +289,12 @@ class AMQP extends CodeceptionModule implements RequiresPackage
      * ?>
      * ```
      *
-     * @param $queue
-     * @param $text
+     * @param string $queue
+     * @param string $text
      */
     public function seeMessageInQueueContainsText($queue, $text)
     {
-        $msg = $this->connection->channel()->basic_get($queue);
+        $msg = $this->getChannel()->basic_get($queue);
         if (!$msg) {
             $this->fail("Message was not received");
         }
@@ -186,14 +308,18 @@ class AMQP extends CodeceptionModule implements RequiresPackage
     /**
      * Takes last message from queue.
      *
+     * ``` php
+     * <?php
      * $message = $I->grabMessageFromQueue('queue.emails');
+     * ?>
+     * ```
      *
-     * @param $queue
-     * @return AMQPMessage
+     * @param string $queue
+     * @return \PhpAmqpLib\Message\AMQPMessage
      */
     public function grabMessageFromQueue($queue)
     {
-        $message = $this->connection->channel()->basic_get($queue);
+        $message = $this->getChannel()->basic_get($queue);
         return $message;
     }
 
@@ -205,6 +331,8 @@ class AMQP extends CodeceptionModule implements RequiresPackage
      * $I->purgeQueue('queue.emails');
      * ?>
      * ```
+     *
+     * @param string $queueName
      */
     public function purgeQueue($queueName = '')
     {
@@ -212,7 +340,7 @@ class AMQP extends CodeceptionModule implements RequiresPackage
             throw new ModuleException(__CLASS__, "'$queueName' doesn't exist in queues config list");
         }
 
-        $this->connection->channel()->queue_purge($queueName, true);
+        $this->getChannel()->queue_purge($queueName, true);
     }
 
     /**
@@ -229,6 +357,17 @@ class AMQP extends CodeceptionModule implements RequiresPackage
         $this->cleanup();
     }
 
+    /**
+     * @return \PhpAmqpLib\Channel\AMQPChannel
+     */
+    protected function getChannel()
+    {
+        if ($this->config['single_channel'] && $this->channelId === null) {
+            $this->channelId = $this->connection->get_free_channel_id();
+        }
+        return $this->connection->channel($this->channelId);
+    }
+
     protected function cleanup()
     {
         if (!isset($this->config['queues'])) {
@@ -239,7 +378,7 @@ class AMQP extends CodeceptionModule implements RequiresPackage
         }
         foreach ($this->config['queues'] as $queue) {
             try {
-                $this->connection->channel()->queue_purge($queue);
+                $this->getChannel()->queue_purge($queue);
             } catch (AMQPProtocolChannelException $e) {
                 // ignore if exchange/queue doesn't exist and rethrow exception if it's something else
                 if ($e->getCode() !== 404) {

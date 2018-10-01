@@ -2,32 +2,25 @@
 namespace Codeception\Lib\Connector\Yii2;
 
 use yii\mail\BaseMailer;
-use yii\mail\BaseMessage;
 
 class TestMailer extends BaseMailer
 {
-    public $messageClass = 'yii\swiftmailer\Message';
+    public $messageClass = \yii\swiftmailer\Message::class;
 
-    private $sentMessages = [];
+    /**
+     * @var \Closure
+     */
+    public $callback;
 
     protected function sendMessage($message)
     {
-        $this->sentMessages[] = $message;
+        call_user_func($this->callback, $message);
         return true;
     }
     
     protected function saveMessage($message)
     {
-        return $this->sendMessage($message);
-    }
-
-    public function getSentMessages()
-    {
-        return $this->sentMessages;
-    }
-
-    public function reset()
-    {
-        $this->sentMessages = [];
+        call_user_func($this->callback, $message);
+        return true;
     }
 }

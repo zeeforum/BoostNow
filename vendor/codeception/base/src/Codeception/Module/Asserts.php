@@ -10,27 +10,57 @@ class Asserts extends CodeceptionModule
 {
 
     /**
-     * Checks that two variables are equal.
+     * Checks that two variables are equal. If you're comparing floating-point values,
+     * you can specify the optional "delta" parameter which dictates how great of a precision
+     * error are you willing to tolerate in order to consider the two values equal.
+     *
+     * Regular example:
+     * ```php
+     * <?php
+     * $I->assertEquals(5, $element->getChildrenCount());
+     * ```
+     *
+     * Floating-point example:
+     * ```php
+     * <?php
+     * $I->assertEquals(0.3, $calculator->add(0.1, 0.2), 'Calculator should add the two numbers correctly.', 0.01);
+     * ```
      *
      * @param        $expected
      * @param        $actual
      * @param string $message
+     * @param float  $delta
      */
-    public function assertEquals($expected, $actual, $message = '')
+    public function assertEquals($expected, $actual, $message = '', $delta = 0.0)
     {
-        parent::assertEquals($expected, $actual, $message);
+        parent::assertEquals($expected, $actual, $message, $delta);
     }
 
     /**
-     * Checks that two variables are not equal
+     * Checks that two variables are not equal. If you're comparing floating-point values,
+     * you can specify the optional "delta" parameter which dictates how great of a precision
+     * error are you willing to tolerate in order to consider the two values not equal.
+     *
+     * Regular example:
+     * ```php
+     * <?php
+     * $I->assertNotEquals(0, $element->getChildrenCount());
+     * ```
+     *
+     * Floating-point example:
+     * ```php
+     * <?php
+     * $I->assertNotEquals(0.4, $calculator->add(0.1, 0.2), 'Calculator should add the two numbers correctly.', 0.01);
+     * ```
      *
      * @param        $expected
      * @param        $actual
      * @param string $message
+     * @param float  $delta
      */
-    public function assertNotEquals($expected, $actual, $message = '')
+    public function assertNotEquals($expected, $actual, $message = '', $delta = 0.0)
     {
-        parent::assertNotEquals($expected, $actual, $message);
+        parent::assertNotEquals($expected, $actual, $message, $delta);
     }
 
     /**
@@ -39,7 +69,6 @@ class Asserts extends CodeceptionModule
      * @param        $expected
      * @param        $actual
      * @param string $message
-     * @return mixed|void
      */
     public function assertSame($expected, $actual, $message = '')
     {
@@ -154,6 +183,30 @@ class Asserts extends CodeceptionModule
         parent::assertNotRegExp($pattern, $string, $message);
     }
 
+    /**
+     * Checks that a string starts with the given prefix.
+     *
+     * @param string $prefix
+     * @param string $string
+     * @param string $message
+     */
+    public function assertStringStartsWith($prefix, $string, $message = '')
+    {
+        parent::assertStringStartsWith($prefix, $string, $message);
+    }
+
+    /**
+     * Checks that a string doesn't start with the given prefix.
+     *
+     * @param string $prefix
+     * @param string $string
+     * @param string $message
+     */
+    public function assertStringStartsNotWith($prefix, $string, $message = '')
+    {
+        parent::assertStringStartsNotWith($prefix, $string, $message);
+    }
+
 
     /**
      * Checks that variable is empty.
@@ -211,6 +264,17 @@ class Asserts extends CodeceptionModule
     }
 
     /**
+     * Checks that the condition is NOT true (everything but true)
+     *
+     * @param        $condition
+     * @param string $message
+     */
+    public function assertNotTrue($condition, $message = '')
+    {
+        parent::assertNotTrue($condition, $message);
+    }
+
+    /**
      * Checks that condition is negative.
      *
      * @param        $condition
@@ -219,6 +283,17 @@ class Asserts extends CodeceptionModule
     public function assertFalse($condition, $message = '')
     {
         parent::assertFalse($condition, $message);
+    }
+
+    /**
+     * Checks that the condition is NOT false (everything but false)
+     *
+     * @param        $condition
+     * @param string $message
+     */
+    public function assertNotFalse($condition, $message = '')
+    {
+        parent::assertNotFalse($condition, $message);
     }
 
     /**
@@ -290,6 +365,19 @@ class Asserts extends CodeceptionModule
     public function assertArrayNotHasKey($key, $actual, $description = '')
     {
         parent::assertArrayNotHasKey($key, $actual, $description);
+    }
+
+    /**
+     * Checks that array contains subset.
+     *
+     * @param array  $subset
+     * @param array  $array
+     * @param bool   $strict
+     * @param string $message
+     */
+    public function assertArraySubset($subset, $array, $strict = false, $message = '')
+    {
+        parent::assertArraySubset($subset, $array, $strict, $message);
     }
 
     /**
@@ -399,8 +487,8 @@ class Asserts extends CodeceptionModule
                 ));
             }
             $this->assertTrue(true); // increment assertion counter
-             return;
+            return;
         }
-        $this->fail("Expected exception to be thrown, but nothing was caught");
+        $this->fail("Expected exception of $class to be thrown, but nothing was caught");
     }
 }

@@ -7,17 +7,53 @@ This module uses Symfony Crawler and HttpKernel to emulate requests and test res
 
 <https://github.com/Codeception/symfony-demo>
 
-## Status
-
-* Maintainer: **raistlin**
-* Stability: **stable**
-
 ## Config
+
+### Symfony 4.x
+
+* app_path: 'src' - in Symfony 4 Kernel is located inside `src`
+* environment: 'local' - environment used for load kernel
+* kernel_class: 'App\Kernel' - kernel class name
+* em_service: 'doctrine.orm.entity_manager' - use the stated EntityManager to pair with Doctrine Module.
+* debug: true - turn on/off debug mode
+* cache_router: 'false' - enable router caching between tests in order to [increase performance](http://lakion.com/blog/how-did-we-speed-up-sylius-behat-suite-with-blackfire)
+* rebootable_client: 'true' - reboot client's kernel before each request
+
+#### Example (`functional.suite.yml`) - Symfony 4 Directory Structure
+
+    modules:
+       enabled:
+          - Symfony:
+              app_path: 'src'
+              environment: 'test'
+
+
+### Symfony 3.x
+
+* app_path: 'app' - specify custom path to your app dir, where the kernel interface is located.
+* var_path: 'var' - specify custom path to your var dir, where bootstrap cache is located.
+* environment: 'local' - environment used for load kernel
+* kernel_class: 'AppKernel' - kernel class name
+* em_service: 'doctrine.orm.entity_manager' - use the stated EntityManager to pair with Doctrine Module.
+* debug: true - turn on/off debug mode
+* cache_router: 'false' - enable router caching between tests in order to [increase performance](http://lakion.com/blog/how-did-we-speed-up-sylius-behat-suite-with-blackfire)
+* rebootable_client: 'true' - reboot client's kernel before each request
+
+#### Example (`functional.suite.yml`) - Symfony 3 Directory Structure
+
+    modules:
+       enabled:
+          - Symfony:
+              app_path: 'app/front'
+              var_path: 'var'
+              environment: 'local_test'
+
 
 ### Symfony 2.x
 
 * app_path: 'app' - specify custom path to your app dir, where bootstrap cache and kernel interface is located.
 * environment: 'local' - environment used for load kernel
+* kernel_class: 'AppKernel' - kernel class name
 * debug: true - turn on/off debug mode
 * em_service: 'doctrine.orm.entity_manager' - use the stated EntityManager to pair with Doctrine Module.
 * cache_router: 'false' - enable router caching between tests in order to [increase performance](http://lakion.com/blog/how-did-we-speed-up-sylius-behat-suite-with-blackfire)
@@ -32,26 +68,6 @@ This module uses Symfony Crawler and HttpKernel to emulate requests and test res
            environment: 'local_test'
 ```
 
-### Symfony 3.x Directory Structure
-
-* app_path: 'app' - specify custom path to your app dir, where the kernel interface is located.
-* var_path: 'var' - specify custom path to your var dir, where bootstrap cache is located.
-* environment: 'local' - environment used for load kernel
-* em_service: 'doctrine.orm.entity_manager' - use the stated EntityManager to pair with Doctrine Module.
-* debug: true - turn on/off debug mode
-* cache_router: 'false' - enable router caching between tests in order to [increase performance](http://lakion.com/blog/how-did-we-speed-up-sylius-behat-suite-with-blackfire)
-* rebootable_client: 'true' - reboot client's kernel before each request
-
-### Example (`functional.suite.yml`) - Symfony 3 Directory Structure
-
-    modules:
-       enabled:
-          - Symfony:
-              app_path: 'app/front'
-              var_path: 'var'
-              environment: 'local_test'
-
-
 ## Public Properties
 
 * kernel - HttpKernel instance
@@ -64,7 +80,7 @@ This module uses Symfony Crawler and HttpKernel to emulate requests and test res
 Usage example:
 
 ```yaml
-class_name: AcceptanceTester
+actor: AcceptanceTester
 modules:
     enabled:
         - Symfony:
@@ -75,7 +91,6 @@ modules:
             url: http://your-url.com
             browser: phantomjs
 ```
-
 
 
 ## Actions
@@ -217,7 +232,7 @@ $I->amOnPage('/');
 $I->amOnPage('/register');
 ```
 
- * `param` $page
+ * `param string` $page
 
 
 ### amOnRoute
@@ -237,7 +252,7 @@ $I->amOnRoute('posts.show', array('id' => 34));
 
 ### attachFile
  
-Attaches a file relative to the Codeception data directory to the given file upload field.
+Attaches a file relative to the Codeception `_data` directory to the given file upload field.
 
 ``` php
 <?php
@@ -342,8 +357,8 @@ But will ignore strings like:
 
 For checking the raw source code, use `seeInSource()`.
 
- * `param`      $text
- * `param null` $selector
+ * `param string` $text
+ * `param string` $selector optional
 
 
 ### dontSeeCheckboxIsChecked
@@ -382,7 +397,7 @@ $I->dontSeeCurrentUrlEquals('/');
 ?>
 ```
 
- * `param` $uri
+ * `param string` $uri
 
 
 ### dontSeeCurrentUrlMatches
@@ -396,7 +411,7 @@ $I->dontSeeCurrentUrlMatches('~$/users/(\d+)~');
 ?>
 ```
 
- * `param` $uri
+ * `param string` $uri
 
 
 ### dontSeeElement
@@ -417,6 +432,13 @@ $I->dontSeeElement('input', ['value' => '123456']);
  * `param array` $attributes
 
 
+### dontSeeEmailIsSent
+ 
+Checks that no email was sent. This is an alias for seeEmailIsSent(0).
+
+ * `[Part]` email
+
+
 ### dontSeeInCurrentUrl
  
 Checks that the current URI doesn't contain the given string.
@@ -427,7 +449,7 @@ $I->dontSeeInCurrentUrl('/users/');
 ?>
 ```
 
- * `param` $uri
+ * `param string` $uri
 
 
 ### dontSeeInField
@@ -526,8 +548,8 @@ $I->dontSeeLink('Checkout now', '/store/cart.php');
 ?>
 ```
 
- * `param` $text
- * `param null` $url
+ * `param string` $text
+ * `param string` $url optional
 
 
 ### dontSeeOptionIsSelected
@@ -585,7 +607,6 @@ $I->grabAttributeFrom('#tooltip', 'title');
 ?>
 ```
 
-
  * `param` $cssOrXpath
  * `param` $attribute
 
@@ -603,7 +624,7 @@ You can set additional cookie params like `domain`, `path` in array passed as la
 
 ### grabFromCurrentUrl
  
-Executes the given regular expression against the current URI and returns the first match.
+Executes the given regular expression against the current URI and returns the first capturing group.
 If no parameters are provided, the full URI is returned.
 
 ``` php
@@ -613,7 +634,7 @@ $uri = $I->grabFromCurrentUrl();
 ?>
 ```
 
- * `param null` $uri
+ * `param string` $uri optional
 
 
 
@@ -641,6 +662,15 @@ $aLinks = $I->grabMultiple('a', 'href');
  * `param` $cssOrXpath
  * `param` $attribute
  * `return` string[]
+
+
+### grabPageSource
+ 
+Grabs current page source code.
+
+@throws ModuleException if no page was opened.
+
+ * `return` string Current page source code.
 
 
 ### grabService
@@ -707,8 +737,19 @@ subsequent HTTP requests through PhpBrowser.
 Example:
 ```php
 <?php
-$I->setHeader('X-Requested-With', 'Codeception');
+$I->haveHttpHeader('X-Requested-With', 'Codeception');
 $I->amOnPage('test-headers.php');
+?>
+```
+
+To use special chars in Header Key use HTML Character Entities:
+Example:
+Header with underscore - 'Client_Id'
+should be represented as - 'Client&#x0005F;Id' or 'Client&#95;Id'
+
+```php
+<?php
+$I->haveHttpHeader('Client&#95;Id', 'Codeception');
 ?>
 ```
 
@@ -797,8 +838,8 @@ But will *not* be true for strings like:
 
 For checking the raw source code, use `seeInSource()`.
 
- * `param`      $text
- * `param null` $selector
+ * `param string` $text
+ * `param string` $selector optional
 
 
 ### seeCheckboxIsChecked
@@ -858,7 +899,7 @@ $I->seeCurrentUrlEquals('/');
 ?>
 ```
 
- * `param` $uri
+ * `param string` $uri
 
 
 ### seeCurrentUrlMatches
@@ -872,7 +913,7 @@ $I->seeCurrentUrlMatches('~$/users/(\d+)~');
 ?>
 ```
 
- * `param` $uri
+ * `param string` $uri
 
 
 ### seeElement
@@ -899,9 +940,16 @@ $I->seeElement(['css' => 'form input'], ['name' => 'login']);
 
 ### seeEmailIsSent
  
-Checks if any email were sent by last request
+Checks if the desired number of emails was sent.
+If no argument is provided then at least one email must be sent to satisfy the check.
 
-@throws \LogicException
+``` php
+<?php
+$I->seeEmailIsSent(2);
+?>
+```
+
+ * `param null|int` $expectedCount
 
 
 ### seeInCurrentRoute
@@ -931,13 +979,13 @@ $I->seeInCurrentUrl('/users/');
 ?>
 ```
 
- * `param` $uri
+ * `param string` $uri
 
 
 ### seeInField
  
-Checks that the given input field or textarea contains the given value.
-For fuzzy locators, fields are matched by label text, the "name" attribute, CSS, and XPath.
+Checks that the given input field or textarea *equals* (i.e. not just contains) the given value.
+Fields are matched by label text, the "name" attribute, CSS, or XPath.
 
 ``` php
 <?php
@@ -1056,8 +1104,8 @@ $I->seeLink('Logout','/logout'); // matches <a href="/logout">Logout</a>
 ?>
 ```
 
- * `param`      $text
- * `param null` $url
+ * `param string` $text
+ * `param string` $url optional
 
 
 ### seeNumberOfElements
@@ -1067,13 +1115,11 @@ Checks that there are a certain number of elements matched by the given locator 
 ``` php
 <?php
 $I->seeNumberOfElements('tr', 10);
-$I->seeNumberOfElements('tr', [0,10]); //between 0 and 10 elements
+$I->seeNumberOfElements('tr', [0,10]); // between 0 and 10 elements
 ?>
 ```
  * `param` $selector
- * `param mixed` $expected :
-- string: strict number
-- array: range of numbers [0,10]
+ * `param mixed` $expected int or int[]
 
 
 ### seeOptionIsSelected
@@ -1109,6 +1155,34 @@ $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
 ```
 
  * `param` $code
+
+
+### seeResponseCodeIsBetween
+ 
+Checks that response code is between a certain range. Between actually means [from <= CODE <= to]
+
+ * `param` $from
+ * `param` $to
+
+
+### seeResponseCodeIsClientError
+ 
+Checks that the response code is 4xx
+
+
+### seeResponseCodeIsRedirection
+ 
+Checks that the response code 3xx
+
+
+### seeResponseCodeIsServerError
+ 
+Checks that the response code is 5xx
+
+
+### seeResponseCodeIsSuccessful
+ 
+Checks that the response code 2xx
 
 
 ### selectOption
@@ -1216,7 +1290,7 @@ $I->setCookie('PHPSESSID', 'el4ukv0kqbvoirg7nkp4dncpk3');
 
 ### submitForm
  
-Submits the given form on the page, optionally with the given form
+Submits the given form on the page, with the given form
 values.  Pass the form field's values as an array in the second
 parameter.
 
@@ -1424,4 +1498,4 @@ Remove service $serviceName from the lists of persistent services.
 
  * `param string` $serviceName
 
-<p>&nbsp;</p><div class="alert alert-warning">Module reference is taken from the source code. <a href="https://github.com/Codeception/Codeception/tree/2.2/src/Codeception/Module/Symfony.php">Help us to improve documentation. Edit module reference</a></div>
+<p>&nbsp;</p><div class="alert alert-warning">Module reference is taken from the source code. <a href="https://github.com/Codeception/Codeception/tree/2.5/src/Codeception/Module/Symfony.php">Help us to improve documentation. Edit module reference</a></div>

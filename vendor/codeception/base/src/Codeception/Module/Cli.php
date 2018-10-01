@@ -2,6 +2,7 @@
 namespace Codeception\Module;
 
 use Codeception\Module as CodeceptionModule;
+use Codeception\TestInterface;
 
 /**
  * Wrapper for basic shell commands and shell output
@@ -17,7 +18,9 @@ class Cli extends CodeceptionModule
 {
     public $output = '';
 
-    public function _cleanup()
+    public $result = null;
+
+    public function _before(TestInterface $test)
     {
         $this->output = '';
     }
@@ -41,12 +44,13 @@ class Cli extends CodeceptionModule
     {
         $data = [];
         exec("$command", $data, $resultCode);
+        $this->result = $resultCode;
         $this->output = implode("\n", $data);
         if ($this->output === null) {
-            \PHPUnit_Framework_Assert::fail("$command can't be executed");
+            \PHPUnit\Framework\Assert::fail("$command can't be executed");
         }
         if ($resultCode !== 0 && $failNonZero) {
-            \PHPUnit_Framework_Assert::fail("Result code was $resultCode.\n\n" . $this->output);
+            \PHPUnit\Framework\Assert::fail("Result code was $resultCode.\n\n" . $this->output);
         }
         $this->debug(preg_replace('~s/\e\[\d+(?>(;\d+)*)m//g~', '', $this->output));
     }
@@ -58,7 +62,7 @@ class Cli extends CodeceptionModule
      */
     public function seeInShellOutput($text)
     {
-        \PHPUnit_Framework_Assert::assertContains($text, $this->output);
+        \PHPUnit\Framework\Assert::assertContains($text, $this->output);
     }
 
     /**
@@ -70,11 +74,44 @@ class Cli extends CodeceptionModule
     public function dontSeeInShellOutput($text)
     {
         $this->debug($this->output);
-        \PHPUnit_Framework_Assert::assertNotContains($text, $this->output);
+        \PHPUnit\Framework\Assert::assertNotContains($text, $this->output);
     }
 
+    /**
+     * @param $regex
+     */
     public function seeShellOutputMatches($regex)
     {
-        \PHPUnit_Framework_Assert::assertRegExp($regex, $this->output);
+        \PHPUnit\Framework\Assert::assertRegExp($regex, $this->output);
+    }
+
+    /**
+     * Checks result code
+     *
+     * ```php
+     * <?php
+     * $I->seeResultCodeIs(0);
+     * ```
+     *
+     * @param $code
+     */
+    public function seeResultCodeIs($code)
+    {
+        $this->assertEquals($this->result, $code, "result code is $code");
+    }
+
+    /**
+     * Checks result code
+     *
+     * ```php
+     * <?php
+     * $I->seeResultCodeIsNot(0);
+     * ```
+     *
+     * @param $code
+     */
+    public function seeResultCodeIsNot($code)
+    {
+        $this->assertNotEquals($this->result, $code, "result code is $code");
     }
 }

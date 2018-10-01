@@ -3,22 +3,40 @@
 
 This module provides integration with [Yii framework](http://www.yiiframework.com/) (2.0).
 It initializes Yii framework in test environment and provides actions for functional testing.
+## Application state during testing
+This section details what you can expect when using this module.
+* You will get a fresh application in `\Yii::$app` at the start of each test (available in the test and in `_before()`).
+* Inside your test you may change application state; however these changes will be lost when doing a request if you have enabled `recreateApplication`.
+* When executing a request via one of the request functions the `request` and `response` component are both recreated.
+* After a request the whole application is available for inspection / interaction.
+* You may use multiple database connections, each will use a separate transaction; to prevent accidental mistakes we
+will warn you if you try to connect to the same database twice but we cannot reuse the same connection.
 
 ## Config
 
 * `configFile` *required* - the path to the application config file. File should be configured for test environment and return configuration array.
 * `entryUrl` - initial application url (default: http://localhost/index-test.php).
 * `entryScript` - front script title (like: index-test.php). If not set - taken from entryUrl.
-* `cleanup` - (default: true) wrap all database connection inside a transaction and roll it back after the test. Should be disabled for acceptance testing..
-
+* `transaction` - (default: true) wrap all database connection inside a transaction and roll it back after the test. Should be disabled for acceptance testing..
+* `cleanup` - (default: true) cleanup fixtures after the test
+* `ignoreCollidingDSN` - (default: false) When 2 database connections use the same DSN but different settings an exception will be thrown, set this to true to disable this behavior.
+* `fixturesMethod` - (default: _fixtures) Name of the method used for creating fixtures.
+* `responseCleanMethod` - (default: clear) Method for cleaning the response object. Note that this is only for multiple requests inside a single test case.
+Between test casesthe whole application is always recreated
+* `requestCleanMethod` - (default: recreate) Method for cleaning the request object. Note that this is only for multiple requests inside a single test case.
+Between test cases the whole application is always recreated
+* `recreateComponents` - (default: []) Some components change their state making them unsuitable for processing multiple requests. In production this is usually
+not a problem since web apps tend to die and start over after each request. This allows you to list application components that need to be recreated before each request.
+As a consequence, any components specified here should not be changed inside a test since those changes will get regarded.
 You can use this module by setting params in your functional.suite.yml:
-
+* `recreateApplication` - (default: false) whether to recreate the whole application before each request
+You can use this module by setting params in your functional.suite.yml:
 ```yaml
-class_name: FunctionalTester
+actor: FunctionalTester
 modules:
     enabled:
         - Yii2:
-            configFile: '/path/to/config.php'
+            configFile: 'path/to/config.php'
 ```
 
 ### Parts
@@ -33,7 +51,7 @@ By default all available methods are loaded, but you can specify parts to select
 ### Example (`functional.suite.yml`)
 
 ```yaml
-class_name: FunctionalTester
+actor: FunctionalTester
 modules:
   enabled:
      - Yii2:
@@ -43,7 +61,7 @@ modules:
 ### Example (`unit.suite.yml`)
 
 ```yaml
-class_name: UnitTester
+actor: UnitTester
 modules:
   enabled:
      - Asserts
@@ -55,7 +73,7 @@ modules:
 ### Example (`acceptance.suite.yml`)
 
 ```yaml
-class_name: AcceptanceTester
+actor: AcceptanceTester
 modules:
     enabled:
         - WebDriver:
@@ -64,7 +82,8 @@ modules:
         - Yii2:
             configFile: 'config/test.php'
             part: ORM # allow to use AR methods
-            cleanup: false # don't wrap test in transaction
+            transaction: false # don't wrap test in transaction
+            cleanup: false # don't cleanup the fixtures
             entryScript: index-test.php
 ```
 
@@ -78,7 +97,7 @@ Fixtures can be loaded using [haveFixtures](#haveFixtures) method inside a test:
 $I->haveFixtures(['posts' => PostsFixture::className()]);
 ```
 
-or, if you need to load fixtures before the test (probably before the cleanup transaction is started), you
+or, if you need to load fixtures before the test, you
 can specify fixtures with `_fixtures` method of a testcase:
 
 ```php
@@ -107,7 +126,7 @@ $I->sendAjaxPostRequest(['/user/update', 'id' => 1], ['UserForm[name]' => 'G.Hop
 Maintainer: **samdark**
 Stability: **stable**
 
-
+@property \Codeception\Lib\Connector\Yii2 $client
 
 ## Actions
 
@@ -268,7 +287,7 @@ $I->amOnPage('/');
 $I->amOnPage('/register');
 ```
 
- * `param` $page
+ * `param string` $page
 
 
 ### amOnRoute
@@ -283,7 +302,7 @@ $I->amOnRoute('site/view', ['page' => 'about']);
 
 ### attachFile
  
-Attaches a file relative to the Codeception data directory to the given file upload field.
+Attaches a file relative to the Codeception `_data` directory to the given file upload field.
 
 ``` php
 <?php
@@ -342,6 +361,13 @@ $I->click(['link' => 'Login']);
  * `param` $context
 
 
+### createAndSetCsrfCookie
+ 
+This function creates the CSRF Cookie.
+ * `param string` $val The value of the CSRF token
+ * `return` string[] Returns an array containing the name of the CSRF param and the masked CSRF token.
+
+
 ### deleteHeader
  
 Deletes the header with the passed name.  Subsequent requests
@@ -388,8 +414,8 @@ But will ignore strings like:
 
 For checking the raw source code, use `seeInSource()`.
 
- * `param`      $text
- * `param null` $selector
+ * `param string` $text
+ * `param string` $selector optional
 
 
 ### dontSeeCheckboxIsChecked
@@ -428,7 +454,7 @@ $I->dontSeeCurrentUrlEquals('/');
 ?>
 ```
 
- * `param` $uri
+ * `param string` $uri
 
 
 ### dontSeeCurrentUrlMatches
@@ -442,7 +468,7 @@ $I->dontSeeCurrentUrlMatches('~$/users/(\d+)~');
 ?>
 ```
 
- * `param` $uri
+ * `param string` $uri
 
 
 ### dontSeeElement
@@ -480,7 +506,7 @@ $I->dontSeeInCurrentUrl('/users/');
 ?>
 ```
 
- * `param` $uri
+ * `param string` $uri
 
 
 ### dontSeeInField
@@ -579,8 +605,8 @@ $I->dontSeeLink('Checkout now', '/store/cart.php');
 ?>
 ```
 
- * `param` $text
- * `param null` $url
+ * `param string` $text
+ * `param string` $url optional
 
 
 ### dontSeeOptionIsSelected
@@ -658,7 +684,6 @@ $I->grabAttributeFrom('#tooltip', 'title');
 ?>
 ```
 
-
  * `param` $cssOrXpath
  * `param` $attribute
 
@@ -675,6 +700,7 @@ $mailer = $I->grabComponent('mailer');
 
  * `param` $component
 @throws ModuleException
+@deprecated in your tests you can use \Yii::$app directly.
 
 
 ### grabCookie
@@ -719,7 +745,7 @@ Array of fixture instances
 
 ### grabFromCurrentUrl
  
-Executes the given regular expression against the current URI and returns the first match.
+Executes the given regular expression against the current URI and returns the first capturing group.
 If no parameters are provided, the full URI is returned.
 
 ``` php
@@ -729,7 +755,7 @@ $uri = $I->grabFromCurrentUrl();
 ?>
 ```
 
- * `param null` $uri
+ * `param string` $uri optional
 
 
 
@@ -772,6 +798,15 @@ $aLinks = $I->grabMultiple('a', 'href');
  * `return` string[]
 
 
+### grabPageSource
+ 
+Grabs current page source code.
+
+@throws ModuleException if no page was opened.
+
+ * `return` string Current page source code.
+
+
 ### grabRecord
  
 Retrieves record from database
@@ -788,7 +823,7 @@ $category = $I->grabRecord('app\models\User', array('name' => 'davert'));
 ### grabSentEmails
  
 Returns array of all sent email messages.
-Each message implements `yii\mail\Message` interface.
+Each message implements `yii\mail\MessageInterface` interface.
 Useful to perform additional checks using `Asserts` module:
 
 ```php
@@ -844,6 +879,22 @@ $I->haveFixtures([
 ]);
 ```
 
+Note: if you need to load fixtures before the test (probably before the cleanup transaction is started;
+`cleanup` options is `true` by default), you can specify fixtures with _fixtures method of a testcase
+```php
+<?php
+// inside Cest file or Codeception\TestCase\Unit
+public function _fixtures(){
+    return [
+        'user' => [
+            'class' => UserFixture::className(),
+            'dataFile' => codecept_data_dir() . 'user.php'
+        ]
+    ];
+}
+```
+instead of defining `haveFixtures` in Cest `_before`
+
  * `param` $fixtures
  * `[Part]` fixtures
 
@@ -856,8 +907,19 @@ subsequent HTTP requests through PhpBrowser.
 Example:
 ```php
 <?php
-$I->setHeader('X-Requested-With', 'Codeception');
+$I->haveHttpHeader('X-Requested-With', 'Codeception');
 $I->amOnPage('test-headers.php');
+?>
+```
+
+To use special chars in Header Key use HTML Character Entities:
+Example:
+Header with underscore - 'Client_Id'
+should be represented as - 'Client&#x0005F;Id' or 'Client&#95;Id'
+
+```php
+<?php
+$I->haveHttpHeader('Client&#95;Id', 'Codeception');
 ?>
 ```
 
@@ -927,8 +989,8 @@ But will *not* be true for strings like:
 
 For checking the raw source code, use `seeInSource()`.
 
- * `param`      $text
- * `param null` $selector
+ * `param string` $text
+ * `param string` $selector optional
 
 
 ### seeCheckboxIsChecked
@@ -973,7 +1035,7 @@ $I->seeCurrentUrlEquals('/');
 ?>
 ```
 
- * `param` $uri
+ * `param string` $uri
 
 
 ### seeCurrentUrlMatches
@@ -987,7 +1049,7 @@ $I->seeCurrentUrlMatches('~$/users/(\d+)~');
 ?>
 ```
 
- * `param` $uri
+ * `param string` $uri
 
 
 ### seeElement
@@ -1043,13 +1105,13 @@ $I->seeInCurrentUrl('/users/');
 ?>
 ```
 
- * `param` $uri
+ * `param string` $uri
 
 
 ### seeInField
  
-Checks that the given input field or textarea contains the given value.
-For fuzzy locators, fields are matched by label text, the "name" attribute, CSS, and XPath.
+Checks that the given input field or textarea *equals* (i.e. not just contains) the given value.
+Fields are matched by label text, the "name" attribute, CSS, or XPath.
 
 ``` php
 <?php
@@ -1168,8 +1230,8 @@ $I->seeLink('Logout','/logout'); // matches <a href="/logout">Logout</a>
 ?>
 ```
 
- * `param`      $text
- * `param null` $url
+ * `param string` $text
+ * `param string` $url optional
 
 
 ### seeNumberOfElements
@@ -1179,13 +1241,11 @@ Checks that there are a certain number of elements matched by the given locator 
 ``` php
 <?php
 $I->seeNumberOfElements('tr', 10);
-$I->seeNumberOfElements('tr', [0,10]); //between 0 and 10 elements
+$I->seeNumberOfElements('tr', [0,10]); // between 0 and 10 elements
 ?>
 ```
  * `param` $selector
- * `param mixed` $expected :
-- string: strict number
-- array: range of numbers [0,10]
+ * `param mixed` $expected int or int[]
 
 
 ### seeOptionIsSelected
@@ -1234,6 +1294,34 @@ $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
 ```
 
  * `param` $code
+
+
+### seeResponseCodeIsBetween
+ 
+Checks that response code is between a certain range. Between actually means [from <= CODE <= to]
+
+ * `param` $from
+ * `param` $to
+
+
+### seeResponseCodeIsClientError
+ 
+Checks that the response code is 4xx
+
+
+### seeResponseCodeIsRedirection
+ 
+Checks that the response code 3xx
+
+
+### seeResponseCodeIsServerError
+ 
+Checks that the response code is 5xx
+
+
+### seeResponseCodeIsSuccessful
+ 
+Checks that the response code 2xx
 
 
 ### selectOption
@@ -1324,24 +1412,15 @@ $I->sendAjaxRequest('PUT', '/posts/7', array('title' => 'new title'));
 
 ### setCookie
  
-Sets a cookie with the given name and value.
-You can set additional cookie params like `domain`, `path`, `expires`, `secure` in array passed as last argument.
-
-``` php
-<?php
-$I->setCookie('PHPSESSID', 'el4ukv0kqbvoirg7nkp4dncpk3');
-?>
-```
-
- * `param` $name
- * `param` $val
- * `param array` $params
-
+Sets a cookie and, if validation is enabled, signs it.
+ * `param string` $name The name of the cookie
+ * `param string` $value The value of the cookie
+ * `param array` $params Additional cookie params like `domain`, `path`, `expires` and `secure`.
 
 
 ### submitForm
  
-Submits the given form on the page, optionally with the given form
+Submits the given form on the page, with the given form
 values.  Pass the form field's values as an array in the second
 parameter.
 
@@ -1542,4 +1621,4 @@ $I->uncheckOption('#notify');
 
  * `param` $option
 
-<p>&nbsp;</p><div class="alert alert-warning">Module reference is taken from the source code. <a href="https://github.com/Codeception/Codeception/tree/2.2/src/Codeception/Module/Yii2.php">Help us to improve documentation. Edit module reference</a></div>
+<p>&nbsp;</p><div class="alert alert-warning">Module reference is taken from the source code. <a href="https://github.com/Codeception/Codeception/tree/2.5/src/Codeception/Module/Yii2.php">Help us to improve documentation. Edit module reference</a></div>

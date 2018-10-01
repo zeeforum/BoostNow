@@ -3,8 +3,6 @@ namespace Codeception;
 
 use Codeception\Event\StepEvent;
 use Codeception\Exception\ConditionalAssertionFailed;
-use Codeception\Lib\Notification;
-use Codeception\Step;
 use Codeception\Test\Metadata;
 
 class Scenario
@@ -138,12 +136,12 @@ class Scenario
 
     public function skip($message = '')
     {
-        throw new \PHPUnit_Framework_SkippedTestError($message);
+        throw new \PHPUnit\Framework\SkippedTestError($message);
     }
 
     public function incomplete($message = '')
     {
-        throw new \PHPUnit_Framework_IncompleteTestError($message);
+        throw new \PHPUnit\Framework\IncompleteTestError($message);
     }
 
     public function __call($method, $args)
@@ -153,10 +151,18 @@ class Scenario
     }
 
     /**
-     * @param null $metaStep
+     * @param Step\Meta $metaStep
      */
     public function setMetaStep($metaStep)
     {
         $this->metaStep = $metaStep;
+    }
+
+    /**
+     * @return Step\Meta
+     */
+    public function getMetaStep()
+    {
+        return $this->metaStep;
     }
 }

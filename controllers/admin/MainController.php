@@ -56,6 +56,7 @@
 			$model = new AdminLoginForm();
 			$model->scenario = 'resetPassword';
 			$admin_row = AdminLoginForm::findByPasswordResetToken($token);
+
 			if (!$admin_row) {
 				return $this->redirect(Yii::$app->params['adminUrl']);
 			} else if ($model->load(Yii::$app->request->post()) && $model->validate()) {

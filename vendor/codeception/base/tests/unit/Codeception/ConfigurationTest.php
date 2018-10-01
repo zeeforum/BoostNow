@@ -1,8 +1,7 @@
 <?php
 
-use Codeception\Util\Stub;
 
-class ConfigurationTest extends \PHPUnit_Framework_TestCase
+class ConfigurationTest extends \PHPUnit\Framework\TestCase
 {
 
     public function setUp()
@@ -66,5 +65,8 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
 
         $commandsConfig = $defaultConfig['extensions'];
         $this->assertArrayHasKey('commands', $commandsConfig);
+
+        $this->assertArrayHasKey('extends', $defaultConfig);
+        $this->assertNull($defaultConfig['extends']);
     }
 }

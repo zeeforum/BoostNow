@@ -41,7 +41,7 @@ class Cept extends Test implements Interfaces\Plain, Interfaces\ScenarioDriven, 
         try {
             require $testFile;
         } catch (\ParseError $e) {
-            throw new TestParseException($testFile);
+            throw new TestParseException($testFile, $e->getMessage(), $e->getLine());
         }
     }
 
@@ -77,7 +77,7 @@ class Cept extends Test implements Interfaces\Plain, Interfaces\ScenarioDriven, 
         return $this->parser;
     }
 
-    public function getDependencies()
+    public function fetchDependencies()
     {
         return $this->getMetadata()->getDependencies();
     }

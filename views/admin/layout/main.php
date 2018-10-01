@@ -6,9 +6,12 @@ use yii\helpers\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
+use yii\helpers\Url;
 use app\assets\AdminAsset;
 
 AdminAsset::register($this);
+
+$adminUrl = Yii::$app->params['adminAbsUrl'];
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -33,7 +36,7 @@ AdminAsset::register($this);
 
 		<header class="main-header">
 			<!-- Logo -->
-			<a href="index2.html" class="logo">
+			<a href="<?= Url::home(); ?>" class="logo">
 				<!-- mini logo for sidebar mini 50x50 pixels -->
 				<span class="logo-mini"><b>A</b>P</span>
 				<!-- logo for regular state and mobile devices -->
@@ -255,28 +258,13 @@ AdminAsset::register($this);
 										<small>Member since <?= Yii::$app->params['date']; ?></small>
 									</p>
 								</li>
-								<!-- Menu Body -->
-								<li class="user-body">
-									<div class="row">
-										<div class="col-xs-4 text-center">
-											<a href="#">Followers</a>
-										</div>
-										<div class="col-xs-4 text-center">
-											<a href="#">Sales</a>
-										</div>
-										<div class="col-xs-4 text-center">
-											<a href="#">Friends</a>
-										</div>
-									</div>
-									<!-- /.row -->
-								</li>
 								<!-- Menu Footer-->
 								<li class="user-footer">
 									<div class="pull-left">
-										<a href="#" class="btn btn-default btn-flat">Profile</a>
+										<a href="<?= Url::to([$adminUrl . '/user/profile']); ?>" class="btn btn-default btn-flat">Profile</a>
 									</div>
 									<div class="pull-right">
-										<a href="#" class="btn btn-default btn-flat">Sign out</a>
+										<a href="<?= Url::to([$adminUrl . '/user/logout']); ?>" class="btn btn-default btn-flat">Sign out</a>
 									</div>
 								</li>
 							</ul>
@@ -492,11 +480,27 @@ AdminAsset::register($this);
 
 		<!-- Content Wrapper. Contains page content -->
 		<div class="content-wrapper">
-
-			<div class="alert alert-warning" style="padding: 20px 30px; background: rgb(243, 156, 18); z-index: 999999; font-size: 16px; font-weight: 600;">
-				<a class="pull-right" href="#" class="close" data-dismiss="alert" style="color: rgb(255, 255, 255); font-size: 20px;">×</a>
-				Ready to sell your theme? Submit your theme to our new marketplace now and let over 200k visitors see it!</a>
-			</div>
+				
+			<?php
+				$emsg = Yii::$app->session->getFlash('emsg');
+				$smsg = Yii::$app->session->getFlash('smsg');
+				
+				if ($emsg) {
+			?>
+				<div class="alert alert-danger" style="padding: 20px 30px; z-index: 999999; font-size: 16px; font-weight: 600;">
+					<a class="pull-right" href="#" class="close" data-dismiss="alert" style="color: rgb(255, 255, 255); font-size: 20px;">×</a>
+					<?= $emsg; ?></a>
+				</div>
+			<?php
+				} else if ($smsg) {
+			?>
+				<div class="alert alert-success" style="padding: 20px 30px; z-index: 999999; font-size: 16px; font-weight: 600;">
+					<a class="pull-right" href="#" class="close" data-dismiss="alert" style="color: rgb(255, 255, 255); font-size: 20px;">×</a>
+					<?= $smsg; ?></a>
+				</div>
+			<?php
+				}
+			?>
 			
 			<!-- Content Header (Page header) -->
 			<section class="content-header">

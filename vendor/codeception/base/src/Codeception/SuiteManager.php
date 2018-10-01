@@ -5,7 +5,6 @@ use Codeception\Lib\Di;
 use Codeception\Lib\GroupManager;
 use Codeception\Lib\ModuleContainer;
 use Codeception\Lib\Notification;
-use Codeception\Test\Interfaces\Configurable;
 use Codeception\Test\Interfaces\ScenarioDriven;
 use Codeception\Test\Loader;
 use Codeception\Test\Descriptor;
@@ -17,7 +16,7 @@ class SuiteManager
     public static $name;
 
     /**
-     * @var \PHPUnit_Framework_TestSuite
+     * @var \PHPUnit\Framework\TestSuite
      */
     protected $suite = null;
 
@@ -80,9 +79,9 @@ class SuiteManager
         foreach ($this->moduleContainer->all() as $module) {
             $module->_initialize();
         }
-        if (!file_exists(Configuration::supportDir() . $this->settings['class_name'] . '.php')) {
+        if ($this->settings['actor'] && !file_exists(Configuration::supportDir() . $this->settings['actor'] . '.php')) {
             throw new Exception\ConfigurationException(
-                $this->settings['class_name']
+                $this->settings['actor']
                 . " class doesn't exist in suite folder.\nRun the 'build' command to generate it"
             );
         }
@@ -109,7 +108,7 @@ class SuiteManager
     {
         $this->configureTest($test);
 
-        if ($test instanceof \PHPUnit_Framework_TestSuite_DataProvider) {
+        if ($test instanceof \PHPUnit\Framework\DataProviderTestSuite) {
             foreach ($test->tests() as $t) {
                 $this->addToSuite($t);
             }
@@ -142,12 +141,16 @@ class SuiteManager
         if (isset($this->settings['backup_globals'])) {
             $suite->setBackupGlobals((bool) $this->settings['backup_globals']);
         }
+
+        if (isset($this->settings['be_strict_about_changes_to_global_state']) && method_exists($suite, 'setbeStrictAboutChangesToGlobalState')) {
+            $suite->setbeStrictAboutChangesToGlobalState((bool)$this->settings['be_strict_about_changes_to_global_state']);
+        }
         $suite->setModules($this->moduleContainer->all());
         return $suite;
     }
 
 
-    public function run(PHPUnit\Runner $runner, \PHPUnit_Framework_TestResult $result, $options)
+    public function run(PHPUnit\Runner $runner, \PHPUnit\Framework\TestResult $result, $options)
     {
         $runner->prepareSuite($this->suite, $options);
         $this->dispatcher->dispatch(Events::SUITE_BEFORE, new Event\SuiteEvent($this->suite, $result, $this->settings));
@@ -173,9 +176,12 @@ class SuiteManager
 
     protected function getActor()
     {
+        if (!$this->settings['actor']) {
+            return null;
+        }
         return $this->settings['namespace']
-            ? rtrim($this->settings['namespace'], '\\') . '\\' . $this->settings['class_name']
-            : $this->settings['class_name'];
+            ? rtrim($this->settings['namespace'], '\\') . '\\' . $this->settings['actor']
+            : $this->settings['actor'];
     }
 
     protected function checkEnvironmentExists(TestInterface $test)

@@ -6,7 +6,7 @@ class SqlSrv extends Db
     public function getDb()
     {
         $matches = [];
-        $matched = preg_match('~Database=(.*);~s', $this->dsn, $matches);
+        $matched = preg_match('~Database=(.*);?~s', $this->dsn, $matches);
 
         if (!$matched) {
             return false;
@@ -56,6 +56,12 @@ class SqlSrv extends Db
 
         $params = [];
         foreach ($criteria as $k => $v) {
+            if ($v === null) {
+                $params[] = $this->getQuotedName($k) . " IS NULL ";
+                unset($criteria[$k]);
+                continue;
+            }
+
             if (strpos(strtolower($k), ' like') > 0) {
                 $k = str_replace(' like', '', strtolower($k));
                 $params[] = $this->getQuotedName($k) . " LIKE ? ";
@@ -69,7 +75,7 @@ class SqlSrv extends Db
 
     public function getQuotedName($name)
     {
-        return '[' . $name . ']';
+        return '[' . str_replace('.', '].[', $name) . ']';
     }
 
     /**

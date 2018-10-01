@@ -72,7 +72,7 @@ use Codeception\Lib\Connector\Phalcon as PhalconConnector;
  * ```
  *
  * ```yaml
- * class_name: AcceptanceTester
+ * actor: AcceptanceTester
  * modules:
  *     enabled:
  *         - Phalcon:
@@ -170,6 +170,7 @@ class Phalcon extends Framework implements ActiveRecord, PartedModule
                 $this->di['db']->setNestedTransactionsWithSavepoints(true);
             }
             $this->di['db']->begin();
+            $this->debugSection('Database', 'Transaction started');
         }
 
         // localize
@@ -204,6 +205,7 @@ class Phalcon extends Framework implements ActiveRecord, PartedModule
                 $level = $this->di['db']->getTransactionLevel();
                 try {
                     $this->di['db']->rollback(true);
+                    $this->debugSection('Database', 'Transaction cancelled; all changes reverted.');
                 } catch (PDOException $e) {
                 }
                 if ($level == $this->di['db']->getTransactionLevel()) {
@@ -559,13 +561,24 @@ class Phalcon extends Framework implements ActiveRecord, PartedModule
     protected function findRecord($model, $attributes = [])
     {
         $this->getModelRecord($model);
-        $query = [];
+        $conditions = [];
+        $bind       = [];
         foreach ($attributes as $key => $value) {
-            $query[] = "$key = '$value'";
+            if ($value === null) {
+                $conditions[] = "$key IS NULL";
+            } else {
+                $conditions[] = "$key = :$key:";
+                $bind[$key] = $value;
+            }
         }
-        $squery = implode(' AND ', $query);
-        $this->debugSection('Query', $squery);
-        return call_user_func_array([$model, 'findFirst'], [$squery]);
+        $query = implode(' AND ', $conditions);
+        $this->debugSection('Query', $query);
+        return call_user_func_array([$model, 'findFirst'], [
+            [
+                'conditions' => $query,
+                'bind'       => $bind,
+            ]
+        ]);
     }
 
     /**

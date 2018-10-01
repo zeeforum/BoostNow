@@ -1,6 +1,7 @@
 <?php
 namespace Codeception\Util;
 
+use Facebook\WebDriver\WebDriverBy;
 use Symfony\Component\CssSelector\CssSelectorConverter;
 use Symfony\Component\CssSelector\Exception\ParseException;
 use Symfony\Component\CssSelector\XPath\Translator;
@@ -197,9 +198,9 @@ class Locator
      *
      * ```php
      * <?php
-     * Locator::isCSS('#user .hello') => false
-     * Locator::isCSS('body') => false
-     * Locator::isCSS('//body/p/user') => true
+     * Locator::isXPath('#user .hello') => false
+     * Locator::isXPath('body') => false
+     * Locator::isXPath('//body/p/user') => true
      * ```
      *
      * @param $locator
@@ -214,7 +215,35 @@ class Locator
     }
 
     /**
+     * @param $locator
+     * @return bool
+     */
+    public static function isPrecise($locator)
+    {
+        if (is_array($locator)) {
+            return true;
+        }
+        if ($locator instanceof WebDriverBy) {
+            return true;
+        }
+        if (Locator::isID($locator)) {
+            return true;
+        }
+        if (strpos($locator, '//') === 0) {
+            return true; // simple xpath check
+        }
+        return false;
+    }
+
+    /**
      * Checks that a string is valid CSS ID
+     *
+     * ```php
+     * <?php
+     * Locator::isID('#user') => true
+     * Locator::isID('body') => false
+     * Locator::isID('//body/p/user') => false
+     * ```
      *
      * @param $id
      *
@@ -228,8 +257,14 @@ class Locator
     /**
      * Checks that a string is valid CSS class
      *
-     * @param $id
+     * ```php
+     * <?php
+     * Locator::isClass('.hello') => true
+     * Locator::isClass('body') => false
+     * Locator::isClass('//body/p/user') => false
+     * ```
      *
+     * @param $class
      * @return bool
      */
     public static function isClass($class)
@@ -275,8 +310,8 @@ class Locator
      * Locator::elementAt('table#grind>tr', -2); // previous than last row
      * ```
      *
-     * @param $element CSS or XPath locator
-     * @param $position xpath index
+     * @param string $element CSS or XPath locator
+     * @param int $position xpath index
      *
      * @return mixed
      */
@@ -354,7 +389,7 @@ class Locator
             return "$type '$locator'";
         }
         if (class_exists('\Facebook\WebDriver\WebDriverBy')) {
-            if ($selector instanceof \Facebook\WebDriver\WebDriverBy) {
+            if ($selector instanceof WebDriverBy) {
                 $type = $selector->getMechanism();
                 $locator = $selector->getValue();
                 return "$type '$locator'";
