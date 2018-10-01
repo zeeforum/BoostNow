@@ -2,7 +2,7 @@
 .idea
 
 # phpintel (sublime) project files
-.phpintel
+.phpintel/*
 
 # netbeans project files
 nbproject
