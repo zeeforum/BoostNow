@@ -22,9 +22,9 @@
 				if ($model->validate()) {
 					$result = $model->saveProfile();
 					if ($result) {
-						return $this->setMsg([$this->admin . '/user/profile'], 'Profile Updated Successfully!');
+						return $this->setMsg([$this->admin . 'user/profile'], 'Profile Updated Successfully!');
 					} else {
-						return $this->setMsg([$this->admin . '/user/profile'], Yii::$app->params['errorMessage'], 'error');
+						return $this->setMsg([$this->admin . 'user/profile'], Yii::$app->params['errorMessage'], 'error');
 					}
 				}
 			}
@@ -40,9 +40,9 @@
 
 			if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 				if ($model->changePassword()) {
-					return $this->setMsg([$this->admin . '/user/change-password'], 'Password Changed Successfully!');
+					return $this->setMsg([$this->admin . 'user/change-password'], 'Password Changed Successfully!');
 				} else {
-					return $this->setMsg([$this->admin . '/user/profile'], Yii::$app->params['errorMessage'], 'error');
+					return $this->setMsg([$this->admin . 'user/profile'], Yii::$app->params['errorMessage'], 'error');
 				}
 			}
 
@@ -52,6 +52,6 @@
 		public function actionLogout() {
 			Yii::$app->admin->logout();
 
-			return $this->redirectTo([$this->admin . '/']);
+			return $this->redirectTo([$this->admin]);
 		}
 	}

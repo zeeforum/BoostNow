@@ -11,7 +11,7 @@ use app\assets\AdminAsset;
 
 AdminAsset::register($this);
 
-$adminUrl = Yii::$app->params['adminAbsUrl'] . '/';
+$adminUrl = Yii::$app->params['adminAbsUrl'];
 ?>
 <?php $this->beginPage(); ?>
 <!DOCTYPE html>
@@ -482,7 +482,17 @@ $adminUrl = Yii::$app->params['adminAbsUrl'] . '/';
 
 		<!-- Content Wrapper. Contains page content -->
 		<div class="content-wrapper">
-				
+			<!-- Content Header (Page header) -->
+			<section class="content-header">
+				<?= Breadcrumbs::widget([
+		            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+		            'homeLink' => [
+		            	'label' => 'Home',
+		            	'url' => Url::to([$adminUrl]),
+		            ],
+		        ]) ?>
+			</section>
+
 			<?php
 				$emsg = Yii::$app->session->getFlash('emsg');
 				$smsg = Yii::$app->session->getFlash('smsg');
@@ -503,18 +513,29 @@ $adminUrl = Yii::$app->params['adminAbsUrl'] . '/';
 			<?php
 				}
 			?>
-			
-			<!-- Content Header (Page header) -->
-			<section class="content-header">
-				<h1><?= Html::encode($this->title) ?></h1>
-				<?= Breadcrumbs::widget([
-		            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-		        ]) ?>
-			</section>
 
 			<!-- Main content -->
 			<section class="content">
-				<?= $content ?>
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="box box-danger">
+							<div class="box-header">
+								<h2 class="blue"><i class="fa-fw fa fa-bars"></i><?= $this->title; ?></h2>
+								<div class="box-icon">
+									<ul class="btn-tasks">
+										<?php if (isset($this->blocks['links'])) { ?>
+											<?= $this->blocks['links']; ?>
+										<?php } ?>
+									</ul>
+								</div>
+							</div>
+
+							<div class="box-body">
+								<?= $content ?>
+							</div>
+						</div>
+					</div>
+				</div>
 			</section>
 
 		</div>

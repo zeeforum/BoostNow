@@ -4,25 +4,17 @@
 
 	use Yii;
 	use app\models\admin\Categories;
-	use yii\data\ActiveDataProvider;
+	use app\models\admin\CategoriesSearch;
 
 	class CategoriesController extends AdminController {
 
 		public function actionIndex() {
-			$admin_id = Yii::$app->admin->can('categories');
-			$categories_model = new Categories();
-			$categories_rows = Categories::find()->all();
-			$this->view->title = 'Categories';
-
-			$dataProvider = new ActiveDataProvider([
-				'query' => Categories::find(),
-				'pagination' => [
-					'pageSize' => 30,
-				],
-			]);
+			$searchModel = new CategoriesSearch();
+			$dataProvider = $searchModel->search(Yii::$app->request->get());
 
 			return $this->render('categories', [
 				'dataProvider' => $dataProvider,
+				'searchModel' => $searchModel,
 			]);
 		}
 
@@ -43,19 +35,17 @@
 		}
 
 		public function actionAdd() {
-			$admin_id = Yii::$app->admin->can('categories');
 			$model = new Categories();
 			$categories_rows = Categories::find()->all();
-			$this->view->title = 'Categories';
 
 			if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 				$model->draft = $model->draft;
 				$model->created_by = Yii::$app->params['adminId'];
 				$result = $model->save();
 				if ($result) {
-					return $this->setMsg([$this->admin . '/categories/'], 'Category Added Successfully!');
+					return $this->setMsg([$this->admin . 'categories/'], 'Category Added Successfully!');
 				} else {
-					return $this->setMsg([$this->admin . '/categories/add'], Yii::$app->params['errorMessage'], 'error');
+					return $this->setMsg([$this->admin . 'categories/add'], Yii::$app->params['errorMessage'], 'error');
 				}
 			}
 

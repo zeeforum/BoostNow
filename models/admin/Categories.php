@@ -16,6 +16,7 @@ class Categories extends ActiveRecord {
 			[['name', 'description', 'keywords'], 'required', 'message' => 'Enter {attribute}'],
 			[['detail'], 'string'],
 			[['name'], 'string', 'max' => 100],
+			['name', 'unique', 'message' => 'Category Name must be unique.'],
 			[['description', 'keywords'], 'string', 'max' => 255],
 			['parent_id', 'integer', 'message' => 'Please Select Parent Category'],
 			['draft', 'required', 'message' => 'Select Draft'],
