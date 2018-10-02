@@ -32,30 +32,28 @@
 
 		public function attributeLabels() {
 			return [
-				'oldPassword' => 'Old Password',
+				'oldPassword' => 'Current Password',
 				'password' => 'New Password',
 				'confirmPassword' => 'Confirm New Password',
 			];
 		}
 
 		public function saveProfile() {
-			if ($this->validate()) {
-				$id = Yii::$app->admin->id;
-				$admin_row = Admin::findOne($id);
+			$id = Yii::$app->admin->id;
+			$admin_row = Admin::findOne($id);
 
-				if ($admin_row) {
-					if ($this->picture) {
-						$image = new UploadImage();
-						$pictureName = $image->upload($this->picture);
-						if ($pictureName != '') {
-							$admin_row->picture = $pictureName;
-						}
+			if ($admin_row) {
+				if ($this->picture) {
+					$image = new UploadImage();
+					$pictureName = $image->upload($this->picture);
+					if ($pictureName != '') {
+						$admin_row->picture = $pictureName;
 					}
-
-					$admin_row->description = $this->description;
-					$result = $admin_row->save();
-					return $result;
 				}
+
+				$admin_row->description = $this->description;
+				$result = $admin_row->save();
+				return $result;
 			}
 			// print_r($admin_row);
 			return false;

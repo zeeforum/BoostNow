@@ -1,6 +1,6 @@
 <?php
 
-namespace app\models;
+namespace app\models\admin;
 
 use Yii;
 use yii\db\ActiveRecord;
@@ -13,10 +13,13 @@ class Categories extends ActiveRecord {
 
 	public function rules() {
 		return [
-			[['name', 'description', 'keywords'], 'required'],
+			[['name', 'description', 'keywords'], 'required', 'message' => 'Enter {attribute}'],
 			[['detail'], 'string'],
 			[['name'], 'string', 'max' => 100],
 			[['description', 'keywords'], 'string', 'max' => 255],
+			['parent_id', 'integer', 'message' => 'Please Select Parent Category'],
+			['draft', 'required', 'message' => 'Select Draft'],
+			['draft', 'in', 'range' => ['no', 'yes']],
 		];
 	}
 
@@ -28,6 +31,14 @@ class Categories extends ActiveRecord {
 			'detail' => 'Content',
 			'parent_id' => 'Parent Category',
 		];
+	}
+
+	function getAdmin() {
+		return $this->hasOne(Admin::className(), ['id' => 'created_by']);
+	}
+
+	function getParentCategory() {
+		return $this->hasOne(Categories::className(), ['id' => 'parent_id']);
 	}
 
 }

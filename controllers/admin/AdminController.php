@@ -38,6 +38,7 @@
 			}
 
 			$admin_row = Yii::$app->admin;
+			Yii::$app->params['adminId'] = $admin_row->identity->id;
 			Yii::$app->params['username'] = $admin_row->identity->username;
 			Yii::$app->params['description'] = $admin_row->identity->description;
 			Yii::$app->params['adminEmail'] = $admin_row->identity->email;

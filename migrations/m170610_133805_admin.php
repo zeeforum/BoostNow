@@ -17,6 +17,7 @@ class m170610_133805_admin extends Migration
             'password_hash' => $this->string(100)->notNull(),
             'access_token' => $this->string(100)->notNull(),
             'password_reset_token' => $this->string(100),
+            'settings' => Schema::TYPE_TEXT,
             'status' => "ENUM('active', 'inactive', 'expire', 'ban', 'block') NOT NULL DEFAULT 'active'",
             'role' => "ENUM('admin', 'editor', 'author', 'contributor') NOT NULL DEFAULT 'author'",
             'created_at' => Schema::TYPE_TIMESTAMP . ' NOT NULL DEFAULT CURRENT_TIMESTAMP',

@@ -9,4 +9,5 @@ return [
     'app_version' => '0.1',
     'user.passwordResetTokenExpire' => 86400,
     'profilePicture' => '',
+    'errorMessage' => 'An unexpected error occurred. Please try again. If the problem continues, contact the system administrator.',
 ];

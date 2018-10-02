@@ -53,7 +53,7 @@ class AdminAsset extends AssetBundle
 		'js/demo.js',
 	];
 	public $depends = [
-		//'yii\web\YiiAsset',
+		'yii\web\YiiAsset',
 		//'yii\bootstrap\BootstrapAsset',
 	];
 }

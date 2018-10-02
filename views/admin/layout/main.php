@@ -11,17 +11,17 @@ use app\assets\AdminAsset;
 
 AdminAsset::register($this);
 
-$adminUrl = Yii::$app->params['adminAbsUrl'];
+$adminUrl = Yii::$app->params['adminAbsUrl'] . '/';
 ?>
-<?php $this->beginPage() ?>
+<?php $this->beginPage(); ?>
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>">
 <head>
 	<meta charset="<?= Yii::$app->charset ?>">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<?= Html::csrfMetaTags() ?>
-	<title><?= Html::encode($this->title) ?></title>
-	<?php $this->head() ?>
+	<?= Html::csrfMetaTags(); ?>
+	<title><?= Html::encode($this->title); ?></title>
+	<?php $this->head(); ?>
 	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 	<!--[if lt IE 9]>
@@ -30,13 +30,13 @@ $adminUrl = Yii::$app->params['adminAbsUrl'];
 	<![endif]-->
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
-	<?php $this->beginBody() ?>
+	<?php $this->beginBody(); ?>
 
 	<div class="wrapper">
 
 		<header class="main-header">
 			<!-- Logo -->
-			<a href="<?= Url::home(); ?>" class="logo">
+			<a href="<?= Url::to([$adminUrl]); ?>" class="logo">
 				<!-- mini logo for sidebar mini 50x50 pixels -->
 				<span class="logo-mini"><b>A</b>P</span>
 				<!-- logo for regular state and mobile devices -->
@@ -261,10 +261,10 @@ $adminUrl = Yii::$app->params['adminAbsUrl'];
 								<!-- Menu Footer-->
 								<li class="user-footer">
 									<div class="pull-left">
-										<a href="<?= Url::to([$adminUrl . '/user/profile']); ?>" class="btn btn-default btn-flat">Profile</a>
+										<a href="<?= Url::to([$adminUrl . 'user/profile']); ?>" class="btn btn-default btn-flat">Profile</a>
 									</div>
 									<div class="pull-right">
-										<a href="<?= Url::to([$adminUrl . '/user/logout']); ?>" class="btn btn-default btn-flat">Sign out</a>
+										<a href="<?= Url::to([$adminUrl . 'user/logout']); ?>" class="btn btn-default btn-flat">Sign out</a>
 									</div>
 								</li>
 							</ul>
@@ -305,7 +305,7 @@ $adminUrl = Yii::$app->params['adminAbsUrl'];
 				<!-- sidebar menu: : style can be found in sidebar.less -->
 				<ul class="sidebar-menu">
 					<li class="header">MAIN NAVIGATION</li>
-					<li class="active treeview">
+					<li class="tab-dashboard treeview">
 						<a href="#">
 							<i class="fa fa-dashboard"></i> <span>Dashboard</span>
 							<span class="pull-right-container">
@@ -317,19 +317,21 @@ $adminUrl = Yii::$app->params['adminAbsUrl'];
 							<li><a href="index2.html"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>
 						</ul>
 					</li>
-					<li class="treeview">
+					<li class="tab-categories treeview">
 						<a href="#">
 							<i class="fa fa-files-o"></i>
-							<span>Layout Options</span>
+							<span>Manage Categories</span>
 							<span class="pull-right-container">
-								<span class="label label-primary pull-right">4</span>
+								<i class="fa fa-angle-left pull-right"></i>
 							</span>
 						</a>
 						<ul class="treeview-menu">
-							<li><a href="pages/layout/top-nav.html"><i class="fa fa-circle-o"></i> Top Navigation</a></li>
-							<li><a href="pages/layout/boxed.html"><i class="fa fa-circle-o"></i> Boxed</a></li>
-							<li><a href="pages/layout/fixed.html"><i class="fa fa-circle-o"></i> Fixed</a></li>
-							<li><a href="pages/layout/collapsed-sidebar.html"><i class="fa fa-circle-o"></i> Collapsed Sidebar</a></li>
+							<li>
+								<a href="<?= Url::to([$adminUrl . 'categories']); ?>"><i class="fa fa-circle-o"></i> Browse Categories</a>
+							</li>
+							<li>
+								<a href="<?= Url::to([$adminUrl . 'categories/add']); ?>"><i class="fa fa-circle-o"></i> Add Category</a>
+							</li>
 						</ul>
 					</li>
 					<li>
@@ -416,23 +418,23 @@ $adminUrl = Yii::$app->params['adminAbsUrl'];
 							</span>
 						</a>
 					</li>
-					<li class="treeview">
+					<li class="tab-settings treeview">
 						<a href="#">
-							<i class="fa fa-folder"></i> <span>Examples</span>
+							<i class="fa fa-folder"></i> <span>Settings</span>
 							<span class="pull-right-container">
 								<i class="fa fa-angle-left pull-right"></i>
 							</span>
 						</a>
 						<ul class="treeview-menu">
-							<li><a href="pages/examples/invoice.html"><i class="fa fa-circle-o"></i> Invoice</a></li>
-							<li><a href="pages/examples/profile.html"><i class="fa fa-circle-o"></i> Profile</a></li>
-							<li><a href="pages/examples/login.html"><i class="fa fa-circle-o"></i> Login</a></li>
-							<li><a href="pages/examples/register.html"><i class="fa fa-circle-o"></i> Register</a></li>
-							<li><a href="pages/examples/lockscreen.html"><i class="fa fa-circle-o"></i> Lockscreen</a></li>
-							<li><a href="pages/examples/404.html"><i class="fa fa-circle-o"></i> 404 Error</a></li>
-							<li><a href="pages/examples/500.html"><i class="fa fa-circle-o"></i> 500 Error</a></li>
-							<li><a href="pages/examples/blank.html"><i class="fa fa-circle-o"></i> Blank Page</a></li>
-							<li><a href="pages/examples/pace.html"><i class="fa fa-circle-o"></i> Pace Page</a></li>
+							<li>
+								<a href="<?= Url::to([$adminUrl . 'preferences/website']); ?>"><i class="fa fa-circle-o"></i> Website Preferences</a>
+							</li>
+							<li>
+								<a href="<?= Url::to([$adminUrl . 'user/profile']); ?>"><i class="fa fa-circle-o"></i> Update Profile</a>
+							</li>
+							<li>
+								<a href="<?= Url::to([$adminUrl . 'user/change-password']); ?>"><i class="fa fa-circle-o"></i> Change Password</a>
+							</li>
 						</ul>
 					</li>
 					<li class="treeview">
@@ -716,7 +718,15 @@ $adminUrl = Yii::$app->params['adminAbsUrl'];
 	</div>
 	<!-- ./wrapper -->
 
-	<?php $this->endBody() ?>
+	<?php $this->endBody(); ?>
+
+	<script type="text/javascript">
+		<?php if (isset($this->params['tab'])) { ?>
+			$('.tab-<?= $this->params['tab']; ?>').addClass('active');
+		<?php } else { ?>
+			$('.tab-dashboard').addClass('active');
+		<?php } ?>
+	</script>
 </body>
 </html>
-<?php $this->endPage() ?>
+<?php $this->endPage(); ?>

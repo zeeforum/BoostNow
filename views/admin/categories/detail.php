@@ -2,7 +2,7 @@
 	use yii\helpers\Html;
 	use yii\helpers\Url;
 
-	$this->params['breadcrumbs'][] = 'Category';
+	$this->title = 'Category';
 	$this->params['breadcrumbs'][] = $this->title;
 ?>
 

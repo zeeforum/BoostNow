@@ -19,9 +19,13 @@
 
 			if ($model->load(Yii::$app->request->post())) {
 				$model->picture = UploadedFile::getInstance($model, 'picture');
-				$result = $model->saveProfile();
-				if ($result) {
-					return $this->setMsg([$this->admin . '/user/profile'], 'Profile Updated Successfully!');
+				if ($model->validate()) {
+					$result = $model->saveProfile();
+					if ($result) {
+						return $this->setMsg([$this->admin . '/user/profile'], 'Profile Updated Successfully!');
+					} else {
+						return $this->setMsg([$this->admin . '/user/profile'], Yii::$app->params['errorMessage'], 'error');
+					}
 				}
 			}
 			
@@ -37,6 +41,8 @@
 			if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 				if ($model->changePassword()) {
 					return $this->setMsg([$this->admin . '/user/change-password'], 'Password Changed Successfully!');
+				} else {
+					return $this->setMsg([$this->admin . '/user/profile'], Yii::$app->params['errorMessage'], 'error');
 				}
 			}
 

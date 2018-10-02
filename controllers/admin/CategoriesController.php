@@ -3,7 +3,8 @@
 	namespace app\controllers\admin;
 
 	use Yii;
-	use app\models\Categories;
+	use app\models\admin\Categories;
+	use yii\data\ActiveDataProvider;
 
 	class CategoriesController extends AdminController {
 
@@ -13,9 +14,15 @@
 			$categories_rows = Categories::find()->all();
 			$this->view->title = 'Categories';
 
+			$dataProvider = new ActiveDataProvider([
+				'query' => Categories::find(),
+				'pagination' => [
+					'pageSize' => 30,
+				],
+			]);
+
 			return $this->render('categories', [
-				'categories_rows' => $categories_rows,
-				'model' => $categories_model,
+				'dataProvider' => $dataProvider,
 			]);
 		}
 
@@ -36,11 +43,30 @@
 		}
 
 		public function actionAdd() {
-			$categories_model = new Categories();
+			$admin_id = Yii::$app->admin->can('categories');
+			$model = new Categories();
+			$categories_rows = Categories::find()->all();
+			$this->view->title = 'Categories';
 
-			if ($categories_model->load(Yii::$app->request->post()) && $categories_model->validate() && $categories_model->is_ajax()) {
-
+			if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+				$model->draft = $model->draft;
+				$model->created_by = Yii::$app->params['adminId'];
+				$result = $model->save();
+				if ($result) {
+					return $this->setMsg([$this->admin . '/categories/'], 'Category Added Successfully!');
+				} else {
+					return $this->setMsg([$this->admin . '/categories/add'], Yii::$app->params['errorMessage'], 'error');
+				}
 			}
+
+			if (!$model->draft) {
+				$model->draft = 'no';
+			}
+
+			return $this->render('add', [
+				'categories_rows' => $categories_rows,
+				'model' => $model,
+			]);
 		}
 
 	}

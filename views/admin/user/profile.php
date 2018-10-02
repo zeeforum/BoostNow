@@ -5,8 +5,8 @@
 	$this->title = 'Update Profile';
 	$this->params['breadcrumbs'][] = 'Your Profile';
 ?>
-<div class="panel panel-primary">
-	<div class="panel panel-body">
+<div class="box box-danger">
+	<div class="box-body">
 		<?php
 			$form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]);
 		?>

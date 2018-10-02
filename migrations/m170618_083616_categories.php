@@ -14,6 +14,7 @@ class m170618_083616_categories extends Migration
             'keywords' => $this->string(255),
             'detail' => $this->text(),
             'parent_id' => $this->integer()->notNull()->defaultValue(0),
+            'draft' => "ENUM('no', 'yes') NOT NULL DEFAULT 'no'",
             'created_at' => Schema::TYPE_TIMESTAMP . ' NOT NULL DEFAULT CURRENT_TIMESTAMP',
             'updated_at' => Schema::TYPE_TIMESTAMP . ' NOT NULL DEFAULT CURRENT_TIMESTAMP',
             'created_by' => $this->integer()->notNull()->defaultValue(0),
