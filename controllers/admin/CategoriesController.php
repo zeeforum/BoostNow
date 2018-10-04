@@ -5,6 +5,7 @@
 	use Yii;
 	use app\models\admin\Categories;
 	use app\models\admin\CategoriesSearch;
+	use yii\web\NotFoundHttpException;
 
 	class CategoriesController extends AdminController {
 
@@ -25,7 +26,7 @@
 			} 
 			$admin_id = Yii::$app->admin->can('updatePost', ['post' => $category_row]);
 			if ($admin_id) {
-			    
+				
 			}
 			die('Access Denied!');
 			/*else if ($userId = parent::canAccess('detailCategory', $category_row)) {
@@ -57,6 +58,63 @@
 				'categories_rows' => $categories_rows,
 				'model' => $model,
 			]);
+		}
+
+		public function actionView($id) {
+			$model = Categories::findOne($id);
+			
+			if ($model === null) {
+				throw new NotFoundHttpException;
+			}
+
+			return $this->render('view', [
+				'model' => $model,
+			]);
+		}
+
+		public function actionUpdate($id) {
+			$model = Categories::findOne($id);
+			
+			if ($model === null) {
+				throw new NotFoundHttpException;
+			}
+
+			$categories_rows = Categories::find()->all();
+
+			if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+				$model->draft = $model->draft;
+				$result = $model->save();
+				if ($result) {
+					return $this->setMsg([$this->admin . 'categories/'], 'Category Updated Successfully!');
+				} else {
+					return $this->setMsg([$this->admin . 'categories/update/' . $id], Yii::$app->params['errorMessage'], 'error');
+				}
+			}
+
+			if (!$model->draft) {
+				$model->draft = 'no';
+			}
+
+			return $this->render('add', [
+				'categories_rows' => $categories_rows,
+				'model' => $model,
+				'command' => 'edit',
+			]);
+		}
+
+		public function actionDelete($id) {
+			$model = Categories::findOne($id);
+
+			if ($model === null) {
+				throw new NotFoundHttpException;
+			}
+
+			$result = $model->delete();
+			if ($result) {
+				return $this->setMsg([$this->admin . 'categories/'], 'Category Deleted Successfully!');
+			} else {
+				return $this->setMsg([$this->admin . 'categories/update/' . $id], Yii::$app->params['errorMessage'], 'error');
+			}
 		}
 
 	}

@@ -3,7 +3,14 @@
 	use yii\helpers\Html;
 	use yii\bootstrap\ActiveForm;
 
-	$this->title = 'Add Categories';
+	if (isset($command) && $command == 'edit') {
+		$this->title = 'Edit Categories';
+		$btnText = 'Update';
+	} else {
+		$this->title = 'Add Categories';
+		$btnText = 'Add New Category';
+	}
+	
 	$this->params['tab'] = 'categories';
 	$this->params['breadcrumbs'][] = ['label' => 'Categories', 'url' => Url::to([Yii::$app->params['adminAbsUrl'] . 'categories'])];
 	$this->params['breadcrumbs'][] = $this->title;
@@ -76,7 +83,7 @@
 			<!-- /.form-group -->
 
 			<div class="col-xs-12">
-				<?= Html::submitButton('Add New Category', ['class' => 'button btn btn-primary btn-large']) ?>
+				<?= Html::submitButton($btnText, ['class' => 'button btn btn-primary btn-large']) ?>
 			</div>
 			
 		</div>
