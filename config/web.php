@@ -31,8 +31,8 @@ $config = [
 			'loginUrl'=>'/git/BoostNow/web/site/login',
 			'returnUrl'=>'/git/BoostNow/web/',
 			'identityCookie' => [
-                'name' => '_frontendUser', // unique for frontend
-            ],
+				'name' => '_frontendUser', // unique for frontend
+			],
 		],
 		'admin' => [
 			'class'=>'yii\web\User',
@@ -42,8 +42,8 @@ $config = [
 			'loginUrl'=>'/git/BoostNow/web/site/admin-login',
 			'returnUrl'=>'/git/BoostNow/web/site/contact',
 			'identityCookie' => [
-                'name' => '_backendUser', // unique for backend
-            ],
+				'name' => '_backendUser', // unique for backend
+			],
 		],
 		'errorHandler' => [
 			'errorAction' => 'site/error',
@@ -83,16 +83,16 @@ $config = [
 			'rules' => [
 				//'about' => 'site/about',
 				[
-		            'pattern' => 'main-admin/<controller:[\w\-]+>/<action:[\w\-]*>/<id:[\w\-]*>',	//'main-admin' is new name of the 'admin' directory all routes will be handle through {/main-admin}
-		            'route' => 'admin/<controller>/<action>',
-		            //'suffix' => '.json',
-		            'defaults' => [
-		            	'controller' => 'main',
-				        'action' => 'index',
-				        'id' => 0
-				    ],
-		        ],
-		        [
+					'pattern' => 'main-admin/<controller:[\w\-]+>/<action:[\w\-]*>/<id:[\w\-]*>',	//'main-admin' is new name of the 'admin' directory all routes will be handle through {/main-admin}
+					'route' => 'admin/<controller>/<action>',
+					//'suffix' => '.json',
+					'defaults' => [
+						'controller' => 'main',
+						'action' => 'index',
+						'id' => 0
+					],
+				],
+				[
 					'pattern' => '<controller:[\w\-]+>/<action:[\w\-]*>/<id:[\w\-]*>',
 					'route' => '<controller>/<action>',
 					'defaults' => [
