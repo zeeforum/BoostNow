@@ -1,26 +1,31 @@
 <?php
-
 	namespace app\controllers\admin;
 
 	use Yii;
+	use app\models\admin\Products;
 	use app\models\admin\Categories;
-	use app\models\admin\CategoriesSearch;
 	use yii\web\NotFoundHttpException;
+	use yii\data\Pagination;
 
-	class CategoriesController extends AdminController {
+	class ProductsController extends AdminController {
 
 		public function actionIndex() {
-			$searchModel = new CategoriesSearch();
-			$dataProvider = $searchModel->search(Yii::$app->request->get());
+			$productsQuery = Products::find();
+			$pages = new Pagination([
+				'totalCount' => $productsQuery->count(),
+				'pageSize' => 30,
+			]);
 
-			return $this->render('categories', [
-				'dataProvider' => $dataProvider,
-				'searchModel' => $searchModel,
+			$model = $productsQuery->offset($pages->offset)->limit($pages->limit)->all();
+
+			return $this->render('products', [
+				'model' => $model,
+				'pages' => $pages,
 			]);
 		}
 
 		public function actionAdd() {
-			$model = new Categories();
+			$model = new Products();
 			$categories_rows = Categories::find()->all();
 
 			if ($model->load(Yii::$app->request->post()) && $model->validate()) {
@@ -28,9 +33,9 @@
 				$model->created_by = Yii::$app->params['adminId'];
 				$result = $model->save();
 				if ($result) {
-					return $this->setMsg([$this->admin . 'categories/'], 'Category Added Successfully!');
+					return $this->setMsg([$this->admin . 'products/'], 'Product Added Successfully!');
 				} else {
-					return $this->setMsg([$this->admin . 'categories/add'], Yii::$app->params['errorMessage'], 'error');
+					return $this->setMsg([$this->admin . 'products/add'], Yii::$app->params['errorMessage'], 'error');
 				}
 			}
 
@@ -45,7 +50,7 @@
 		}
 
 		public function actionView($id) {
-			$model = Categories::findOne($id);
+			$model = Products::findOne($id);
 			
 			if ($model === null) {
 				throw new NotFoundHttpException;
@@ -57,7 +62,7 @@
 		}
 
 		public function actionUpdate($id) {
-			$model = Categories::findOne($id);
+			$model = Products::findOne($id);
 			
 			if ($model === null) {
 				throw new NotFoundHttpException;
@@ -69,9 +74,9 @@
 				$model->draft = $model->draft;
 				$result = $model->save();
 				if ($result) {
-					return $this->setMsg([$this->admin . 'categories/'], 'Category Updated Successfully!');
+					return $this->setMsg([$this->admin . 'products/'], 'Product Updated Successfully!');
 				} else {
-					return $this->setMsg([$this->admin . 'categories/update/' . $id], Yii::$app->params['errorMessage'], 'error');
+					return $this->setMsg([$this->admin . 'products/update/' . $id], Yii::$app->params['errorMessage'], 'error');
 				}
 			}
 
@@ -95,9 +100,9 @@
 
 			$result = $model->delete();
 			if ($result) {
-				return $this->setMsg([$this->admin . 'categories/'], 'Category Deleted Successfully!');
+				return $this->setMsg([$this->admin . 'products/'], 'Product Deleted Successfully!');
 			} else {
-				return $this->setMsg([$this->admin . 'categories/update/' . $id], Yii::$app->params['errorMessage'], 'error');
+				return $this->setMsg([$this->admin . 'products/update/' . $id], Yii::$app->params['errorMessage'], 'error');
 			}
 		}
 

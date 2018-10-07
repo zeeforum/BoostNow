@@ -83,7 +83,7 @@
 				var triggered = $(this);
 				var id = triggered.data('id');
 				var name = triggered.data('name');
-				$('.modal-title').text('Confirm! you want to delete \"' + name + '\" Category');
+				$('.modal-title').text('Delete Category: \"' + name + '\"');
 
 				$('#delete-confirm').click(function(e) {
 					e.preventDefault();
