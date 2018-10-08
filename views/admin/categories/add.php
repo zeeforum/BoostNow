@@ -67,18 +67,18 @@
 					]
 				?>
 				<?php echo $form->field($model, 'draft')->radioList($items, [
-                    'item' => function($index, $label, $name, $checked, $value) {
-                    	$checkedString = '';
-                    	if ($checked) {
-                    		$checkedString = 'checked';
-                    	}
-                        $return = '<label class="radio-inline">';
-                        $return .= '<input type="radio" name="' . $name . '" value="' . $value . '" ' . $checkedString . '>';
-                        $return .= '<span>' . $label . '</span>';
-                        $return .= '</label>';
-                        return $return;
-                    }
-                ]); ?>
+					'item' => function($index, $label, $name, $checked, $value) {
+						$checkedString = '';
+						if ($checked) {
+							$checkedString = 'checked';
+						}
+						$return = '<label class="radio-inline">';
+						$return .= '<input type="radio" name="' . $name . '" value="' . $value . '" ' . $checkedString . '>';
+						$return .= '<span>' . $label . '</span>';
+						$return .= '</label>';
+						return $return;
+					}
+				]); ?>
 			</div>
 			<!-- /.form-group -->
 

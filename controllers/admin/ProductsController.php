@@ -10,17 +10,36 @@
 	class ProductsController extends AdminController {
 
 		public function actionIndex() {
+			$searchModel = new Products();
+			$searchModel->scenario = 'search';
 			$productsQuery = Products::find();
+
+			if ($searchModel->load(Yii::$app->request->get()) && $searchModel->validate()) {
+				if ($searchModel->name != '') {
+					$productsQuery->where(['like', 'name', $searchModel->name]);
+				}
+				
+				if ($searchModel->category_id > 0) {
+					$productsQuery->where(['category_id' => $searchModel->category_id]);
+				}
+
+				if ($searchModel->draft != '') {
+					$productsQuery->where(['draft' => $searchModel->draft]);
+				}
+			}
+
 			$pages = new Pagination([
 				'totalCount' => $productsQuery->count(),
 				'pageSize' => 30,
 			]);
-
 			$model = $productsQuery->offset($pages->offset)->limit($pages->limit)->all();
+			$categories_rows = Categories::find()->all();
 
 			return $this->render('products', [
+				'searchModel' => $searchModel,
 				'model' => $model,
 				'pages' => $pages,
+				'categories_rows' => $categories_rows,
 			]);
 		}
 

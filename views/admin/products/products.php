@@ -3,6 +3,7 @@
 	use yii\bootstrap\Html;
 	use yii\bootstrap\Modal;
 	use yii\widgets\LinkPager;
+	use yii\bootstrap\ActiveForm;
 
 	$this->title = 'Products';
 	$this->params['tab'] = 'products';
@@ -14,6 +15,60 @@
 	<?php $this->endBlock(); ?>
 
 	<div class="">
+		<?php
+			$form = ActiveForm::begin([
+				'method' => 'get',
+				'action' => Url::to([Yii::$app->params['adminAbsUrl'] . 'products'])
+			]);
+		?>
+
+			<div class="form-group col-xs-12 col-sm-4">
+				<?php echo $form->field($searchModel, 'name'); ?>
+			</div>
+
+			<div class="form-group col-xs-12 col-sm-4">
+				<?php
+					$parent = array('0' => 'None');
+					if ($categories_rows) {
+						foreach ($categories_rows as $row) {
+							$parent[$row->id] = $row->name;
+						}
+					}
+					echo $form->field($searchModel, 'category_id')->dropdownList($parent);
+				?>
+			</div>
+
+			<div class="form-group col-xs-12 col-sm-4">
+				<?php 
+					$items = [
+						'no' => 'No', 
+						'yes' => 'Yes'
+					]
+				?>
+				<?php echo $form->field($searchModel, 'draft')->radioList($items, [
+                    'item' => function($index, $label, $name, $checked, $value) {
+                    	$checkedString = '';
+                    	if ($checked) {
+                    		$checkedString = 'checked';
+                    	}
+                        $return = '<label class="radio-inline">';
+                        $return .= '<input type="radio" name="' . $name . '" value="' . $value . '" ' . $checkedString . '>';
+                        $return .= '<span>' . $label . '</span>';
+                        $return .= '</label>';
+                        return $return;
+                    }
+                ]); ?>
+			</div>
+			<div class="clearfix"></div>
+
+			<div class="col-xs-12" style="margin-bottom: 10px;">
+				<?= Html::submitButton('Search', ['class' => 'button btn btn-primary btn-large']) ?>
+			</div>
+
+		<?php 
+			ActiveForm::end();
+		?>
+
 		<table class="table table-responsive">
 			<tr>
 				<th>#</th>
