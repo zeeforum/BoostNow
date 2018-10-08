@@ -98,7 +98,7 @@
 				<td>
 					<a href="<?= Url::to([Yii::$app->params['adminAbsUrl'] . 'products/view/' . $row->id]); ?>" class="btn btn-primary btn-xs glyphicon glyphicon-eye-open"></a>
 					<a href="<?= Url::to([Yii::$app->params['adminAbsUrl'] . 'products/update/' . $row->id]); ?>" class="btn btn-info btn-xs glyphicon glyphicon-pencil"></a>
-					<a href="<?= Url::to([Yii::$app->params['adminAbsUrl'] . 'products/delete/' . $row->id]); ?>" class="btn btn-danger btn-xs glyphicon glyphicon-trash delete-modal"></a>
+					<a data-toggle="modal" data-target="#modal" class="btn btn-danger btn-xs glyphicon glyphicon-trash delete-modal" data-id="<?= $row->id ?>" data-name="<?= $row->name ?>"></a>
 				</td>
 			</tr>
 			<?php

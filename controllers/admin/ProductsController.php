@@ -12,7 +12,7 @@
 		public function actionIndex() {
 			$searchModel = new Products();
 			$searchModel->scenario = 'search';
-			$productsQuery = Products::find();
+			$productsQuery = Products::find()->orderBy('id desc');
 
 			if ($searchModel->load(Yii::$app->request->get()) && $searchModel->validate()) {
 				if ($searchModel->name != '') {
@@ -45,6 +45,7 @@
 
 		public function actionAdd() {
 			$model = new Products();
+			$model->scenario = 'add';
 			$categories_rows = Categories::find()->all();
 
 			if ($model->load(Yii::$app->request->post()) && $model->validate()) {
@@ -75,13 +76,14 @@
 				throw new NotFoundHttpException;
 			}
 
-			return $this->render('view', [
+			return $this->render('detail', [
 				'model' => $model,
 			]);
 		}
 
 		public function actionUpdate($id) {
 			$model = Products::findOne($id);
+			$model->scenario = 'add';
 			
 			if ($model === null) {
 				throw new NotFoundHttpException;
@@ -111,7 +113,7 @@
 		}
 
 		public function actionDelete($id) {
-			$model = Categories::findOne($id);
+			$model = Products::findOne($id);
 
 			if ($model === null) {
 				throw new NotFoundHttpException;

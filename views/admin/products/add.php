@@ -4,20 +4,20 @@
 	use yii\bootstrap\ActiveForm;
 
 	if (isset($command) && $command == 'edit') {
-		$this->title = 'Edit Categories';
+		$this->title = 'Edit Product';
 		$btnText = 'Update';
 	} else {
-		$this->title = 'Add Categories';
-		$btnText = 'Add New Category';
+		$this->title = 'Add Product';
+		$btnText = 'Add New Product';
 	}
 	
-	$this->params['tab'] = 'categories';
-	$this->params['breadcrumbs'][] = ['label' => 'Categories', 'url' => Url::to([Yii::$app->params['adminAbsUrl'] . 'categories'])];
+	$this->params['tab'] = 'products';
+	$this->params['breadcrumbs'][] = ['label' => 'Products', 'url' => Url::to([Yii::$app->params['adminAbsUrl'] . 'products'])];
 	$this->params['breadcrumbs'][] = $this->title;
 ?>
 
 	<?php $this->beginBlock('links'); ?>
-		<li><a href="<?= Url::to([Yii::$app->params['adminAbsUrl'] . 'categories']); ?>" class="btn bg-purple btn-flat"> Go Back</a></li>
+		<li><a href="<?= Url::to([Yii::$app->params['adminAbsUrl'] . 'products']); ?>" class="btn bg-purple btn-flat"> Go Back</a></li>
 	<?php $this->endBlock(); ?>
 
 	<?php $form = ActiveForm::begin(['id' => 'category-form']); ?>
@@ -29,19 +29,29 @@
 			</div>
 			<!-- /.form-group -->
 
+			<div class="form-group col-xs-12 col-sm-6">
+				<?php echo $form->field($model, 'title'); ?>
+			</div>
+			<!-- /.form-group -->
+
 			<div class="form-group col-sm-6">
 				<?php
-					$parent = array('0' => 'None');
+					$parent = array('' => 'Select Category');
 					if ($categories_rows) {
 						foreach ($categories_rows as $row) {
 							$parent[$row->id] = $row->name;
 						}
 					}
-					echo $form->field($model, 'parent_id')->dropdownList($parent);
+					echo $form->field($model, 'category_id')->dropdownList($parent);
 				?>
 			</div>
-			<div class="clearfix"></div>
 			<!-- /.form-group -->
+
+			<div class="form-group col-xs-12 col-sm-6">
+				<?php echo $form->field($model, 'quantity'); ?>
+			</div>
+			<!-- /.form-group -->
+			<div class="clearfix"></div>
 
 			<div class="form-group col-xs-12 col-sm-6">
 				<?php echo $form->field($model, 'description')->textarea(['rows' => 2]); ?>
@@ -53,6 +63,7 @@
 			</div>
 			<!-- /.form-group -->
 			<div class="clearfix"></div>
+			
 
 			<div class="form-group col-xs-12">
 				<?php echo $form->field($model, 'detail')->textarea(['rows' => 6]); ?>

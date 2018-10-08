@@ -21,7 +21,7 @@ class Products extends ActiveRecord {
 			[['name', 'title', 'description', 'keywords'], 'string', 'max' => 255, 'on' => self::SCENARIO_ACTION],
 			['name', 'string', 'max' => 255, 'on' => self::SCENARIO_SEARCH],
 			['category_id', 'integer', 'message' => 'Please Select Category', 'on' => [self::SCENARIO_ACTION, self::SCENARIO_SEARCH]],
-			['quantity', 'integer', 'message' => 'Please Select Category', 'on' => self::SCENARIO_ACTION],
+			['quantity', 'integer', 'message' => 'Please Enter Quantity', 'on' => self::SCENARIO_ACTION],
 			['draft', 'required', 'message' => 'Select Draft', 'on' => self::SCENARIO_ACTION],
 			['draft', 'in', 'range' => ['no', 'yes'], 'on' => [self::SCENARIO_ACTION, self::SCENARIO_SEARCH]],
 		];
