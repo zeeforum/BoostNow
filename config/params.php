@@ -4,6 +4,7 @@ return [
     'website_title' => 'My Company',
     'adminEmail' => 'admin@dailypakistani.com',
     'base_url' => 'http://localhost/git/BoostNow/web/',
+    'imageUrl' => 'images/',
     'adminAbsUrl' => 'main-admin/',
     'adminUrl' => 'http://localhost/git/BoostNow/web/main-admin/',
     'app_version' => '0.1',
