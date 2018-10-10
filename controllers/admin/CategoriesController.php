@@ -67,6 +67,7 @@
 
 			if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 				$model->draft = $model->draft;
+				$model->updated_at = date('Y-m-d h:i:s');
 				$result = $model->save();
 				if ($result) {
 					return $this->setMsg([$this->admin . 'categories/'], 'Category Updated Successfully!');

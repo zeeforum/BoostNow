@@ -104,6 +104,7 @@ $config = [
 			],
 		],
 	],
+	'timeZone' => 'Asia/Karachi',	//default timezone
 	'params' => $params,
 ];
 
