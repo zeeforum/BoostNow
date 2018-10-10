@@ -124,7 +124,7 @@
 			if ($result) {
 				return $this->setMsg([$this->admin . 'products/'], 'Product Deleted Successfully!');
 			} else {
-				return $this->setMsg([$this->admin . 'products/update/' . $id], Yii::$app->params['errorMessage'], 'error');
+				return $this->setMsg([$this->admin . 'products/'], Yii::$app->params['errorMessage'], 'error');
 			}
 		}
 

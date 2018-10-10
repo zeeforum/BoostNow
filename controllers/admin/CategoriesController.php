@@ -98,7 +98,7 @@
 			if ($result) {
 				return $this->setMsg([$this->admin . 'categories/'], 'Category Deleted Successfully!');
 			} else {
-				return $this->setMsg([$this->admin . 'categories/update/' . $id], Yii::$app->params['errorMessage'], 'error');
+				return $this->setMsg([$this->admin . 'categories/'], Yii::$app->params['errorMessage'], 'error');
 			}
 		}
 

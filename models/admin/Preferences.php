@@ -4,6 +4,7 @@ namespace app\models\admin;
 
 use Yii;
 use yii\db\ActiveRecord;
+use yii\data\ActiveDataProvider;
 
 class Preferences extends ActiveRecord {
 
@@ -18,6 +19,7 @@ class Preferences extends ActiveRecord {
 			['label', 'required', 'message' => 'Enter Field Label', 'on' => 'field'],
 			['label', 'string', 'max' => 255, 'on' => 'field'],
 			['name', 'unique', 'message' => 'Field Name must be unique.', 'on' => 'field'],
+			['field_type', 'string', 'max' => 255, 'on' => 'field'],
 		];
 	}
 
