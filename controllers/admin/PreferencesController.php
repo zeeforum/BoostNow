@@ -5,6 +5,8 @@
 	use app\models\admin\Preferences;
 	use yii\web\NotFoundHttpException;
 	use yii\base\DynamicModel;
+	use yii\web\UploadedFile;
+	use app\models\UploadImage;
 
 	class PreferencesController extends AdminController {
 
@@ -16,17 +18,30 @@
 			$bool = isset($dynamicModel) && count($dynamicModel) > 0 ? true : false;
 			$arr = array();
 			if ($model) {
+				$image = new UploadImage();
+				$image->setImagePath('images/preferences/');
+
 				foreach ($model as $row) {
-					if ($bool) {
-						$arr[$row->name] = $dynamicModel[$row->name];
+					if ($bool) {	//if form is submitted
+						if ($row->field_type == 'image' || $row->field_type == 'file') {	//upload image or file
+							$picture = UploadedFile::getInstance(new DynamicModel, $row->name);
+							$pictureName = $image->upload($picture);
+							if ($pictureName) {
+								$arr[$row->name] = $pictureName;
+							}
+						} else {
+							$arr[$row->name] = $dynamicModel[$row->name];
+						}
 					} else {
 						$arr[$row->name] = $row->value;
 					}
 				}
 			}
+
+			//dynamic form instance
 			$formModel = new DynamicModel($arr);
 
-			if ($formModel->load(Yii::$app->request->post()) && $formModel->validate()) {
+			if ($formModel->load(Yii::$app->request->post()) && $formModel->validate()) {	//form is submitted, update data in database
 				$result = true;
 				if ($model) {
 					foreach ($model as $row) {

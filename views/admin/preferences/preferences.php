@@ -4,7 +4,7 @@
 	use yii\bootstrap\ActiveForm;
 
 	$this->title = 'Edit Preferences';	
-	$this->params['tab'] = '';
+	$this->params['tab'] = 'settings';
 	$this->params['breadcrumbs'][] = $this->title;
 ?>
 

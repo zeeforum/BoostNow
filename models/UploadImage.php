@@ -6,11 +6,15 @@
 
 	class UploadImage extends Model {
 
-		private $profileImages = 'images/profile/';
+		private $imagePath = 'images/profile/';
+
+		public function setImagePath($imagePath = 'images/profile/') {
+			$this->imagePath = $imagePath;
+		}
 
 		public function upload($image) {
 			$imageName = time() . rand(9999, 999999) . '.' . $image->extension;
-			$data = $image->saveAs($this->profileImages . $imageName);
+			$data = $image->saveAs($this->imagePath . $imageName);
 			if ($data) {
 				return $imageName;
 			}

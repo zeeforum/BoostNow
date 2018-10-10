@@ -6,7 +6,7 @@
 
     class WebController extends Controller {
         
-        public function beforeAction() {
+        public function initializeConfig() {
             Yii::$app->params['imageUrl'] = Yii::$app->params['base_url'] . Yii::$app->params['imageUrl'];
         }
 

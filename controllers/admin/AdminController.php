@@ -3,10 +3,10 @@
 	namespace app\controllers\admin;
 
 	use Yii;
-	use yii\web\Controller;
+	use app\controllers\WebController;
 	use yii\helpers\Url;
 
-	class AdminController extends Controller {
+	class AdminController extends WebController {
 
 		public $layout = '@app/views/admin/layout/main.php';
 		public $admin = NULL;
@@ -30,6 +30,8 @@
 		];*/
 
 		public function beforeAction($bool = true) {
+			parent::initializeConfig();
+
 			if ($bool) {
 				if (Yii::$app->admin->isGuest) {
 					$this->redirect(Yii::$app->params['adminUrl']);

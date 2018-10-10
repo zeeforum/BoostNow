@@ -308,9 +308,7 @@ $adminUrl = Yii::$app->params['adminAbsUrl'];
 					<li class="tab-dashboard treeview">
 						<a href="#">
 							<i class="fa fa-dashboard"></i> <span>Dashboard</span>
-							<span class="pull-right-container">
-								<i class="fa fa-angle-left pull-right"></i>
-							</span>
+							<i class="fa fa-angle-left pull-right"></i>
 						</a>
 						<ul class="treeview-menu">
 							<li><a href="<?= Url::to([$adminUrl . 'user/dashboard/']); ?>"><i class="fa fa-circle-o"></i> Dashboard</a></li>
@@ -320,9 +318,7 @@ $adminUrl = Yii::$app->params['adminAbsUrl'];
 						<a href="#">
 							<i class="fa fa-files-o"></i>
 							<span>Manage Categories</span>
-							<span class="pull-right-container">
-								<i class="fa fa-angle-left pull-right"></i>
-							</span>
+							<i class="fa fa-angle-left pull-right"></i>
 						</a>
 						<ul class="treeview-menu">
 							<li>
@@ -338,9 +334,7 @@ $adminUrl = Yii::$app->params['adminAbsUrl'];
 						<a href="#">
 							<i class="fa fa-files-o"></i>
 							<span>Manage Products</span>
-							<span class="pull-right-container">
-								<i class="fa fa-angle-left pull-right"></i>
-							</span>
+							<i class="fa fa-angle-left pull-right"></i>
 						</a>
 						<ul class="treeview-menu">
 							<li>
@@ -354,10 +348,9 @@ $adminUrl = Yii::$app->params['adminAbsUrl'];
 
 					<li class="tab-settings treeview">
 						<a href="#">
-							<i class="fa fa-folder"></i> <span>Settings</span>
-							<span class="pull-right-container">
-								<i class="fa fa-angle-left pull-right"></i>
-							</span>
+							<i class="fa fa-folder"></i>
+							<span>Settings</span>
+							<i class="fa fa-angle-left pull-right"></i>
 						</a>
 						<ul class="treeview-menu">
 							<li>
