@@ -12,7 +12,7 @@
 	}
 	
 	$this->params['tab'] = 'categories';
-	$this->params['breadcrumbs'][] = ['label' => 'Categories', 'url' => Url::to([Yii::$app->params['adminAbsUrl'] . 'categories'])];
+	$this->params['breadcrumbs'][] = ['label' => 'Browse Categories', 'url' => Url::to([Yii::$app->params['adminAbsUrl'] . 'categories'])];
 	$this->params['breadcrumbs'][] = $this->title;
 ?>
 

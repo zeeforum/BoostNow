@@ -5,7 +5,7 @@
 	use app\models\admin\Categories;
 	use yii\bootstrap\Modal;
 
-	$this->title = 'Categories';
+	$this->title = 'Browse Categories';
 	$this->params['tab'] = 'categories';
 	$this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -64,7 +64,7 @@
 	<?php
 		$url = Url::to([Yii::$app->params['adminAbsUrl'] . 'categories/delete']);
 		Modal::begin([
-			'header' => '<h2 class="modal-title"></h2>',
+			'header' => '<h4 class="modal-title"></h4>',
 			'id'     => 'deleteModal',
 			'footer' => Html::a('Confirm', '', ['class' => 'btn btn-danger', 'id' => 'delete-confirm']),
 		]);

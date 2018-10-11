@@ -5,7 +5,7 @@
 	use yii\widgets\LinkPager;
 	use yii\bootstrap\ActiveForm;
 
-	$this->title = 'Products';
+	$this->title = 'Browse Products';
 	$this->params['tab'] = 'products';
 	$this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -125,7 +125,7 @@
 	<?php
 		$url = Url::to([Yii::$app->params['adminAbsUrl'] . 'products/delete']);
 		Modal::begin([
-			'header' => '<h2 class="modal-title"></h2>',
+			'header' => '<h4 class="modal-title"></h4>',
 			'id'     => 'deleteModal',
 			'footer' => Html::a('Confirm', '', ['class' => 'btn btn-danger', 'id' => 'delete-confirm']),
 		]);

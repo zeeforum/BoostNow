@@ -364,6 +364,22 @@ $adminUrl = Yii::$app->params['adminAbsUrl'];
 							</li>
 						</ul>
 					</li>
+
+					<li class="tab-admin-users treeview">
+						<a href="#">
+							<i class="fa fa-folder"></i>
+							<span>Manage Admin Users</span>
+							<i class="fa fa-angle-left pull-right"></i>
+						</a>
+						<ul class="treeview-menu">
+							<li>
+								<a href="<?= Url::to([$adminUrl . 'admin-user/']); ?>"><i class="fa fa-circle-o"></i> Browse Admins</a>
+							</li>
+							<li>
+								<a href="<?= Url::to([$adminUrl . 'admin-user/add/']); ?>"><i class="fa fa-circle-o"></i> Add Admin</a>
+							</li>
+						</ul>
+					</li>
 				</ul>
 			</section>
 			<!-- /.sidebar -->

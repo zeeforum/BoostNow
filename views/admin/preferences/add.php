@@ -12,7 +12,7 @@
 	}
 	
 	$this->params['tab'] = 'settings';
-	$this->params['breadcrumbs'][] = ['label' => 'Preferences', 'url' => Url::to([Yii::$app->params['adminAbsUrl'] . 'preferences/'])];
+	$this->params['breadcrumbs'][] = ['label' => 'Browse Preferences', 'url' => Url::to([Yii::$app->params['adminAbsUrl'] . 'preferences/'])];
 	$this->params['breadcrumbs'][] = $this->title;
 ?>
 

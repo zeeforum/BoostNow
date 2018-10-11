@@ -20,7 +20,7 @@ class m170618_083616_categories extends Migration
 			'created_by' => $this->integer()->notNull()->defaultValue(0),
 		]);
 
-		$this->addForeignKey('categories_admin_id', 'categories', 'created_by', 'admin', 'id', 'CASCADE');
+		// $this->addForeignKey('categories_admin_id', 'categories', 'created_by', 'admin', 'id', 'CASCADE');
 	}
 
 	public function down()

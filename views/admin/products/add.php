@@ -12,7 +12,7 @@
 	}
 	
 	$this->params['tab'] = 'products';
-	$this->params['breadcrumbs'][] = ['label' => 'Products', 'url' => Url::to([Yii::$app->params['adminAbsUrl'] . 'products'])];
+	$this->params['breadcrumbs'][] = ['label' => 'Browse Products', 'url' => Url::to([Yii::$app->params['adminAbsUrl'] . 'products'])];
 	$this->params['breadcrumbs'][] = $this->title;
 ?>
 

@@ -36,7 +36,7 @@ class m181005_124221_products extends Migration
 
 		//foreign keys
 		$this->addForeignKey('products_category_id', 'products', 'category_id', 'categories', 'id', 'CASCADE');
-		$this->addForeignKey('products_admin_id', 'products', 'created_by', 'admin', 'id', 'CASCADE');
+		// $this->addForeignKey('products_admin_id', 'products', 'created_by', 'admin', 'id', 'CASCADE');
 	}
 
 	/**

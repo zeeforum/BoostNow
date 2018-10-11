@@ -6,4 +6,4 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule . index.php
 
 #redirect user to main page if he tries to access admin directory
-RedirectMatch 301 /admin/?(.*) /git/BoostNow/web/
+#RedirectMatch 301 /admin /git/BoostNow/web/
