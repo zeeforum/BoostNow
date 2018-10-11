@@ -7,6 +7,16 @@ $config = [
 	'basePath' => dirname(__DIR__),
 	'bootstrap' => ['log'],
 	'components' => [
+		'assetManager' => [
+			'bundles' => [
+				'yii\bootstrap\BootstrapAsset' => [
+					'css' => [],
+				],
+				'yii\bootstrap\BootstrapPluginAsset' => [
+					'js' => [],
+				],
+			],
+		],
 		'authManager' => [
 			'class' => 'yii\rbac\PhpManager',
 			'defaultRoles' => ['admin', 'author'],
