@@ -8,6 +8,7 @@ use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use yii\helpers\Url;
 use app\assets\AdminAsset;
+use app\models\admin\Queries;
 
 AdminAsset::register($this);
 
@@ -51,83 +52,48 @@ $adminUrl = Yii::$app->params['adminAbsUrl'];
 
 				<div class="navbar-custom-menu">
 					<ul class="nav navbar-nav">
+						<?php
+							$queriesModel = Queries::find()->select(['id','name','subject', 'created_at'])->where(['is_read' => 'no'])->orderBy('id desc');
+							$counter = $queriesModel->count();
+							$queriesModel->limit(5);
+							$queriesModel = $queriesModel->all();
+
+							if ($counter > 0) {
+						?>
 						<!-- Messages: style can be found in dropdown.less-->
 						<li class="dropdown messages-menu">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 								<i class="fa fa-envelope-o"></i>
-								<span class="label label-success">4</span>
+								<span class="label label-success"><?= $counter; ?></span>
 							</a>
 							<ul class="dropdown-menu">
-								<li class="header">You have 4 messages</li>
+								<li class="header">You have <?= $counter; ?> messages</li>
 								<li>
 									<!-- inner menu: contains the actual data -->
 									<ul class="menu">
-										<li><!-- start message -->
-											<a href="#">
-												<div class="pull-left">
-													<img src="<?= Yii::$app->params['base_url'] . 'img/avatar.png'; ?>" class="img-circle" alt="User Image">
-												</div>
+										<?php foreach ($queriesModel as $query) { ?>
+										<li>
+											<!-- start message -->
+											<a href="<?= Yii::$app->params['adminUrl'] . 'queries/view/' . $query->id; ?>">
 												<h4>
-													Support Team
-													<small><i class="fa fa-clock-o"></i> 5 mins</small>
+													<?= $query->name ?>
+													<small><i class="fa fa-clock-o"></i> <?= Yii::$app->formatter->format(strtotime($query->created_at), 'relativeTime') ?></small>
 												</h4>
-												<p>Why not buy a new awesome theme?</p>
+												<p><?= $query->subject; ?></p>
 											</a>
 										</li>
 										<!-- end message -->
-										<li>
-											<a href="#">
-												<div class="pull-left">
-													<img src="<?= Yii::$app->params['base_url'] . 'img/avatar.png'; ?>" class="img-circle" alt="User Image">
-												</div>
-												<h4>
-													AdminLTE Design Team
-													<small><i class="fa fa-clock-o"></i> 2 hours</small>
-												</h4>
-												<p>Why not buy a new awesome theme?</p>
-											</a>
-										</li>
-										<li>
-											<a href="#">
-												<div class="pull-left">
-													<img src="<?= Yii::$app->params['base_url'] . 'img/avatar.png'; ?>" class="img-circle" alt="User Image">
-												</div>
-												<h4>
-													Developers
-													<small><i class="fa fa-clock-o"></i> Today</small>
-												</h4>
-												<p>Why not buy a new awesome theme?</p>
-											</a>
-										</li>
-										<li>
-											<a href="#">
-												<div class="pull-left">
-													<img src="<?= Yii::$app->params['base_url'] . 'img/avatar.png'; ?>" class="img-circle" alt="User Image">
-												</div>
-												<h4>
-													Sales Department
-													<small><i class="fa fa-clock-o"></i> Yesterday</small>
-												</h4>
-												<p>Why not buy a new awesome theme?</p>
-											</a>
-										</li>
-										<li>
-											<a href="#">
-												<div class="pull-left">
-													<img src="<?= Yii::$app->params['base_url'] . 'img/avatar.png'; ?>" class="img-circle" alt="User Image">
-												</div>
-												<h4>
-													Reviewers
-													<small><i class="fa fa-clock-o"></i> 2 days</small>
-												</h4>
-												<p>Why not buy a new awesome theme?</p>
-											</a>
-										</li>
+										<?php } ?>
 									</ul>
 								</li>
-								<li class="footer"><a href="#">See All Messages</a></li>
+								<li class="footer"><a href="<?= Yii::$app->params['adminUrl'] . 'queries/'; ?>">See All Messages</a></li>
 							</ul>
 						</li>
+						<?php
+							}
+						?>
+						
+						<?php /*
 						<!-- Notifications: style can be found in dropdown.less -->
 						<li class="dropdown notifications-menu">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -169,6 +135,7 @@ $adminUrl = Yii::$app->params['adminAbsUrl'];
 								<li class="footer"><a href="#">View all</a></li>
 							</ul>
 						</li>
+
 						<!-- Tasks: style can be found in dropdown.less -->
 						<li class="dropdown tasks-menu">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -242,7 +209,8 @@ $adminUrl = Yii::$app->params['adminAbsUrl'];
 									<a href="#">View all tasks</a>
 								</li>
 							</ul>
-						</li>
+						</li>*/ ?>
+
 						<!-- User Account: style can be found in dropdown.less -->
 						<li class="dropdown user user-menu">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -269,10 +237,12 @@ $adminUrl = Yii::$app->params['adminAbsUrl'];
 								</li>
 							</ul>
 						</li>
+
+						<?php /*
 						<!-- Control Sidebar Toggle Button -->
 						<li>
 							<a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-						</li>
+						</li>*/ ?>
 					</ul>
 				</div>
 			</nav>
