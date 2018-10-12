@@ -2,14 +2,14 @@
 	use yii\widgets\DetailView;
 	use yii\helpers\Url;
 
-	$this->title = $model->name . ' - Category';
-	$this->params['tab'] = 'categories';
-	$this->params['breadcrumbs'][] = ['label' => 'Browse Categories', 'url' => Url::to([Yii::$app->params['adminAbsUrl'] . 'categories'])];
+	$this->title = $model->name . ' - Query';
+	$this->params['tab'] = 'queries';
+	$this->params['breadcrumbs'][] = ['label' => 'Browse Queries', 'url' => Url::to([Yii::$app->params['adminAbsUrl'] . 'queries/'])];
 	$this->params['breadcrumbs'][] = $model->name;
 ?>
 
 <?php $this->beginBlock('links'); ?>
-	<li><a href="<?= Url::to([Yii::$app->params['adminAbsUrl'] . 'categories']); ?>" class="btn bg-purple btn-flat"> Go Back</a></li>
+	<li><a href="<?= Url::to([Yii::$app->params['adminAbsUrl'] . 'queries/']); ?>" class="btn bg-purple btn-flat"> Go Back</a></li>
 <?php $this->endBlock(); ?>
 
 <style type="text/css">
@@ -21,11 +21,13 @@
 		'model' => $model,
 		'attributes' => [
 			'name',
-			'description',
-			'keywords',
-			'detail',
-			'parentCategory.name',
-			'admin.username',
+			'email',
+			'phone',
+			'subject',
+			[
+                'attribute' => 'message',
+                'format' => 'raw',
+            ],
 			[
                 'attribute' => 'created_at',
                 'value' => function($model) {
@@ -38,6 +40,6 @@
                     return date('M d, Y h:i:s A', strtotime($model->updated_at));
                 }
             ],
-		],
+        ],
 	]);
 ?>

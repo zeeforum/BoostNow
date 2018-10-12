@@ -32,8 +32,18 @@
 			
 			'category.name',
 			'admin.username',
-			'created_at:datetime',
-			'updated_at:datetime',
+			[
+                'attribute' => 'created_at',
+                'value' => function($model) {
+                    return date('M d, Y h:i:s A', strtotime($model->created_at));
+                }
+            ],
+			[
+                'attribute' => 'updated_at',
+                'value' => function($model) {
+                    return date('M d, Y h:i:s A', strtotime($model->updated_at));
+                }
+            ],
 			[
 				'label' => 'Draft',
 				'value' => ucfirst($model->draft),

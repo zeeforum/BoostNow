@@ -2,7 +2,6 @@
 	use yii\helpers\Url;
 	use yii\bootstrap\Html;
 	use yii\grid\GridView;
-	use app\models\admin\Categories;
 	use yii\bootstrap\Modal;
 
 	$this->title = 'Browse Preferences';

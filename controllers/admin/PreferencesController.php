@@ -127,7 +127,7 @@
 		private function updateFields($fieldName, $fieldValue, $type) {
 			$pref = Preferences::findOne(['name' => $fieldName]);
 			$pref->value = $fieldValue;
-			$pref->updated_at = date('Y-m-d h:i:s');
+			$pref->updated_at = date('Y-m-d H:i:s');
 			$result = $pref->save();
 			if ($result) {
 				return true;

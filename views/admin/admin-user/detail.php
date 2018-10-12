@@ -47,7 +47,12 @@
                     return ucfirst($data->role);
                 }
             ],
-			'created_at:datetime',
+			[
+                'attribute' => 'created_at',
+                'value' => function($model) {
+                    return date('M d, Y h:i:s A', strtotime($model->created_at));
+                }
+            ],
 		],
 	]);
 ?>

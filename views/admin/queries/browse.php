@@ -4,28 +4,41 @@
 	use yii\grid\GridView;
 	use yii\bootstrap\Modal;
 
-	$this->title = 'Browse Categories';
-	$this->params['tab'] = 'categories';
+	$this->title = 'Browse Queries';
+	$this->params['tab'] = 'queries';
 	$this->params['breadcrumbs'][] = $this->title;
 ?>
-
-	<?php $this->beginBlock('links'); ?>
-		<li><a href="<?= Url::to([Yii::$app->params['adminAbsUrl'] . 'categories/add']); ?>" class="btn bg-purple btn-flat"> Add Category</a></li>
-	<?php $this->endBlock(); ?>
-
+    <style type="text/css">
+        .queries-table .empty {text-align:center;}
+        .message-unread {background-color: #c1d7ff !important;}
+    </style>
 	<div class="">
 		<?php
 			echo GridView::widget([
 				'dataProvider' => $dataProvider,
-				'filterModel' => $searchModel,
+                'filterModel' => $searchModel,
+                'rowOptions' => function($model) {
+                    if ($model->is_read == 'no') {
+                        return ['class' => 'message-unread'];
+                    }
+                },
 				'columns' => [
 					['class' => 'yii\grid\SerialColumn'],
 					// Simple columns defined by the data contained in $dataProvider.
 					// Data from the model's column will be used.
-					'name',
-					[
-						'attribute' => 'draft',
-					],
+                    'name',
+                    'email',
+                    [
+                        'attribute' => 'phone',
+                        'label' => 'Phone',
+                        'value' => function($data) {
+                            if ($data->phone != '') {
+                                return $data->phone;
+                            } else {
+                                return '(not set)';
+                            }
+                        }
+                    ],
 					[
 						'attribute' => 'created_at',
 						'format' => ['date', 'php:Y-m-d']
@@ -44,9 +57,7 @@
 								]);
 							},
 							'update' => function ($url, $model) {
-								return Html::a('', $url, [
-									'class'       => 'btn btn-info btn-xs glyphicon glyphicon-pencil',
-								]);
+								return '';
 							},
 							'view' => function ($url, $model) {
 								return Html::a('', $url, [
@@ -55,13 +66,14 @@
 							},
 						],
 					],
-				],
+                ],
+                'tableOptions' => ['class' => 'table table-striped table-bordered queries-table'],
 			]);
 		?>
 	</div>
 	
 	<?php
-		$url = Url::to([Yii::$app->params['adminAbsUrl'] . 'categories/delete']);
+		$url = Url::to([Yii::$app->params['adminAbsUrl'] . 'queries/delete']);
 		Modal::begin([
 			'header' => '<h4 class="modal-title"></h4>',
 			'id'     => 'deleteModal',
@@ -69,7 +81,7 @@
 		]);
 	?>
 
-	<?= 'If you will delete this category, then it will delete all of your products related to this category. Are you sure you want to perform this action?'; ?>
+	<?= 'Are you sure you want to perform this action?'; ?>
 
 	<?php Modal::end(); ?>
 
@@ -82,7 +94,7 @@
 				var triggered = $(this);
 				var id = triggered.data('id');
 				var name = triggered.data('name');
-				$('.modal-title').text('Delete Category: \"' + name + '\"');
+				$('.modal-title').text('Delete Query: \"' + name + '\"');
 
 				$('#delete-confirm').click(function(e) {
 					e.preventDefault();

@@ -380,6 +380,13 @@ $adminUrl = Yii::$app->params['adminAbsUrl'];
 							</li>
 						</ul>
 					</li>
+
+					<li class="tab-queries treeview">
+						<a href="<?= Url::to([$adminUrl . 'queries/']); ?>">
+							<i class="fa fa-folder"></i>
+							<span>Queries</span>
+						</a>
+					</li>
 				</ul>
 			</section>
 			<!-- /.sidebar -->
