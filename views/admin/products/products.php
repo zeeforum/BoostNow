@@ -88,7 +88,7 @@
 				<td><?php echo $counter++; ?></td>
 				<td><?php echo $row->name; ?></td>
 				<td><?php echo $row->quantity; ?></td>
-				<td><?php echo $row->category->name; ?></td>
+				<td><?php if ($row->category) { echo $row->category->name; } else { echo '- No Category -'; } ?></td>
 				<td><?php echo ucfirst($row->draft); ?></td>
 				<td>
 					<?php
