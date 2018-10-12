@@ -5,9 +5,12 @@ use yii\db\Migration;
 
 class m170610_133805_admin extends Migration
 {
+
+    private $tableName = 'admin';
+
     public function up()
     {
-        $this->createTable('admin', [
+        $this->createTable($this->tableName, [
             'id' => $this->primaryKey(),
             'username' => $this->string(100)->notNull(),
             'email' => $this->string(255)->notNull(),
@@ -23,9 +26,10 @@ class m170610_133805_admin extends Migration
             'created_at' => Schema::TYPE_TIMESTAMP . ' NOT NULL DEFAULT CURRENT_TIMESTAMP',
         ]);
 
-        $this->insert('admin', array(
+        $this->insert($this->tableName, array(
                 'username' => 'admin',
-                'email' => 'zartashzulfiqar@gmail.com',
+                'email' => 'admin@abc.xyz',
+                'picture' => '1538425078908466.png',
                 'auth_key' => Yii::$app->security->generateRandomString(),
                 'password_hash' => Yii::$app->security->generatePasswordHash('admin'),
                 'access_token' => Yii::$app->security->generateRandomString() . time(),
@@ -34,11 +38,35 @@ class m170610_133805_admin extends Migration
                 'role' => 'admin',
             )
         );
+
+        $this->insert($this->tableName, array(
+                'username' => 'test',
+                'email' => 'test@abc.xyz',
+                'auth_key' => Yii::$app->security->generateRandomString(),
+                'password_hash' => Yii::$app->security->generatePasswordHash('test'),
+                'access_token' => Yii::$app->security->generateRandomString() . time(),
+                'password_reset_token' => '',
+                'status' => 'active',
+                'role' => 'editor',
+            )
+        );
+
+        $this->insert($this->tableName, array(
+                'username' => 'testuser',
+                'email' => 'testuser@abc.xyz',
+                'auth_key' => Yii::$app->security->generateRandomString(),
+                'password_hash' => Yii::$app->security->generatePasswordHash('test'),
+                'access_token' => Yii::$app->security->generateRandomString() . time(),
+                'password_reset_token' => '',
+                'status' => 'active',
+                'role' => 'editor',
+            )
+        );
     }
 
     public function down()
     {
-        $this->dropTable('admin');
+        $this->dropTable($this->tableName);
     }
 
     /*

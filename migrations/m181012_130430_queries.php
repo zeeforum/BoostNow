@@ -31,6 +31,36 @@ class m181012_130430_queries extends Migration
 		//index
 		$this->createIndex('name', $this->tableName, 'name');
 		$this->createIndex('email', $this->tableName, 'email');
+
+		$this->insert($this->tableName, array(
+				'name' => "Zartash Zulfiqar",
+				'email' => "contact@abc.xyz",
+				'phone' => '+123456789',
+				'subject' => 'Test subject to show',
+				'message' => '<h4>Content of the message to show</h4>',
+				'is_read' => 'yes',
+			)
+		);
+
+		$this->insert($this->tableName, array(
+				'name' => "Zee Forum",
+				'email' => "user@abc.xyz",
+				'phone' => '+123456789',
+				'subject' => 'Test subject to show',
+				'message' => '<h4>Content of the message to show</h4>',
+				'is_read' => 'no',
+			)
+		);
+
+		$this->insert($this->tableName, array(
+				'name' => "M Zee",
+				'email' => "user2@abc.xyz",
+				'phone' => '+223456789',
+				'subject' => 'Test subject to show',
+				'message' => '<h4>Content of the message to show</h4>',
+				'is_read' => 'no',
+			)
+		);
 	}
 
 	/**

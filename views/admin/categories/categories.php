@@ -69,7 +69,7 @@
 		]);
 	?>
 
-	<?= 'If you will delete this category, then it will delete all of your products related to this category. Are you sure you want to perform this action?'; ?>
+	<?= 'Are you sure you want to perform this action?'; //If you will delete this category, then it will delete all of your products related to this category.  ?>
 
 	<?php Modal::end(); ?>
 

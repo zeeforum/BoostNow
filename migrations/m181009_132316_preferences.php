@@ -8,12 +8,14 @@ use yii\db\Migration;
  */
 class m181009_132316_preferences extends Migration
 {
+	private $tableName = 'preferences';
+
 	/**
 	 * {@inheritdoc}
 	 */
 	public function up()
 	{
-		$this->createTable('preferences', [
+		$this->createTable($this->tableName, [
 			'id' => $this->primaryKey(),
 			'name' => $this->string(255)->notNull()->unique(),
 			'label' => $this->string(255)->notNull(),
@@ -23,6 +25,30 @@ class m181009_132316_preferences extends Migration
 			'updated_at' => Schema::TYPE_TIMESTAMP . ' NOT NULL DEFAULT CURRENT_TIMESTAMP',
 			'created_by' => $this->integer()->notNull()->defaultValue(0),
 		]);
+
+		$this->insert($this->tableName, array(
+				'name' => "website_title",
+				'label' => "Website Title",
+				'field_type' => 'text',
+				'created_by' => '1',
+			)
+		);
+
+		$this->insert($this->tableName, array(
+				'name' => "logo",
+				'label' => "Logo",
+				'field_type' => 'image',
+				'created_by' => '1',
+			)
+		);
+
+		$this->insert($this->tableName, array(
+				'name' => "copyright_text",
+				'label' => "Copyright Text",
+				'field_type' => 'textarea',
+				'created_by' => '1',
+			)
+		);
 	}
 
 	/**
@@ -30,6 +56,6 @@ class m181009_132316_preferences extends Migration
 	 */
 	public function down()
 	{
-		$this->dropTable('products');
+		$this->dropTable($this->tableName);
 	}
 }
