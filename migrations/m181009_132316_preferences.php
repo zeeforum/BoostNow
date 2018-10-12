@@ -29,6 +29,7 @@ class m181009_132316_preferences extends Migration
 		$this->insert($this->tableName, array(
 				'name' => "website_title",
 				'label' => "Website Title",
+				'value' => 'Sample Content',
 				'field_type' => 'text',
 				'created_by' => '1',
 			)
@@ -37,6 +38,7 @@ class m181009_132316_preferences extends Migration
 		$this->insert($this->tableName, array(
 				'name' => "logo",
 				'label' => "Logo",
+				'value' => '1539139566287179.png',
 				'field_type' => 'image',
 				'created_by' => '1',
 			)
@@ -45,6 +47,7 @@ class m181009_132316_preferences extends Migration
 		$this->insert($this->tableName, array(
 				'name' => "copyright_text",
 				'label' => "Copyright Text",
+				'value' => 'Test Apps',
 				'field_type' => 'textarea',
 				'created_by' => '1',
 			)
