@@ -48,7 +48,7 @@
 			<!-- /.form-group -->
 
 			<div class="form-group col-xs-12 col-sm-6">
-				<?php echo $form->field($model, 'quantity'); ?>
+				<?php echo $form->field($model, 'price'); ?>
 			</div>
 			<!-- /.form-group -->
 			<div class="clearfix"></div>
@@ -70,7 +70,12 @@
 			</div>
 			<!-- /.form-group -->
 
-			<div class="form-group col-xs-12">
+			<div class="form-group col-xs-12 col-sm-6">
+				<?php echo $form->field($model, 'quantity'); ?>
+			</div>
+			<!-- /.form-group -->
+
+			<div class="form-group col-xs-12 col-sm-6">
 				<?php 
 					$items = [
 						'no' => 'No', 

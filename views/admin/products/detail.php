@@ -22,6 +22,7 @@
 		'attributes' => [
 			'name',
 			'title',
+			'price',
 			'quantity',
 			'description',
 			'keywords',

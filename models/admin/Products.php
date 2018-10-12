@@ -22,6 +22,8 @@ class Products extends ActiveRecord {
 			['name', 'string', 'max' => 255, 'on' => self::SCENARIO_SEARCH],
 			['category_id', 'integer', 'message' => 'Please Select Category', 'on' => [self::SCENARIO_ACTION, self::SCENARIO_SEARCH]],
 			['quantity', 'integer', 'message' => 'Please Enter Quantity', 'on' => self::SCENARIO_ACTION],
+			['price', 'required', 'message' => 'Enter Price', 'on' => self::SCENARIO_ACTION],
+			['price', 'number', 'message' => 'Please Enter Price', 'on' => self::SCENARIO_ACTION],
 			['draft', 'required', 'message' => 'Select Draft', 'on' => self::SCENARIO_ACTION],
 			['draft', 'in', 'range' => ['no', 'yes'], 'on' => [self::SCENARIO_ACTION, self::SCENARIO_SEARCH]],
 		];
@@ -35,6 +37,7 @@ class Products extends ActiveRecord {
 			'keywords' => 'Keywords',
 			'detail' => 'Content',
 			'category_id' => 'Category',
+			'price' => 'Price',
 		];
 	}
 
