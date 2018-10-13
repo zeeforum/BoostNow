@@ -8,23 +8,24 @@ If you want to contibute in my project, please contact me. Drop me a message, I 
 
 ## Todo
 
-[x] Admin Authentication
-[x] Product Brands/Categories
-[x] Products
-[x] Website Preferences
-[x] Admin Users
-[x] Manage User Queries
-[] Front-End Website Design
-[] Front-End Website Implementation
-[] Payment GateWay Integration
-[] Manage Orders
-[] Manage Website Stats
-[] Manage Website Users
-[] Products Variant (Future)
+- [x] Admin Authentication
+- [x] Product Brands/Categories
+- [x] Products
+- [x] Website Preferences
+- [x] Admin Users
+- [x] Manage User Queries
+- [] Front-End Website Design
+- [] Front-End Website Implementation
+- [] Payment GateWay Integration
+- [] Manage Orders
+- [] Manage Website Stats
+- [] Manage Website Users
+- [] Products Variant (Future)
 
 ## Resources Used
 
-- [![Yii](https://img.shields.io/badge/Powered_by-Yii_Framework-green.svg?style=flat)](http://www.yiiframework.com/)
 - AdminLTE
 - Bootstrap
 - jQuery
+
+[![Yii](https://img.shields.io/badge/Powered_by-Yii_Framework-green.svg?style=flat)](http://www.yiiframework.com/)
