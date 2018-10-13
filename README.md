@@ -14,13 +14,13 @@ If you want to contibute in my project, please contact me. Drop me a message, I 
 - [x] Website Preferences
 - [x] Admin Users
 - [x] Manage User Queries
-- [] Front-End Website Design
-- [] Front-End Website Implementation
-- [] Payment GateWay Integration
-- [] Manage Orders
-- [] Manage Website Stats
-- [] Manage Website Users
-- [] Products Variant (Future)
+- [ ] Front-End Website Design
+- [ ] Front-End Website Implementation
+- [ ] Payment GateWay Integration
+- [ ] Manage Orders
+- [ ] Manage Website Stats
+- [ ] Manage Website Users
+- [ ] Products Variant (Future)
 
 ## Resources Used
 
