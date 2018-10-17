@@ -33,7 +33,7 @@ AppAsset::register($this);
 	<div class="header-nav nav">
         <div class="container">
             <ul class="nav navbar-nav navbar-right m0">
-                <li class="active">
+                <li>
                     <a href="#">save more on app</a>
                 </li>
                 <li>
@@ -93,13 +93,110 @@ AppAsset::register($this);
         <div class="container">
             <ul class="nav navbar-nav m0 categories">
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <a class="dropdown-toggle pointer" data-toggle="dropdown">
                         Categories
                         <span class="fa fa-angle-down"></span>
                     </a>
                     <ul class="dropdown-menu dropdown-categories">
-                        <li><a href="#">Electronic Devices</a></li>
-                        <li><a href="#">Health & Beauty</a></li>
+                        <li class="dropdown-submenu">
+                            <a href="#" class="submenu">
+                                Electronic Devices
+                                <span class="fa fa-angle-right"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="#">
+                                        Mobiles
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        Tablets
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        Laptops
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        Desktops
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        Gaming Consoles
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        Digital Cameras
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown-submenu">
+							<a href="#" class="submenu">
+								Health & Beauty
+								<span class="fa fa-angle-right"></span>
+							</a>
+							<ul class="dropdown-menu">
+                                <li class="dropdown-submenu">
+                                    <a href="#" class="submenu">
+										Beauty Tools
+										<span class="fa fa-angle-right"></span>
+									</a>
+									<ul class="dropdown-menu">
+										<li>
+											<a href="#">
+												Curling Irons and Wands
+											</a>
+										</li>
+										<li>
+											<a href="#">
+												Flat Irons
+											</a>
+										</li>
+										<li>
+											<a href="#">
+												Multi-stylers
+											</a>
+										</li>
+										<li>
+											<a href="#">
+												Hair Dryers
+											</a>
+										</li>
+										<li>
+											<a href="#">
+												Hair Removal Appliances
+											</a>
+										</li>
+									</ul>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        Fragrances
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        Makeup
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        Men's Care
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        Personal Care
+                                    </a>
+                                </li>
+                            </ul>
+						</li>
                         <li><a href="#">Babies & Toys</a></li>
                         <li><a href="#">Home & LifeStyle</a></li>
                         <li><a href="#">Women's Fashion</a></li>
@@ -140,6 +237,15 @@ AppAsset::register($this);
 </footer>
 
 <?php $this->endBody() ?>
+<script>
+	$(document).ready(function(){
+		$('.dropdown-submenu a.test').on("click", function(e){
+			$(this).next('ul').toggle();
+			e.stopPropagation();
+			e.preventDefault();
+		});
+	});
+</script>
 </body>
 </html>
 <?php $this->endPage() ?>

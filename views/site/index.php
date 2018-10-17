@@ -4,50 +4,234 @@
 
 $this->title = 'My Yii Application';
 ?>
-<div class="site-index">
 
-    <div class="jumbotron">
-        <h1>Congratulations!</h1>
+<div class="row no-gutter">
+	<div id="myCarousel" class="carousel slide" data-ride="carousel">
+		<!-- Indicators -->
+		<ol class="carousel-indicators">
+			<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+			<li data-target="#myCarousel" data-slide-to="1"></li>
+			<li data-target="#myCarousel" data-slide-to="2"></li>
+			<li data-target="#myCarousel" data-slide-to="3"></li>
+		</ol>
 
-        <p class="lead">You have successfully created your Yii-powered application.</p>
+		<!-- Wrapper for slides -->
+		<div class="carousel-inner">
+			<div class="item active">
+				<img src="img/slider1.jpg" alt="Los Angeles">
+			</div>
 
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
-    </div>
+			<div class="item">
+				<img src="img/slider2.jpg" alt="Chicago">
+			</div>
 
-    <div class="body-content">
+			<div class="item">
+				<img src="img/slider3.jpg" alt="New York">
+			</div>
 
-        <div class="row">
-            <div class="col-lg-4">
-                <h2>Heading</h2>
+			<div class="item">
+				<img src="img/slider4.jpg" alt="Las Vegas">
+			</div>
+		</div>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
-            </div>
-        </div>
-
-    </div>
+		<!-- Left and right controls -->
+		<a class="left carousel-control" href="#myCarousel" data-slide="prev">
+			<span class="glyphicon glyphicon-chevron-left"></span>
+			<span class="sr-only">Previous</span>
+		</a>
+		<a class="right carousel-control" href="#myCarousel" data-slide="next">
+			<span class="glyphicon glyphicon-chevron-right"></span>
+			<span class="sr-only">Next</span>
+		</a>
+	</div>
 </div>
+
+<!-- categories-product -->
+<div class="col-xs-12 no-gutter">
+	<h4 class="category-name">Electronic Devices</h4>
+</div>
+
+<div class="col-xs-12 category-products no-gutter">
+	<div class="col-xs-12 col-sm-2 product-box row-first-child">
+		<div class="product-item pointer">
+			<a href="#">
+				<img src="img/product1.jpg" alt="Product 1">
+				<div class="product-row">
+					<h5 class="product-title">
+						<a href="#">Dry Ginger Powder (Sonth Powder) - 250 gm</a>
+					</h5>
+					<p class="product-price">Rs. 2,000</p>
+					<p class="cut-price">Rs. 2,500</p>
+				</div>
+			</a>
+		</div>
+	</div>
+
+	<div class="col-xs-12 col-sm-2 product-box">
+		<div class="product-item pointer">
+			<a href="#">
+				<img src="img/product2.jpg" alt="Product 1">
+				<div class="product-row">
+					<h5 class="product-title">
+						<a href="#">Dry Ginger Powder (Sonth Powder) - 250 gm</a>
+					</h5>
+					<p class="product-price">Rs. 2,000</p>
+					<p class="cut-price">Rs. 2,500</p>
+				</div>
+			</a>
+		</div>
+	</div>
+
+	<div class="col-xs-12 col-sm-2 product-box">
+		<div class="product-item pointer">
+			<a href="#">
+				<img src="img/product3.jpg" alt="Product 1">
+				<div class="product-row">
+					<h5 class="product-title">
+						<a href="#">Dry Ginger Powder (Sonth Powder) - 250 gm</a>
+					</h5>
+					<p class="product-price">Rs. 2,000</p>
+					<p class="cut-price">Rs. 2,500</p>
+				</div>
+			</a>
+		</div>
+	</div>
+
+	<div class="col-xs-12 col-sm-2 product-box">
+		<div class="product-item pointer">
+			<a href="#">
+				<img src="img/product4.jpg" alt="Product 1">
+				<div class="product-row">
+					<h5 class="product-title">
+						<a href="#">Dry Ginger Powder (Sonth Powder) - 250 gm</a>
+					</h5>
+					<p class="product-price">Rs. 2,000</p>
+					<p class="cut-price">Rs. 2,500</p>
+				</div>
+			</a>
+		</div>
+	</div>
+
+	<div class="col-xs-12 col-sm-2 product-box">
+		<div class="product-item pointer">
+			<a href="#">
+				<img src="img/product5.jpg" alt="Product 1">
+				<div class="product-row">
+					<h5 class="product-title">
+						<a href="#">Dry Ginger Powder (Sonth Powder) - 250 gm</a>
+					</h5>
+					<p class="product-price">Rs. 2,000</p>
+					<p class="cut-price">Rs. 2,500</p>
+				</div>
+			</a>
+		</div>
+	</div>
+
+	<div class="col-xs-12 col-sm-2 product-box row-last-child">
+		<div class="product-item pointer">
+			<a href="#">
+				<img src="img/product6.jpg" alt="Product 1">
+				<div class="product-row">
+					<h5 class="product-title">
+						<a href="#">Dry Ginger Powder (Sonth Powder) - 250 gm</a>
+					</h5>
+					<p class="product-price">Rs. 2,000</p>
+					<p class="cut-price">Rs. 2,500</p>
+				</div>
+			</a>
+		</div>
+	</div>
+</div>
+
+<div class="col-xs-12 category-products no-gutter mt10">
+	<div class="col-xs-12 col-sm-2 product-box row-first-child">
+		<div class="product-item pointer">
+			<a href="#">
+				<img src="img/product6.jpg" alt="Product 1">
+				<div class="product-row">
+					<h5 class="product-title">
+						<a href="#">Dry Ginger Powder (Sonth Powder) - 250 gm</a>
+					</h5>
+					<p class="product-price">Rs. 2,000</p>
+					<p class="cut-price">Rs. 2,500</p>
+				</div>
+			</a>
+		</div>
+	</div>
+
+	<div class="col-xs-12 col-sm-2 product-box">
+		<div class="product-item pointer">
+			<a href="#">
+				<img src="img/product1.jpg" alt="Product 1">
+				<div class="product-row">
+					<h5 class="product-title">
+						<a href="#">Dry Ginger Powder (Sonth Powder) - 250 gm</a>
+					</h5>
+					<p class="product-price">Rs. 2,000</p>
+					<p class="cut-price">Rs. 2,500</p>
+				</div>
+			</a>
+		</div>
+	</div>
+
+	<div class="col-xs-12 col-sm-2 product-box">
+		<div class="product-item pointer">
+			<a href="#">
+				<img src="img/product2.jpg" alt="Product 1">
+				<div class="product-row">
+					<h5 class="product-title">
+						<a href="#">Dry Ginger Powder (Sonth Powder) - 250 gm</a>
+					</h5>
+					<p class="product-price">Rs. 2,000</p>
+					<p class="cut-price">Rs. 2,500</p>
+				</div>
+			</a>
+		</div>
+	</div>
+
+	<div class="col-xs-12 col-sm-2 product-box">
+		<div class="product-item pointer">
+			<a href="#">
+				<img src="img/product4.jpg" alt="Product 1">
+				<div class="product-row">
+					<h5 class="product-title">
+						<a href="#">Dry Ginger Powder (Sonth Powder) - 250 gm</a>
+					</h5>
+					<p class="product-price">Rs. 2,000</p>
+					<p class="cut-price">Rs. 2,500</p>
+				</div>
+			</a>
+		</div>
+	</div>
+
+	<div class="col-xs-12 col-sm-2 product-box">
+		<div class="product-item pointer">
+			<a href="#">
+				<img src="img/product3.jpg" alt="Product 1">
+				<div class="product-row">
+					<h5 class="product-title">
+						<a href="#">Dry Ginger Powder (Sonth Powder) - 250 gm</a>
+					</h5>
+					<p class="product-price">Rs. 2,000</p>
+					<p class="cut-price">Rs. 2,500</p>
+				</div>
+			</a>
+		</div>
+	</div>
+
+	<div class="col-xs-12 col-sm-2 product-box row-last-child">
+		<div class="product-item pointer">
+			<a href="#">
+				<img src="img/product5.jpg" alt="Product 1">
+				<div class="product-row">
+					<h5 class="product-title">
+						<a href="#">Dry Ginger Powder (Sonth Powder) - 250 gm</a>
+					</h5>
+					<p class="product-price">Rs. 2,000</p>
+					<p class="cut-price">Rs. 2,500</p>
+				</div>
+			</a>
+		</div>
+	</div>
+</div>
+<!-- /categories-product -->
