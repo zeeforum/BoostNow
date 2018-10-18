@@ -18,19 +18,19 @@ $this->title = 'My Yii Application';
 		<!-- Wrapper for slides -->
 		<div class="carousel-inner">
 			<div class="item active">
-				<img src="img/slider1.jpg" alt="Los Angeles">
+				<img src="web/img/slider1.jpg" alt="Los Angeles">
 			</div>
 
 			<div class="item">
-				<img src="img/slider2.jpg" alt="Chicago">
+				<img src="web/img/slider2.jpg" alt="Chicago">
 			</div>
 
 			<div class="item">
-				<img src="img/slider3.jpg" alt="New York">
+				<img src="web/img/slider3.jpg" alt="New York">
 			</div>
 
 			<div class="item">
-				<img src="img/slider4.jpg" alt="Las Vegas">
+				<img src="web/img/slider4.jpg" alt="Las Vegas">
 			</div>
 		</div>
 
@@ -60,7 +60,7 @@ $this->title = 'My Yii Application';
 	<div class="col-xs-12 col-sm-2 product-box row-first-child">
 		<div class="product-item pointer">
 			<a href="#">
-				<img src="img/product1.jpg" alt="Product 1">
+				<img src="web/img/product1.jpg" alt="Product 1">
 				<div class="product-row">
 					<h5 class="product-title">
 						<a href="#">Dry Ginger Powder (Sonth Powder) - 250 gm</a>
@@ -75,7 +75,7 @@ $this->title = 'My Yii Application';
 	<div class="col-xs-12 col-sm-2 product-box">
 		<div class="product-item pointer">
 			<a href="#">
-				<img src="img/product2.jpg" alt="Product 1">
+				<img src="web/img/product2.jpg" alt="Product 1">
 				<div class="product-row">
 					<h5 class="product-title">
 						<a href="#">Dry Ginger Powder (Sonth Powder) - 250 gm</a>
@@ -90,7 +90,7 @@ $this->title = 'My Yii Application';
 	<div class="col-xs-12 col-sm-2 product-box">
 		<div class="product-item pointer">
 			<a href="#">
-				<img src="img/product3.jpg" alt="Product 1">
+				<img src="web/img/product3.jpg" alt="Product 1">
 				<div class="product-row">
 					<h5 class="product-title">
 						<a href="#">Dry Ginger Powder (Sonth Powder) - 250 gm</a>
@@ -105,7 +105,7 @@ $this->title = 'My Yii Application';
 	<div class="col-xs-12 col-sm-2 product-box">
 		<div class="product-item pointer">
 			<a href="#">
-				<img src="img/product4.jpg" alt="Product 1">
+				<img src="web/img/product4.jpg" alt="Product 1">
 				<div class="product-row">
 					<h5 class="product-title">
 						<a href="#">Dry Ginger Powder (Sonth Powder) - 250 gm</a>
@@ -120,7 +120,7 @@ $this->title = 'My Yii Application';
 	<div class="col-xs-12 col-sm-2 product-box">
 		<div class="product-item pointer">
 			<a href="#">
-				<img src="img/product5.jpg" alt="Product 1">
+				<img src="web/img/product5.jpg" alt="Product 1">
 				<div class="product-row">
 					<h5 class="product-title">
 						<a href="#">Dry Ginger Powder (Sonth Powder) - 250 gm</a>
@@ -135,7 +135,7 @@ $this->title = 'My Yii Application';
 	<div class="col-xs-12 col-sm-2 product-box row-last-child">
 		<div class="product-item pointer">
 			<a href="#">
-				<img src="img/product6.jpg" alt="Product 1">
+				<img src="web/img/product6.jpg" alt="Product 1">
 				<div class="product-row">
 					<h5 class="product-title">
 						<a href="#">Dry Ginger Powder (Sonth Powder) - 250 gm</a>
@@ -152,7 +152,7 @@ $this->title = 'My Yii Application';
 	<div class="col-xs-12 col-sm-2 product-box row-first-child">
 		<div class="product-item pointer">
 			<a href="#">
-				<img src="img/product6.jpg" alt="Product 1">
+				<img src="web/img/product6.jpg" alt="Product 1">
 				<div class="product-row">
 					<h5 class="product-title">
 						<a href="#">Dry Ginger Powder (Sonth Powder) - 250 gm</a>
@@ -167,7 +167,7 @@ $this->title = 'My Yii Application';
 	<div class="col-xs-12 col-sm-2 product-box">
 		<div class="product-item pointer">
 			<a href="#">
-				<img src="img/product1.jpg" alt="Product 1">
+				<img src="web/img/product1.jpg" alt="Product 1">
 				<div class="product-row">
 					<h5 class="product-title">
 						<a href="#">Dry Ginger Powder (Sonth Powder) - 250 gm</a>
@@ -182,7 +182,7 @@ $this->title = 'My Yii Application';
 	<div class="col-xs-12 col-sm-2 product-box">
 		<div class="product-item pointer">
 			<a href="#">
-				<img src="img/product2.jpg" alt="Product 1">
+				<img src="web/img/product2.jpg" alt="Product 1">
 				<div class="product-row">
 					<h5 class="product-title">
 						<a href="#">Dry Ginger Powder (Sonth Powder) - 250 gm</a>
@@ -197,7 +197,7 @@ $this->title = 'My Yii Application';
 	<div class="col-xs-12 col-sm-2 product-box">
 		<div class="product-item pointer">
 			<a href="#">
-				<img src="img/product4.jpg" alt="Product 1">
+				<img src="web/img/product4.jpg" alt="Product 1">
 				<div class="product-row">
 					<h5 class="product-title">
 						<a href="#">Dry Ginger Powder (Sonth Powder) - 250 gm</a>
@@ -212,7 +212,7 @@ $this->title = 'My Yii Application';
 	<div class="col-xs-12 col-sm-2 product-box">
 		<div class="product-item pointer">
 			<a href="#">
-				<img src="img/product3.jpg" alt="Product 1">
+				<img src="web/img/product3.jpg" alt="Product 1">
 				<div class="product-row">
 					<h5 class="product-title">
 						<a href="#">Dry Ginger Powder (Sonth Powder) - 250 gm</a>
@@ -227,7 +227,7 @@ $this->title = 'My Yii Application';
 	<div class="col-xs-12 col-sm-2 product-box row-last-child">
 		<div class="product-item pointer">
 			<a href="#">
-				<img src="img/product5.jpg" alt="Product 1">
+				<img src="web/img/product5.jpg" alt="Product 1">
 				<div class="product-row">
 					<h5 class="product-title">
 						<a href="#">Dry Ginger Powder (Sonth Powder) - 250 gm</a>
@@ -255,7 +255,7 @@ $this->title = 'My Yii Application';
 	<div class="col-xs-12 col-sm-2 product-box row-first-child">
 		<div class="product-item pointer">
 			<a href="#">
-				<img src="img/product6.jpg" alt="Product 1">
+				<img src="web/img/product6.jpg" alt="Product 1">
 				<div class="product-row">
 					<h5 class="product-title">
 						<a href="#">Dry Ginger Powder (Sonth Powder) - 250 gm</a>
@@ -270,7 +270,7 @@ $this->title = 'My Yii Application';
 	<div class="col-xs-12 col-sm-2 product-box">
 		<div class="product-item pointer">
 			<a href="#">
-				<img src="img/product1.jpg" alt="Product 1">
+				<img src="web/img/product1.jpg" alt="Product 1">
 				<div class="product-row">
 					<h5 class="product-title">
 						<a href="#">Dry Ginger Powder (Sonth Powder) - 250 gm</a>
@@ -285,7 +285,7 @@ $this->title = 'My Yii Application';
 	<div class="col-xs-12 col-sm-2 product-box">
 		<div class="product-item pointer">
 			<a href="#">
-				<img src="img/product2.jpg" alt="Product 1">
+				<img src="web/img/product2.jpg" alt="Product 1">
 				<div class="product-row">
 					<h5 class="product-title">
 						<a href="#">Dry Ginger Powder (Sonth Powder) - 250 gm</a>
@@ -300,7 +300,7 @@ $this->title = 'My Yii Application';
 	<div class="col-xs-12 col-sm-2 product-box">
 		<div class="product-item pointer">
 			<a href="#">
-				<img src="img/product4.jpg" alt="Product 1">
+				<img src="web/img/product4.jpg" alt="Product 1">
 				<div class="product-row">
 					<h5 class="product-title">
 						<a href="#">Dry Ginger Powder (Sonth Powder) - 250 gm</a>
@@ -315,7 +315,7 @@ $this->title = 'My Yii Application';
 	<div class="col-xs-12 col-sm-2 product-box">
 		<div class="product-item pointer">
 			<a href="#">
-				<img src="img/product3.jpg" alt="Product 1">
+				<img src="web/img/product3.jpg" alt="Product 1">
 				<div class="product-row">
 					<h5 class="product-title">
 						<a href="#">Dry Ginger Powder (Sonth Powder) - 250 gm</a>
@@ -330,7 +330,7 @@ $this->title = 'My Yii Application';
 	<div class="col-xs-12 col-sm-2 product-box row-last-child">
 		<div class="product-item pointer">
 			<a href="#">
-				<img src="img/product5.jpg" alt="Product 1">
+				<img src="web/img/product5.jpg" alt="Product 1">
 				<div class="product-row">
 					<h5 class="product-title">
 						<a href="#">Dry Ginger Powder (Sonth Powder) - 250 gm</a>
@@ -347,7 +347,7 @@ $this->title = 'My Yii Application';
 	<div class="col-xs-12 col-sm-2 product-box row-first-child">
 		<div class="product-item pointer">
 			<a href="#">
-				<img src="img/product1.jpg" alt="Product 1">
+				<img src="web/img/product1.jpg" alt="Product 1">
 				<div class="product-row">
 					<h5 class="product-title">
 						<a href="#">Dry Ginger Powder (Sonth Powder) - 250 gm</a>
@@ -362,7 +362,7 @@ $this->title = 'My Yii Application';
 	<div class="col-xs-12 col-sm-2 product-box">
 		<div class="product-item pointer">
 			<a href="#">
-				<img src="img/product2.jpg" alt="Product 1">
+				<img src="web/img/product2.jpg" alt="Product 1">
 				<div class="product-row">
 					<h5 class="product-title">
 						<a href="#">Dry Ginger Powder (Sonth Powder) - 250 gm</a>
@@ -377,7 +377,7 @@ $this->title = 'My Yii Application';
 	<div class="col-xs-12 col-sm-2 product-box">
 		<div class="product-item pointer">
 			<a href="#">
-				<img src="img/product3.jpg" alt="Product 1">
+				<img src="web/img/product3.jpg" alt="Product 1">
 				<div class="product-row">
 					<h5 class="product-title">
 						<a href="#">Dry Ginger Powder (Sonth Powder) - 250 gm</a>
@@ -392,7 +392,7 @@ $this->title = 'My Yii Application';
 	<div class="col-xs-12 col-sm-2 product-box">
 		<div class="product-item pointer">
 			<a href="#">
-				<img src="img/product4.jpg" alt="Product 1">
+				<img src="web/img/product4.jpg" alt="Product 1">
 				<div class="product-row">
 					<h5 class="product-title">
 						<a href="#">Dry Ginger Powder (Sonth Powder) - 250 gm</a>
@@ -407,7 +407,7 @@ $this->title = 'My Yii Application';
 	<div class="col-xs-12 col-sm-2 product-box">
 		<div class="product-item pointer">
 			<a href="#">
-				<img src="img/product5.jpg" alt="Product 1">
+				<img src="web/img/product5.jpg" alt="Product 1">
 				<div class="product-row">
 					<h5 class="product-title">
 						<a href="#">Dry Ginger Powder (Sonth Powder) - 250 gm</a>
@@ -422,7 +422,7 @@ $this->title = 'My Yii Application';
 	<div class="col-xs-12 col-sm-2 product-box row-last-child">
 		<div class="product-item pointer">
 			<a href="#">
-				<img src="img/product6.jpg" alt="Product 1">
+				<img src="web/img/product6.jpg" alt="Product 1">
 				<div class="product-row">
 					<h5 class="product-title">
 						<a href="#">Dry Ginger Powder (Sonth Powder) - 250 gm</a>
@@ -450,7 +450,7 @@ $this->title = 'My Yii Application';
 	<div class="col-xs-12 col-sm-2 product-box row-first-child">
 		<div class="product-item pointer">
 			<a href="#">
-				<img src="img/product1.jpg" alt="Product 1">
+				<img src="web/img/product1.jpg" alt="Product 1">
 				<div class="product-row">
 					<h5 class="product-title">
 						<a href="#">Dry Ginger Powder (Sonth Powder) - 250 gm</a>
@@ -465,7 +465,7 @@ $this->title = 'My Yii Application';
 	<div class="col-xs-12 col-sm-2 product-box">
 		<div class="product-item pointer">
 			<a href="#">
-				<img src="img/product2.jpg" alt="Product 1">
+				<img src="web/img/product2.jpg" alt="Product 1">
 				<div class="product-row">
 					<h5 class="product-title">
 						<a href="#">Dry Ginger Powder (Sonth Powder) - 250 gm</a>
@@ -480,7 +480,7 @@ $this->title = 'My Yii Application';
 	<div class="col-xs-12 col-sm-2 product-box">
 		<div class="product-item pointer">
 			<a href="#">
-				<img src="img/product3.jpg" alt="Product 1">
+				<img src="web/img/product3.jpg" alt="Product 1">
 				<div class="product-row">
 					<h5 class="product-title">
 						<a href="#">Dry Ginger Powder (Sonth Powder) - 250 gm</a>
@@ -495,7 +495,7 @@ $this->title = 'My Yii Application';
 	<div class="col-xs-12 col-sm-2 product-box">
 		<div class="product-item pointer">
 			<a href="#">
-				<img src="img/product4.jpg" alt="Product 1">
+				<img src="web/img/product4.jpg" alt="Product 1">
 				<div class="product-row">
 					<h5 class="product-title">
 						<a href="#">Dry Ginger Powder (Sonth Powder) - 250 gm</a>
@@ -510,7 +510,7 @@ $this->title = 'My Yii Application';
 	<div class="col-xs-12 col-sm-2 product-box">
 		<div class="product-item pointer">
 			<a href="#">
-				<img src="img/product5.jpg" alt="Product 1">
+				<img src="web/img/product5.jpg" alt="Product 1">
 				<div class="product-row">
 					<h5 class="product-title">
 						<a href="#">Dry Ginger Powder (Sonth Powder) - 250 gm</a>
@@ -525,7 +525,7 @@ $this->title = 'My Yii Application';
 	<div class="col-xs-12 col-sm-2 product-box row-last-child">
 		<div class="product-item pointer">
 			<a href="#">
-				<img src="img/product6.jpg" alt="Product 1">
+				<img src="web/img/product6.jpg" alt="Product 1">
 				<div class="product-row">
 					<h5 class="product-title">
 						<a href="#">Dry Ginger Powder (Sonth Powder) - 250 gm</a>
@@ -542,7 +542,7 @@ $this->title = 'My Yii Application';
 	<div class="col-xs-12 col-sm-2 product-box row-first-child">
 		<div class="product-item pointer">
 			<a href="#">
-				<img src="img/product6.jpg" alt="Product 1">
+				<img src="web/img/product6.jpg" alt="Product 1">
 				<div class="product-row">
 					<h5 class="product-title">
 						<a href="#">Dry Ginger Powder (Sonth Powder) - 250 gm</a>
@@ -557,7 +557,7 @@ $this->title = 'My Yii Application';
 	<div class="col-xs-12 col-sm-2 product-box">
 		<div class="product-item pointer">
 			<a href="#">
-				<img src="img/product1.jpg" alt="Product 1">
+				<img src="web/img/product1.jpg" alt="Product 1">
 				<div class="product-row">
 					<h5 class="product-title">
 						<a href="#">Dry Ginger Powder (Sonth Powder) - 250 gm</a>
@@ -572,7 +572,7 @@ $this->title = 'My Yii Application';
 	<div class="col-xs-12 col-sm-2 product-box">
 		<div class="product-item pointer">
 			<a href="#">
-				<img src="img/product2.jpg" alt="Product 1">
+				<img src="web/img/product2.jpg" alt="Product 1">
 				<div class="product-row">
 					<h5 class="product-title">
 						<a href="#">Dry Ginger Powder (Sonth Powder) - 250 gm</a>
@@ -587,7 +587,7 @@ $this->title = 'My Yii Application';
 	<div class="col-xs-12 col-sm-2 product-box">
 		<div class="product-item pointer">
 			<a href="#">
-				<img src="img/product4.jpg" alt="Product 1">
+				<img src="web/img/product4.jpg" alt="Product 1">
 				<div class="product-row">
 					<h5 class="product-title">
 						<a href="#">Dry Ginger Powder (Sonth Powder) - 250 gm</a>
@@ -602,7 +602,7 @@ $this->title = 'My Yii Application';
 	<div class="col-xs-12 col-sm-2 product-box">
 		<div class="product-item pointer">
 			<a href="#">
-				<img src="img/product3.jpg" alt="Product 1">
+				<img src="web/img/product3.jpg" alt="Product 1">
 				<div class="product-row">
 					<h5 class="product-title">
 						<a href="#">Dry Ginger Powder (Sonth Powder) - 250 gm</a>
@@ -617,7 +617,7 @@ $this->title = 'My Yii Application';
 	<div class="col-xs-12 col-sm-2 product-box row-last-child">
 		<div class="product-item pointer">
 			<a href="#">
-				<img src="img/product5.jpg" alt="Product 1">
+				<img src="web/img/product5.jpg" alt="Product 1">
 				<div class="product-row">
 					<h5 class="product-title">
 						<a href="#">Dry Ginger Powder (Sonth Powder) - 250 gm</a>
