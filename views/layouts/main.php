@@ -230,11 +230,75 @@ AppAsset::register($this);
 
 <footer class="footer">
     <div class="container">
-        <p class="pull-left">&copy; <?= Yii::$app->params['website_title']; ?> <?= date('Y') ?></p>
+        <div class="col-xs-12 col-sm-3">
+            <div class="footer-block">
+                <h3>Customer Care</h3>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">How to Buy</a></li>
+                    <li><a href="#">Track Your Order</a></li>
+                    <li><a href="#">Returns & Refunds</a></li>
+                    <li><a href="#">BoostNow Shop</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+            </div>
 
-        <p class="pull-right"><?= Yii::powered() ?></p>
+            <div class="footer-block">
+                <h3>Make Money With Us</h3>
+                <ul>
+                    <li><a href="#">Seller University</a></li>
+                    <li><a href="#">Sell on Daraz</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-3">
+            <div class="footer-block">
+                <ul class="footer-mt">
+                    <li><a href="#">BoostNow Affiliate</a></li>
+                    <li><a href="#">Video Guidelines</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-block">
+                <h3>BoostNow</h3>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Digital Payment</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">BoostNow Cares</a></li>
+                    <li><a href="#">Terms & Conditions</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-3">
+            <div class="footer-block">
+                <h3>About Us</h3>
+                <div class="footer-content">
+                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-3">
+            <div class="footer-block">
+                <h3>Contact Us</h3>
+                <div class="footer-content">
+                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
     </div>
 </footer>
+
+<div class="copyright-text">
+    <div class="container">
+        <p class="text-center">BoostNow Copyrights &copy; <?= date('Y'); ?>. <?= Yii::powered() ?></p>
+    </div>
+</div>
 
 <?php $this->endBody() ?>
 <script>
