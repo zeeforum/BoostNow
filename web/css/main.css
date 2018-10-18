@@ -29,17 +29,18 @@
 
 .main-nav .navbar-brand {margin-left: 0px;padding-left: 0px;}
 
+/* Main Header with Search Navigation */
 .search-nav li.form form {width:100%;padding:0;}
 .search-nav li.form form input {width:75% !important;border-radius:0px;border-color:var(--light-pink);padding:20px 10px;}
 .search-nav li.form form button {width:20% !important;border-radius:0px;border-color:var(--light-pink);padding:10px 10px;}
 .search-nav li.form form input:focus {border-color:var(--light-pink);box-shadow:none;}
 .search-nav li.form form button:hover {background-color:var(--light-pink);color:var(--white);border-color:var(--light-pink);}
 .main-nav .navbar {margin-bottom:0px !important;}
-
 .fa.fa-shopping-cart {font-size:28px;color:var(--light-blue);}
 .mt15 {margin-top:15px;}
 .cart-icon a:hover {background:var(--color-none) !important;}
 
+/* Header Navigation */
 .header-main-nav {background: var(--light-blue);margin-top:5px;}
 .header-main-nav ul.navbar-nav li a {padding:15px 0;margin:0px 10px;text-transform: uppercase;color:var(--white);}
 .header-main-nav ul.navbar-nav li a:hover {background:var(--light-blue);}
@@ -59,6 +60,10 @@
 .dropdown-submenu {position: relative;}
 .dropdown-submenu .dropdown-menu {top: 0;left: 100%;margin-top: -1px;padding:0px;}
 .dropdown-submenu:hover > .dropdown-menu {display: block;}
+
+/* Breadcrumbs */
+.breadcrumb {background: var(--white);padding:10px 0px;margin-bottom:0px;}
+.breadcrumb a {color:var(--light-blue);}
 
 /* Slider */
 .carousel.slide .carousel-indicators li {background:#e8e4e4;border:1px solid var(--light-blue);}
@@ -91,6 +96,19 @@
 .footer .footer-block a {font-size:14px;}
 .copyright-text p {text-align: center;margin:5px 0;}
 .copyright-text a {color:var(--light-blue);font-weight: bold;}
+
+/* Contact Page */
+.address-info p a {color: var(--light-blue);}
+.address-info .google-map iframe {height: 250px;}
+.contact-form .first {padding-left: 0px;}
+.contact-form .last {padding-right: 0px;}
+.contact-form form input, .contact-form form textarea {border-radius: 0px;padding: 5px 10px;}
+.contact-form form input:focus, .contact-form form textarea:focus {border:1px solid var(--light-blue);box-shadow: none;}
+.field-contactform-verifycode label {display: block;}
+
+/* Buttons */
+.btn-boostnow {background:var(--light-blue);box-shadow:none;border-radius: 0px;border: 1px solid var(--light-blue);}
+.btn-boostnow:hover {background: var(--light-pink);}
 
 /* screens with minimum width 992px or above */
 @media only screen and (min-width: 992px) {
