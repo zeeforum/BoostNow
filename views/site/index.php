@@ -52,7 +52,7 @@ $this->title = 'My Yii Application';
 		<a href="#">Electronic Devices</a>
 	</h4>
 	<h4 class="category-all pull-right">
-		<a href="#">View All</a>
+		<a href="#">View All <span class="fa fa-angle-right"></span></a>
 	</h4>
 </div>
 
@@ -247,7 +247,7 @@ $this->title = 'My Yii Application';
 		<a href="#">Health and Beauty</a>
 	</h4>
 	<h4 class="category-all pull-right">
-		<a href="#">View All</a>
+		<a href="#">View All <span class="fa fa-angle-right"></span></a>
 	</h4>
 </div>
 
@@ -442,7 +442,7 @@ $this->title = 'My Yii Application';
 		<a href="#">Babies and Boys</a>
 	</h4>
 	<h4 class="category-all pull-right">
-		<a href="#">View All</a>
+		<a href="#">View All <span class="fa fa-angle-right"></span></a>
 	</h4>
 </div>
 
