@@ -97,6 +97,16 @@
 .copyright-text p {text-align: center;margin:5px 0;}
 .copyright-text a {color:var(--light-blue);font-weight: bold;}
 
+/* Page Title */
+.page-title h1 {border-bottom:4px solid var(--light-blue);display: inline-block;padding-bottom:5px;margin-bottom:20px;border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;}
+
+/* Page Content */
+.page-content p {text-align: justify;}
+.page-content a {color:var(--light-blue);font-weight: bold;text-decoration: none;font-style: italic;}
+.page-content blockquote {margin-bottom: 10px;border-left-color: var(--light-blue);}
+.page-content img {max-width:100%;max-height:100%;}
+.page-content iframe {height:400px;}
+
 /* Contact Page */
 .address-info p a {color: var(--light-blue);}
 .address-info .google-map iframe {height: 250px;}
@@ -129,6 +139,7 @@
     .search-nav li {display:inline-block;vertical-align: middle;}
     .search-nav li.form {width:75%;}
     .search-nav li.form form input {display:inline-block;}
+    .page-content iframe {height:300px;}
 
     /* dropdown menu */
     .dropdown-menu {width:100%;}
@@ -145,4 +156,5 @@
     .search-nav li.form form button {margin-top:5px !important;}
     .search-nav li.form form input, .search-nav li.form form button {display:block;margin-right: 0px !important;width: 100% !important;}
     .cart-icon {width:100%;text-align: center;}
+    .page-content iframe {height:250px;}
 }

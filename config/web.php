@@ -91,7 +91,7 @@ $config = [
 			//'enableStrictParsing' => true,
 			'showScriptName' => false,
 			'rules' => [
-				//'about' => 'site/about',
+				'page/?' => 'site/about',
 				[
 					'pattern' => 'main-admin/<controller:[\w\-]+>/<action:[\w\-]*>/<id:[\w\-]*>',	//'main-admin' is new name of the 'admin' directory all routes will be handle through {/main-admin}
 					'route' => 'admin/<controller>/<action>',
@@ -102,6 +102,7 @@ $config = [
 						'id' => 0
 					],
 				],
+				'contact-us/?' => 'site/contact',
 				[
 					'pattern' => '<controller:[\w\-]+>/<action:[\w\-]*>/<id:[\w\-]*>',
 					'route' => '<controller>/<action>',

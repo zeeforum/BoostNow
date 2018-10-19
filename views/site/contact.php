@@ -12,7 +12,9 @@ $this->title = 'Contact';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="row no-gutter">
-    <h1 class="text-center"><?= Html::encode($this->title) ?></h1>
+    <div class="page-title text-center">
+        <h1 class="contact"><?= Html::encode($this->title) ?></h1>
+    </div>
     
     <div class="contact-page">
         <div class="col-xs-12 col-sm-6">
