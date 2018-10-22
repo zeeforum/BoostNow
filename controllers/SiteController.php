@@ -145,6 +145,10 @@ class SiteController extends Controller
 		return $this->render('about');
 	}
 
+	public function actionDetail() {
+		return $this->render('detail');
+	}
+
 	public function actionRegistration() {
 		$mRegistration = new \app\models\RegistrationForm();
 
