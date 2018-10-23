@@ -93,6 +93,8 @@ $config = [
 			'rules' => [
 				'page/?' => 'site/about',
 				'detail/?' => 'site/detail',
+				'login/?' => 'site/login',
+				'signup/?' => 'site/registration',
 				[
 					'pattern' => 'main-admin/<controller:[\w\-]+>/<action:[\w\-]*>/<id:[\w\-]*>',	//'main-admin' is new name of the 'admin' directory all routes will be handle through {/main-admin}
 					'route' => 'admin/<controller>/<action>',
