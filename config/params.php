@@ -11,4 +11,6 @@ return [
     'user.passwordResetTokenExpire' => 86400,
     'profilePicture' => '',
     'errorMessage' => 'An unexpected error occurred. Please try again. If the problem continues, contact the system administrator.',
+
+    'productImage' => 'images/products/',
 ];

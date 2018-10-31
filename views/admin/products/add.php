@@ -14,6 +14,10 @@
 	$this->params['tab'] = 'products';
 	$this->params['breadcrumbs'][] = ['label' => 'Browse Products', 'url' => Url::to([Yii::$app->params['adminAbsUrl'] . 'products'])];
 	$this->params['breadcrumbs'][] = $this->title;
+
+	$this->registerCss('
+	.multiple-pictures img {margin: 5px 5px;}
+	');
 ?>
 
 	<?php $this->beginBlock('links'); ?>
@@ -116,6 +120,12 @@
 			<div class="form-group col-xs-12">
 				<?= $form->field($model, 'main_picture')->fileInput(['accept' => 'image/*']); ?>
 			</div>
+
+			<?php if ($model->main_picture != '') { ?>
+				<div class="form-group col-xs-12">
+					<img src="<?= Yii::$app->params['base_url'] . Yii::$app->params['productImage'] . 'thumbsm-' . $model->main_picture; ?>" />
+				</div>
+			<?php } ?>
 			<div class="clearfix"></div>
 
 			<div class="multiplePictures">
@@ -126,6 +136,25 @@
 					</div>
 					';
 					echo $picturesHtml;
+				?>
+
+				<?php
+					if ($model->pictures != '') {
+						$pictures = json_decode($model->pictures, true);
+						if ($pictures && count($pictures) > 0) {
+				?>
+						<div class="form-group col-xs-12 multiple-pictures">
+				<?php
+							foreach ($pictures as $pic) {
+				?>
+							<img src="<?= Yii::$app->params['base_url'] . Yii::$app->params['productImage'] . 'thumbsm-' . $pic; ?>" />	
+				<?php
+							}
+				?>
+						</div>
+				<?php
+						}
+					}
 				?>
 			</div>
 			<div class="clearfix"></div>

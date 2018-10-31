@@ -30,8 +30,18 @@
 				'attribute' => 'detail',
 				'format' => 'raw',
 			],
-			
 			'category.name',
+			[
+				'attribute' => 'main_picture',
+				'format' => 'raw',
+                'value' => function($model) {
+					if ($model->main_picture != '') {
+						return '<img src="' . Yii::$app->params['base_url'] . Yii::$app->params['productImage'] . 'thumbsm-' . $model->main_picture . '">';
+					} else {
+						return '(not set)';
+					}
+                }
+            ],
 			'admin.username',
 			[
                 'attribute' => 'created_at',

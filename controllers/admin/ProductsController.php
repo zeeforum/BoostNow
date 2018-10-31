@@ -7,6 +7,7 @@
 	use yii\web\NotFoundHttpException;
 	use yii\data\Pagination;
 	use yii\web\UploadedFile;
+	use app\models\UploadImage;
 
 	class ProductsController extends AdminController {
 
@@ -50,11 +51,37 @@
 			$categories_rows = Categories::find()->all();
 
 			if ($model->load(Yii::$app->request->post())) {
+				$objImage = new UploadImage();
+				$objImage->setImagePath('images/products/');
+
 				$model->pictures = UploadedFile::getInstances($model, 'pictures');
 				$model->main_picture = UploadedFile::getInstance($model, 'main_picture');
-				print_r($model->pictures);die();
 
 				if ($model->validate()) {
+					//uploading multiple images
+					if ($model->pictures) {
+						$result = $objImage->uploadProductImages($model->pictures);
+						if ($result && count($result) > 0) {
+							$model->pictures = json_encode($result);
+						} else {
+							$model->pictures = NULL;
+						}
+					} else {
+						$model->pictures = NULL;
+					}
+
+					//uploading main product image
+					if ($model->main_picture) {
+						$picture = $objImage->upload($model->main_picture, true);
+						if ($picture) {
+							$model->main_picture = $picture;
+						} else {
+							$model->main_picture = NULL;
+						}
+					} else {
+						$model->main_picture = NULL;
+					}
+
 					$model->draft = $model->draft;
 					$model->created_by = Yii::$app->params['adminId'];
 					$result = $model->save();
@@ -90,6 +117,9 @@
 
 		public function actionUpdate($id) {
 			$model = Products::findOne($id);
+
+			$productMainPicture = $model->main_picture;
+			$productPictures = $model->pictures;
 			$model->scenario = 'add';
 			
 			if ($model === null) {
@@ -98,14 +128,46 @@
 
 			$categories_rows = Categories::find()->all();
 
-			if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-				$model->draft = $model->draft;
-				$model->updated_at = date('Y-m-d H:i:s');
-				$result = $model->save();
-				if ($result) {
-					return $this->setMsg([$this->admin . 'products/'], 'Product Updated Successfully!');
-				} else {
-					return $this->setMsg([$this->admin . 'products/update/' . $id], Yii::$app->params['errorMessage'], 'error');
+			if ($model->load(Yii::$app->request->post())) {
+				$objImage = new UploadImage();
+				$objImage->setImagePath('images/products/');
+
+				$model->pictures = UploadedFile::getInstances($model, 'pictures');
+				$model->main_picture = UploadedFile::getInstance($model, 'main_picture');
+
+				if ($model->validate()) {
+					//uploading multiple images
+					if ($model->pictures) {
+						$result = $objImage->uploadProductImages($model->pictures);
+						if ($result && count($result) > 0) {
+							$model->pictures = json_encode($result);
+						} else {
+							$model->pictures = $productPictures;
+						}
+					} else {
+						$model->pictures = $productPictures;
+					}
+
+					//uploading main product image
+					if ($model->main_picture) {
+						$picture = $objImage->upload($model->main_picture, true);
+						if ($picture) {
+							$model->main_picture = $picture;
+						} else {
+							$model->main_picture = $productMainPicture;
+						}
+					} else {
+						$model->main_picture = $productMainPicture;
+					}
+
+					$model->draft = $model->draft;
+					$model->updated_at = date('Y-m-d H:i:s');
+					$result = $model->save();
+					if ($result) {
+						return $this->setMsg([$this->admin . 'products/'], 'Product Updated Successfully!');
+					} else {
+						return $this->setMsg([$this->admin . 'products/update/' . $id], Yii::$app->params['errorMessage'], 'error');
+					}
 				}
 			}
 
