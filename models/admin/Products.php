@@ -24,6 +24,9 @@ class Products extends ActiveRecord {
 			['quantity', 'integer', 'message' => 'Please Enter Quantity', 'on' => self::SCENARIO_ACTION],
 			['price', 'required', 'message' => 'Enter Price', 'on' => self::SCENARIO_ACTION],
 			['price', 'number', 'message' => 'Please Enter Price', 'on' => self::SCENARIO_ACTION],
+			[['main_picture',],'required', 'message' => 'Select Picture to Upload.', 'on' => self::SCENARIO_ACTION],
+			[['main_picture'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, gif, jpeg', 'message' => 'Please select valid image!', 'checkExtensionByMimeType' => false, 'on' => self::SCENARIO_ACTION],
+			[['pictures'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, gif, jpeg', 'message' => 'Please select valid image!', 'checkExtensionByMimeType' => false, 'maxFiles' => 10, 'on' => self::SCENARIO_ACTION],
 			['draft', 'required', 'message' => 'Select Draft', 'on' => self::SCENARIO_ACTION],
 			['draft', 'in', 'range' => ['no', 'yes'], 'on' => [self::SCENARIO_ACTION, self::SCENARIO_SEARCH]],
 		];
@@ -38,6 +41,10 @@ class Products extends ActiveRecord {
 			'detail' => 'Content',
 			'category_id' => 'Category',
 			'price' => 'Price',
+			'cut_price' => 'Cut Price',
+			'cut_price_type' => 'Cut Price Type',
+			'main_picture' => 'Main Picture',
+			'pictures' => 'Select Picture'
 		];
 	}
 

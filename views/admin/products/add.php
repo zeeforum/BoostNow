@@ -97,10 +97,43 @@
 				]); ?>
 			</div>
 			<!-- /.form-group -->
+			<div class="clearfix"></div>
 
-			<div class="col-xs-12">
+			<div class="form-group col-xs-12 col-sm-6">
+				<?php echo $form->field($model, 'cut_price'); ?>
+			</div>
+			<!-- /.form-group -->
+
+			<div class="form-group col-xs-12 col-sm-6">
+				<?php
+					$parent = array('value' => 'Value', 'percentage' => 'Percentage');
+					echo $form->field($model, 'cut_price_type')->dropdownList($parent);
+				?>
+			</div>
+			<!-- /.form-group -->
+			<div class="clearfix"></div>
+
+			<div class="form-group col-xs-12">
+				<?= $form->field($model, 'main_picture')->fileInput(['accept' => 'image/*']); ?>
+			</div>
+			<div class="clearfix"></div>
+
+			<div class="multiplePictures">
+				<?php
+					$picturesHtml = '
+					<div class="form-group col-xs-12 col-xs-6">
+						' . $form->field($model, 'pictures[]')->fileInput(['accept' => 'image/*', 'multiple' => true]) . '
+					</div>
+					';
+					echo $picturesHtml;
+				?>
+			</div>
+			<div class="clearfix"></div>
+
+			<div class="col-xs-12 col-sm-6">
 				<?= Html::submitButton($btnText, ['class' => 'button btn btn-primary btn-large']) ?>
 			</div>
+			<div class="clearfix"></div>
 			
 		</div>
 		<!-- /.row -->

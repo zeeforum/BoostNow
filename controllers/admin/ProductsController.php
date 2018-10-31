@@ -6,6 +6,7 @@
 	use app\models\admin\Categories;
 	use yii\web\NotFoundHttpException;
 	use yii\data\Pagination;
+	use yii\web\UploadedFile;
 
 	class ProductsController extends AdminController {
 
@@ -48,14 +49,20 @@
 			$model->scenario = 'add';
 			$categories_rows = Categories::find()->all();
 
-			if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-				$model->draft = $model->draft;
-				$model->created_by = Yii::$app->params['adminId'];
-				$result = $model->save();
-				if ($result) {
-					return $this->setMsg([$this->admin . 'products/'], 'Product Added Successfully!');
-				} else {
-					return $this->setMsg([$this->admin . 'products/add'], Yii::$app->params['errorMessage'], 'error');
+			if ($model->load(Yii::$app->request->post())) {
+				$model->pictures = UploadedFile::getInstances($model, 'pictures');
+				$model->main_picture = UploadedFile::getInstance($model, 'main_picture');
+				print_r($model->pictures);die();
+
+				if ($model->validate()) {
+					$model->draft = $model->draft;
+					$model->created_by = Yii::$app->params['adminId'];
+					$result = $model->save();
+					if ($result) {
+						return $this->setMsg([$this->admin . 'products/'], 'Product Added Successfully!');
+					} else {
+						return $this->setMsg([$this->admin . 'products/add'], Yii::$app->params['errorMessage'], 'error');
+					}
 				}
 			}
 
