@@ -5,43 +5,24 @@ namespace app\controllers;
 use Yii;
 use app\models\News;
 use app\models\SearchNews;
-use yii\web\Controller;
+use app\controllers\MainController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
  * NewsController implements the CRUD actions for News model.
  */
-class NewsController extends Controller
+class NewsController extends MainController
 {
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
+
+    public function __construct($id, $module, $config = []) {
+        parent::__construct($id, $module, $config);
+        parent::setPreferences();
     }
 
-    /**
-     * Lists all News models.
-     * @return mixed
-     */
-    public function actionIndex()
-    {
-        $searchModel = new SearchNews();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+    public function actionIndex() {
+        echo 'Test';
+        $this->preFormat($this->categories);
     }
 
     /**

@@ -17,6 +17,7 @@
 
 	$this->registerCss('
 	.multiple-pictures img {margin: 5px 5px;}
+	.red-note {color:red;}
 	');
 ?>
 
@@ -130,9 +131,14 @@
 
 			<div class="multiplePictures">
 				<?php
+					$imagesRemoveText = '';
+					if (isset($command) && $command == 'edit') {
+						$imagesRemoveText = '<p class="red-note">If you will upload new images, old images will be removed.</p>';
+					}
 					$picturesHtml = '
 					<div class="form-group col-xs-12 col-xs-6">
 						' . $form->field($model, 'pictures[]')->fileInput(['accept' => 'image/*', 'multiple' => true]) . '
+						' . $imagesRemoveText . '
 					</div>
 					';
 					echo $picturesHtml;
