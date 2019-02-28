@@ -110,7 +110,6 @@ $config = [
 						'id' => 0
 					],
 				],
-				'<action:(.*)>' => 'site/<action>',
 			],
 		],
 	],
