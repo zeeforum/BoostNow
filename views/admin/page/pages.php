@@ -81,7 +81,7 @@
 				<td><?php echo $row->title; ?></td>
 				<td><?php echo $row->seo_url; ?></td>
 				<td><?php echo ucfirst($row->draft); ?></td>
-				<td><?php echo ucfirst($row->section); ?></td>
+				<td><?php echo ucwords(str_replace('-', ' ', $row->section)); ?></td>
 				<td>
 					<?php
 						echo $row->updated_at;

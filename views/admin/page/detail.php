@@ -44,7 +44,7 @@
 			[
 				'attribute' => 'section',
 				'value' => function($model) {
-					return ucfirst($model->section);
+					return ucwords(str_replace('-', ' ', $model->section));
 				}
 			],
 			[

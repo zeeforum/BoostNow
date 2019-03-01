@@ -22,7 +22,7 @@
 ?>
 
 	<?php $this->beginBlock('links'); ?>
-		<li><a href="<?= Url::to([Yii::$app->params['adminAbsUrl'] . 'products']); ?>" class="btn bg-purple btn-flat"> Go Back</a></li>
+		<li><a href="<?= Url::to([Yii::$app->params['adminAbsUrl'] . 'page']); ?>" class="btn bg-purple btn-flat"> Go Back</a></li>
 	<?php $this->endBlock(); ?>
 
 	<?php $form = ActiveForm::begin(['id' => 'pages-form']); ?>
@@ -59,7 +59,7 @@
 
 			<div class="form-group col-xs-12 col-sm-6">
 				<?php
-					$parent = array('header' => 'Header', 'footer' => 'Footer', 'both' => 'Both (Header & Footer)', 'all' => 'All');
+					$parent = array('top-header' => 'Top Header', 'header' => 'Header', 'footer' => 'Footer', 'both' => 'Both (Header & Footer)', 'all' => 'All');
 					echo $form->field($model, 'section')->dropdownList($parent);
 				?>
 			</div>
