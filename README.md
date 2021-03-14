@@ -28,5 +28,6 @@ If you want to contibute in my project, please contact me. Drop me a message, I 
 - AdminLTE
 - Bootstrap
 - jQuery
+- PHP
 
 [![Yii](https://img.shields.io/badge/Powered_by-Yii_Framework-green.svg?style=flat)](http://www.yiiframework.com/)
